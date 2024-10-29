@@ -26,7 +26,7 @@ investigate the manage booking (not working) - unreplicable on my end
 make the fb name mandatory field - done
 prompt request by alex - done
 remove avail new lamp id on registration table - done
+group registration for online guests - done
 
 pending:
 update cluster groups
-group registration for online guests

@@ -156,16 +156,16 @@
 
 .el-button--theme {
     color: #FFF !important;
-    background-color: #6a9322 !important;
-    border-color: #6a9322 !important;
+    background-color: #2d7a5f !important;
+    border-color: #2d7a5f !important;
 }
 
 .el-link.el-link--theme:hover {
-    color: #6a9322 !important;
+    color: #2d7a5f !important;
 }
 
 .el-link.el-link--theme {
-    color: #86ba2c !important;
+    color: #2d7a5f !important;
     text-decoration: none !important;
 }
 

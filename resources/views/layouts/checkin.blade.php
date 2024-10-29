@@ -7,9 +7,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta property="og:image" content="https://online.lampawta.com/images/registration_banner.jpeg" />
+    <meta property="og:image" content="https://lampawta.com/images/meta_banner.png" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://online.lampawta.com/registration"/>
+    <meta property="og:url" content="https://lampawta.com/registration"/>
     <meta property="og:title" content="Annual Worship and Thanksgiving {{ config('settings.year') }}" />
     <meta property="og:description" content="{{ config('settings.theme') }}"/>
 

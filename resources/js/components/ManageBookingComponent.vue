@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <div v-if="! validated" class="row justify-content-center">
                 <div class="col-md-6 mb-3">
-                    <el-card shadow="always" class="mb-3 p-1" style="border-top: 10px solid rgb(106 147 34); height: 100% !important;">
+                    <el-card shadow="always" class="mb-3 p-1" style="border-top: 10px solid rgb(45 122 95); height: 100% !important;">
                         <div class="text-black">
                             <h6 class="fw-bolder text-muted">LAMP WORLDWIDE AWTA {{ year }}</h6>
                             <small>
@@ -29,7 +29,7 @@
                     </el-card>
                 </div>
                 <div class="col-md-6">
-                    <el-card shadow="always" class="mb-3 pb-0" style="border-top: 10px solid rgb(106 147 34)">
+                    <el-card shadow="always" class="mb-3 pb-0" style="border-top: 10px solid rgb(45 122 95)">
                         <h3>Manage Booking</h3>
                         <p class="mt-2 c-booking-subheader">Type in your details to manage your booking</p>
 
