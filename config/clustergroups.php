@@ -36,7 +36,7 @@ return [
                 "Sta. Rosa North Cluster",
                 "Sta. Rosa South Cluster",
                 "Muntinlupa Cluster",
-                "Fly 4 Chris Clustert"
+                "Fly 4 Chris Cluster"
             ]
         ]
     ],
