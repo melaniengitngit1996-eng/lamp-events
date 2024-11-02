@@ -19,7 +19,6 @@ class DashboardController extends Controller
         $color_assignment = config('settings.chart_color');
 
         $local_churches = array_keys(config('clustergroups'));
-        dd(Slots::where('id', env('SLOT_ID_TODAY_GUEST'))->first());
 
         return view('dashboard', [
             'all' => (object) $this->get_local_churches_attendance($color_assignment, $local_churches),
