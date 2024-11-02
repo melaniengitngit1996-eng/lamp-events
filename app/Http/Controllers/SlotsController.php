@@ -21,14 +21,21 @@ class SlotsController extends Controller
         }
 
         $activities = $slot->activities;
-
-        array_unshift($activities, [
-            'user' => auth()->user()->name ?? '',
-            'message' => $request->notes,
-            'timestamp' => date('M d, Y h:i A')
-        ]);
-
-        $slot = $slot->update([
+        if (empty($activities)) {
+            $activities = array([
+                'user' => auth()->user()->name ?? '',
+                'message' => $request->notes,
+                'timestamp' => date('M d, Y h:i A')
+            ]);
+        } else {
+            array_unshift($activities, [
+                'user' => auth()->user()->name ?? '',
+                'message' => $request->notes,
+                'timestamp' => date('M d, Y h:i A')
+            ]);
+        }
+        
+        $slot->update([
             'seat_count' => $slot->seat_count + $request->additional_count,
             'activities' => $activities
         ]);
