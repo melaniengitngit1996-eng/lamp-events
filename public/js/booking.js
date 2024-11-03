@@ -7436,7 +7436,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, _callee2);
       })));
     },
-    printThis: function printThis() {
+    printThis: function printThis(id) {
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         var options, printCanvas, link;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -7447,7 +7447,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   type: "dataURL"
                 };
                 _context3.next = 3;
-                return html2canvas__WEBPACK_IMPORTED_MODULE_0___default()(document.querySelector("#capture"), options);
+                return html2canvas__WEBPACK_IMPORTED_MODULE_0___default()(document.querySelector("#" + id), options);
 
               case 3:
                 printCanvas = _context3.sent;
@@ -7877,7 +7877,7 @@ var render = function render() {
     }, [_c("el-card", {
       staticClass: "box-card ticket-header",
       attrs: {
-        id: "capture"
+        id: "capture_".concat(i)
       }
     }, [_c("div", {
       staticClass: "clearfix",
@@ -7895,7 +7895,7 @@ var render = function render() {
       on: {
         click: function click($event) {
           if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "preventDefault", undefined, $event.key, undefined)) return null;
-          return _vm.printThis.apply(null, arguments);
+          return _vm.printThis("capture_".concat(i));
         }
       }
     })], 1), _vm._v(" "), _c("div", [_c("div", {
