@@ -1,11 +1,11 @@
 <template>
     <div class="row justify-content-center my-4">
         <div v-bind:class="{'col-lg-12 mb-4' : isRebooking, 'col-md-6 col-lg-4 mb-4' : !isRebooking}" v-for="(registration, i) in registrations" :key="i">
-            <el-card id="capture" class="box-card ticket-header">
+            <el-card :id="`capture_${i}`" class="box-card ticket-header">
                 <div slot="header" class="clearfix">
                     <span>LAMP WORLDWIDE AWTA {{ year }}</span>
 
-                    <el-button icon="el-icon-download" class="float-end p-1 mx-0" type="primary" plain @click.preventDefault="printThis" />
+                    <el-button icon="el-icon-download" class="float-end p-1 mx-0" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
                 </div>
                 <div>
                     <div class="row">
@@ -175,12 +175,12 @@ export default {
                 })
             })
         },
-        async printThis() {
+        async printThis(id) {
             const options = {
                 type: "dataURL"
             };
 
-            const printCanvas = await html2canvas(document.querySelector("#capture"), options);
+            const printCanvas = await html2canvas(document.querySelector("#" + id), options);
 
             const link = document.createElement("a");
             link.setAttribute("download", "awta-ticket.png");
