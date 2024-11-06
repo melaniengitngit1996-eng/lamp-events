@@ -8074,10 +8074,18 @@ var render = function render() {
     staticStyle: {
       width: "100%"
     }
-  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._l(_vm.overall, function (lc) {
+  }, [_vm._m(0), _vm._v(" "), _vm._m(1), _vm._v(" "), _vm._m(2), _vm._v(" "), _vm._l(_vm.overall, function (lc) {
     return _c("tr", [_c("td", {
       staticClass: "border px-2 py-1"
     }, [_vm._v(_vm._s(lc.local_church))]), _vm._v(" "), _c("td", {
+      staticClass: "border px-2 py-1"
+    }, [_vm._v(_vm._s(lc.count.member.cancelled))]), _vm._v(" "), _c("td", {
+      staticClass: "border px-2 py-1"
+    }, [_vm._v(_vm._s(lc.count.guest.cancelled))]), _vm._v(" "), _c("td", {
+      staticClass: "border px-2 py-1"
+    }, [_vm._v(_vm._s(lc.count.member.pending))]), _vm._v(" "), _c("td", {
+      staticClass: "border px-2 py-1"
+    }, [_vm._v(_vm._s(lc.count.guest.pending))]), _vm._v(" "), _c("td", {
       staticClass: "border px-2 py-1"
     }, [_vm._v(_vm._s(lc.count.member.attended) + " / " + _vm._s(lc.count.member.total))]), _vm._v(" "), _c("td", {
       staticClass: "border px-2 py-1"
@@ -8088,6 +8096,14 @@ var render = function render() {
     staticClass: "border px-2 py-1"
   }, [_vm._v("Total")]), _vm._v(" "), _c("td", {
     staticClass: "border px-2 py-1"
+  }, [_vm._v(_vm._s(_vm.overall_total.member.cancelled))]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
+  }, [_vm._v(_vm._s(_vm.overall_total.guest.cancelled))]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
+  }, [_vm._v(_vm._s(_vm.overall_total.member.pending))]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
+  }, [_vm._v(_vm._s(_vm.overall_total.guest.pending))]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
   }, [_vm._v(_vm._s(_vm.overall_total.member.attended) + " / " + _vm._s(_vm.overall_total.member.total))]), _vm._v(" "), _c("td", {
     staticClass: "border px-2 py-1"
   }, [_vm._v(_vm._s(_vm.overall_total.guest.attended) + " / " + _vm._s(_vm.overall_total.guest.total))]), _vm._v(" "), _c("td", {
@@ -8097,7 +8113,13 @@ var render = function render() {
       "border-top": "2px solid lightgray"
     }
   }, [_c("td", {
-    staticClass: "border px-2 py-1"
+    staticClass: "border px-2 py-1",
+    staticStyle: {
+      "text-align": "right"
+    },
+    attrs: {
+      colspan: "5"
+    }
   }, [_vm._v("Present")]), _vm._v(" "), _c("td", {
     staticClass: "border px-2 py-1"
   }, [_vm._v(_vm._s(_vm.overall_total.member.attended))]), _vm._v(" "), _c("td", {
@@ -8105,7 +8127,13 @@ var render = function render() {
   }, [_vm._v(_vm._s(_vm.overall_total.guest.attended))]), _vm._v(" "), _c("td", {
     staticClass: "border px-2 py-1"
   }, [_vm._v(_vm._s(_vm.overall_total.guest.attended + _vm.overall_total.member.attended))])]), _vm._v(" "), _c("tr", [_c("td", {
-    staticClass: "border px-2 py-1"
+    staticClass: "border px-2 py-1",
+    staticStyle: {
+      "text-align": "right"
+    },
+    attrs: {
+      colspan: "5"
+    }
   }, [_vm._v("Not Yet Present")]), _vm._v(" "), _c("td", {
     staticClass: "border px-2 py-1"
   }, [_vm._v(_vm._s(_vm.overall_total.member.total - _vm.overall_total.member.attended))]), _vm._v(" "), _c("td", {
@@ -8133,7 +8161,7 @@ var render = function render() {
       attrs: {
         colspan: "4"
       }
-    }, [_vm._v(_vm._s(item.event_date))])]), _vm._v(" "), _vm._m(2, true), _vm._v(" "), _vm._l(item.count, function (lc) {
+    }, [_vm._v(_vm._s(item.event_date))])]), _vm._v(" "), _vm._m(3, true), _vm._v(" "), _vm._l(item.count, function (lc) {
       return _c("tr", [_c("td", {
         staticClass: "border px-2 py-1"
       }, [_vm._v(_vm._s(lc.local_church))]), _vm._v(" "), _c("td", {
@@ -8182,9 +8210,29 @@ var staticRenderFns = [function () {
   return _c("tr", [_c("td", {
     staticClass: "border px-2 py-1",
     attrs: {
-      colspan: "4"
+      colspan: "8"
     }
-  }, [_vm._v("Overall Unique Count")])]);
+  }, [_vm._v("Overall Unique Count"), _c("br"), _c("small", [_vm._v("Physical Attendees")])])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("tr", [_c("td"), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1",
+    attrs: {
+      colspan: "2"
+    }
+  }, [_vm._v("Cancelled Bookings")]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1",
+    attrs: {
+      colspan: "2"
+    }
+  }, [_vm._v("Pending Bookings")]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1",
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v("Attendance "), _c("br"), _c("small", [_vm._v("Confirmed Bookings")])])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
@@ -8192,6 +8240,14 @@ var staticRenderFns = [function () {
   return _c("tr", [_c("td", {
     staticClass: "border px-2 py-1"
   }), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
+  }, [_vm._v("Member")]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
+  }, [_vm._v("Guest")]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
+  }, [_vm._v("Member")]), _vm._v(" "), _c("td", {
+    staticClass: "border px-2 py-1"
+  }, [_vm._v("Guest")]), _vm._v(" "), _c("td", {
     staticClass: "border px-2 py-1"
   }, [_vm._v("Member")]), _vm._v(" "), _c("td", {
     staticClass: "border px-2 py-1"

@@ -8,6 +8,7 @@ use App\Http\Resources\RegistrationResource;
 use App\Models\LookUp;
 use App\Models\Slots;
 use App\Models\Attendance;
+use App\Enums\BookingStatus;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -64,19 +65,48 @@ class HomeController extends Controller
             foreach ($local_churches as $local_church) {
                 $array = [];
 
-                $member_total = DB::table('bookings')
+                // count member
+                $member_total_confirmed = DB::table('bookings')
                     ->where('local_church', $local_church)
                     ->where('slot_id', $member->id)
+                    ->where('status', BookingStatus::Confirmed)
                     ->count();
+
+                $member_total_canceled = DB::table('bookings')
+                    ->where('local_church', $local_church)
+                    ->where('slot_id', $member->id)
+                    ->where('status', BookingStatus::Cancelled)
+                    ->count();
+
+                $member_total_pending = DB::table('bookings')
+                    ->where('local_church', $local_church)
+                    ->where('slot_id', $member->id)
+                    ->where('status', BookingStatus::Pending)
+                    ->count();
+                // --------------
 
                 $member_attended = DB::table('attendances')
                     ->where('local_church', $local_church)
                     ->where('slot_id', $member->id)
                     ->count();
 
-                $guest_total = DB::table('bookings')
+                // count guest
+                $guest_total_confirmed = DB::table('bookings')
                     ->where('local_church', $local_church)
                     ->where('slot_id', $guest->id)
+                    ->where('status', BookingStatus::Confirmed)
+                    ->count();
+
+                $guest_total_canceled = DB::table('bookings')
+                    ->where('local_church', $local_church)
+                    ->where('slot_id', $guest->id)
+                    ->where('status', BookingStatus::Cancelled)
+                    ->count();
+
+                $guest_total_pending = DB::table('bookings')
+                    ->where('local_church', $local_church)
+                    ->where('slot_id', $guest->id)
+                    ->where('status', BookingStatus::Pending)
                     ->count();
 
                 $guest_attended = DB::table('attendances')
@@ -84,21 +114,25 @@ class HomeController extends Controller
                     ->where('slot_id', $guest->id)
                     ->count();
 
-                $guest_overall_total += $guest_total;
+                $guest_overall_total += $guest_total_confirmed;
                 $guest_overall_attended += $guest_attended;
 
-                $member_overall_total += $member_total;
+                $member_overall_total += $member_total_confirmed;
                 $member_overall_attended += $member_attended;
 
                 $array['local_church'] = $local_church;
                 $array['count'] = array(
                     'member' => array(
-                        'total' => $member_total,
+                        'total' => $member_total_confirmed,
                         'attended' => $member_attended,
+                        'pending' => $member_total_pending,
+                        'cancelled' => $member_total_canceled
                     ),
                     'guest' => array(
-                        'total' => $guest_total,
+                        'total' => $guest_total_confirmed,
                         'attended' => $guest_attended,
+                        'pending' => $guest_total_pending,
+                        'cancelled' => $guest_total_canceled
                     )
                 );
 
@@ -136,6 +170,17 @@ class HomeController extends Controller
                     'total' => DB::table('bookings')
                         ->whereIn('slot_id', array(1, 2, 3, 4))
                         ->where('local_church', $local_church)
+                        ->where('status', BookingStatus::Confirmed)
+                        ->count(DB::raw('DISTINCT registration_uuid')),
+                    'cancelled' => DB::table('bookings')
+                        ->whereIn('slot_id', array(1, 2, 3, 4))
+                        ->where('local_church', $local_church)
+                        ->where('status', BookingStatus::Cancelled)
+                        ->count(DB::raw('DISTINCT registration_uuid')),
+                    'pending' => DB::table('bookings')
+                        ->whereIn('slot_id', array(1, 2, 3, 4))
+                        ->where('local_church', $local_church)
+                        ->where('status', BookingStatus::Pending)
                         ->count(DB::raw('DISTINCT registration_uuid'))
                 ],
                 'guest' => [
@@ -146,6 +191,17 @@ class HomeController extends Controller
                     'total' => DB::table('bookings')
                         ->whereIn('slot_id', array(5, 6, 7, 8))
                         ->where('local_church', $local_church)
+                        ->where('status', BookingStatus::Confirmed)
+                        ->count(DB::raw('DISTINCT registration_uuid')),
+                    'cancelled' => DB::table('bookings')
+                        ->whereIn('slot_id', array(5, 6, 7, 8))
+                        ->where('local_church', $local_church)
+                        ->where('status', BookingStatus::Cancelled)
+                        ->count(DB::raw('DISTINCT registration_uuid')),
+                    'pending' => DB::table('bookings')
+                        ->whereIn('slot_id', array(5, 6, 7, 8))
+                        ->where('local_church', $local_church)
+                        ->where('status', BookingStatus::Pending)
                         ->count(DB::raw('DISTINCT registration_uuid'))
                 ]
             ];
@@ -160,6 +216,15 @@ class HomeController extends Controller
                     ->count(DB::raw('DISTINCT registration_uuid')),
                 'total' => DB::table('bookings')
                     ->whereIn('slot_id', array(1, 2, 3, 4))
+                    ->where('status', BookingStatus::Confirmed)
+                    ->count(DB::raw('DISTINCT registration_uuid')),
+                'cancelled' => DB::table('bookings')
+                    ->whereIn('slot_id', array(1, 2, 3, 4))
+                    ->where('status', BookingStatus::Cancelled)
+                    ->count(DB::raw('DISTINCT registration_uuid')),
+                'pending' => DB::table('bookings')
+                    ->whereIn('slot_id', array(1, 2, 3, 4))
+                    ->where('status', BookingStatus::Pending)
                     ->count(DB::raw('DISTINCT registration_uuid'))
             ],
             'guest' => [
@@ -168,7 +233,16 @@ class HomeController extends Controller
                     ->count(DB::raw('DISTINCT registration_uuid')),
                 'total' => DB::table('bookings')
                     ->whereIn('slot_id', array(5, 6, 7, 8))
-                    ->count(DB::raw('DISTINCT registration_uuid'))
+                    ->where('status', BookingStatus::Confirmed)
+                    ->count(DB::raw('DISTINCT registration_uuid')),
+                'pending' => DB::table('bookings')
+                    ->whereIn('slot_id', array(5, 6, 7, 8))
+                    ->where('status', BookingStatus::Pending)
+                    ->count(DB::raw('DISTINCT registration_uuid')),
+                'cancelled' => DB::table('bookings')
+                    ->whereIn('slot_id', array(5, 6, 7, 8))
+                    ->where('status', BookingStatus::Cancelled)
+                    ->count(DB::raw('DISTINCT registration_uuid')),
             ]
         ];
 
@@ -181,6 +255,7 @@ class HomeController extends Controller
         if ($request->type === 'attendance_count') $tab = 4;
         if ($request->type === 'slots') $tab = 5;
         if ($request->type === 'received_hg') $tab = 6;
+
         return view('home', [
             'search' => $request->search,
             'type' => $request->type,
