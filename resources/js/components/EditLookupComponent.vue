@@ -33,6 +33,26 @@
                     </el-form-item>
                 </div>
                 <div class="col-md-3">
+                    <el-form-item label="Cluster Group" prop="localChurch" required>
+                        <el-select 
+                            v-model="ruleForm.clusterGroup" 
+                            placeholder="Cluster Group">
+                            <el-option label="No Cluster Group" value="No Cluster"></el-option>
+                            <el-option-group
+                            v-for="group in assignments[ruleForm.localChurch]"
+                                :key="group.label"
+                                :label="group.label">
+                                <el-option
+                                    v-for="item in group.options"
+                                    :key="item"
+                                    :label="item"
+                                    :value="item">
+                                </el-option>
+                            </el-option-group>
+                        </el-select>
+                    </el-form-item>
+                </div>
+                <div class="col-md-3">
                     <el-form-item label="Country" prop="country" required>
                         <el-select v-model="ruleForm.country" placeholder="Choose">
                             <el-option v-for="country in countries" v-bind:key="country" :label="country" :value="country"></el-option>
@@ -89,7 +109,8 @@ export default {
                 country: 'Philippines',
                 lampIDNumber: '',
                 category: 'Adult',
-                canBookDays: parseInt(window.env.member_booking_limit || 0)
+                canBookDays: parseInt(window.env.member_booking_limit || 0),
+                clusterGroup: ''
             },
             rules: {
                 firstName: [
@@ -130,8 +151,14 @@ export default {
             country: this.lookup.country,
             lampIDNumber: this.lookup.lamp_id,
             category: this.lookup.category,
-            canBookDays: this.lookup.can_book_days
+            canBookDays: this.lookup.can_book_days,
+            clusterGroup: this.lookup.cluster_group
         }
+    },
+    watch: {
+        'ruleForm.localChurch'(data, old) {
+            if (old) this.ruleForm.clusterGroup = ''
+        },
     },
     methods: {
         submitForm(formName) {

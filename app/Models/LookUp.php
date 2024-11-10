@@ -30,6 +30,7 @@ class LookUp extends Model
         'is_registered',
         'local_church',
         'can_book_days',
-        'avail_new_lamp_id'
+        'avail_new_lamp_id',
+        'cluster_group'
     ];
 }

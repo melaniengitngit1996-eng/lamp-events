@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\RegistrationType;
 use App\Imports\LookUpImport;
 use App\Models\LookUp;
+use App\Models\Booking;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
@@ -161,7 +162,30 @@ class LookUpController extends Controller
             'country' => $request->country,
             'category' => $request->category,
             'can_book_days' => $request->canBookDays,
+            'cluster_group' => $request->clusterGroup
         ]);
+
+        $registration = Registration::where('uuid', $awtaNumber)->first();
+
+        if ($registration) { // if has registration
+            $registration->update([
+                'email' => $request->email,
+                'firstname' => $request->firstName,
+                'lastname' => $request->lastName,
+                'fullname' => $request->firstName . ' ' . $request->lastName,
+                'facebook_name' => $request->facebookName,
+                'local_church' => $request->localChurch,
+                'country' => $request->country,
+                'category' => $request->category,
+                'can_book_days' => $request->canBookDays,
+                'cluster_group' => $request->clusterGroup
+            ]);
+
+            // if has booking
+            Booking::where('registration_uuid',$awtaNumber)->update([
+                'local_church' => $request->localChurch,
+            ]);
+        }
 
         return view('lookup.edit', [
             'lookup' => $lookup

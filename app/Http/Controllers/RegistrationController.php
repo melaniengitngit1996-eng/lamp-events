@@ -491,6 +491,7 @@ class RegistrationController extends Controller
                 'fullname' => $request->firstName . ' ' . $request->lastName,
                 'facebook_name' => $request->facebookName,
                 'local_church' => $request->localChurch,
+                'cluster_group' => $request->clusterGroup,
                 'country' => $request->country,
                 'category' => $request->category,
                 'attending_option' => $request->attendingOption,
@@ -500,6 +501,24 @@ class RegistrationController extends Controller
                 'rate' => $request->rate,
                 'rebooking_limit' => $request->rebookingLimit,
                 'visitor_to_member' => $request->visitorToMember ? date('Y-m-d', strtotime($request->visitorToMember)) : NULL,
+            ]);
+
+            $lookup = LookUp::where('lamp_id', $uuid)->first();
+            $lookup->update([
+                'email' => $request->email,
+                'firstname' => $request->firstName,
+                'lastname' => $request->lastName,
+                'fullname' => $request->firstName . ' ' . $request->lastName,
+                'facebook_name' => $request->facebookName,
+                'local_church' => $request->localChurch,
+                'country' => $request->country,
+                'category' => $request->category,
+                'cluster_group' => $request->clusterGroup
+            ]);
+
+            // if has booking
+            Booking::where('registration_uuid',$uuid)->update([
+                'local_church' => $request->localChurch,
             ]);
 
             if ($registration->registration_type === 'Member') {

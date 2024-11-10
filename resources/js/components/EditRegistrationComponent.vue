@@ -58,6 +58,26 @@
                     </el-form-item>
                 </div>
                 <div class="col-md-3">
+                    <el-form-item label="Cluster Group" prop="localChurch" required>
+                        <el-select 
+                            v-model="ruleForm.clusterGroup" 
+                            placeholder="Cluster Group">
+                            <el-option label="No Cluster Group" value="No Cluster"></el-option>
+                            <el-option-group
+                            v-for="group in assignments[ruleForm.localChurch]"
+                                :key="group.label"
+                                :label="group.label">
+                                <el-option
+                                    v-for="item in group.options"
+                                    :key="item"
+                                    :label="item"
+                                    :value="item">
+                                </el-option>
+                            </el-option-group>
+                        </el-select>
+                    </el-form-item>
+                </div>
+                <div class="col-md-3">
                     <el-form-item label="Country" prop="country" required>
                         <el-select
                             v-model="ruleForm.country"
@@ -311,6 +331,7 @@ export default {
                 rate: 0,
                 visitorToMember: "",
                 availNewLAMPID: "",
+                clusterGroup: ""
             },
             rules: {
                 firstName: [
@@ -365,7 +386,8 @@ export default {
             },
             countries: this.$allCountries,
             permissions: window.auth_user.permissions,
-            localChurches: Object.keys(window.env.cluster_groups)
+            localChurches: Object.keys(window.env.cluster_groups),
+            assignments: window.env.cluster_groups
         };
     },
     watch: {
@@ -373,6 +395,9 @@ export default {
             if (oldData != newData && oldData != "" && newData != "") {
                 this.ruleForm.attendingOption = "";
             }
+        },
+        'ruleForm.localChurch'(data, old) {
+            if (old) this.ruleForm.clusterGroup = "";
         },
     },
     mounted() {
@@ -394,6 +419,7 @@ export default {
             rate: this.registration.rate,
             visitorToMember: this.registration.visitor_to_member,
             availNewLAMPID: this.registration.lookup ? this.registration.lookup.avail_new_lamp_id : '',
+            clusterGroup: this.registration.cluster_group
         };
     },
     methods: {
