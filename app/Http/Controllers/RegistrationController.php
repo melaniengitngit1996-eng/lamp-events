@@ -504,17 +504,20 @@ class RegistrationController extends Controller
             ]);
 
             $lookup = LookUp::where('lamp_id', $uuid)->first();
-            $lookup->update([
-                'email' => $request->email,
-                'firstname' => $request->firstName,
-                'lastname' => $request->lastName,
-                'fullname' => $request->firstName . ' ' . $request->lastName,
-                'facebook_name' => $request->facebookName,
-                'local_church' => $request->localChurch,
-                'country' => $request->country,
-                'category' => $request->category,
-                'cluster_group' => $request->clusterGroup
-            ]);
+            
+            if ($lookup) {
+                $lookup->update([
+                    'email' => $request->email,
+                    'firstname' => $request->firstName,
+                    'lastname' => $request->lastName,
+                    'fullname' => $request->firstName . ' ' . $request->lastName,
+                    'facebook_name' => $request->facebookName,
+                    'local_church' => $request->localChurch,
+                    'country' => $request->country,
+                    'category' => $request->category,
+                    'cluster_group' => $request->clusterGroup
+                ]);
+            }
 
             // if has booking
             Booking::where('registration_uuid',$uuid)->update([
