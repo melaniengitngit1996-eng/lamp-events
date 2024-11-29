@@ -27,7 +27,7 @@ class BookingController extends Controller
         $registration = Registration::where('uuid', $uuid)->first();
 
         return view('booking.edit', [
-            'booked_dates' => $registration->bookings()->with(['slot'])->get(),
+            'booked_dates' => $registration->bookings()->with(['slot'])->where('status', '!=', BookingStatus::Cancelled)->get(),
             'slots' => Slots::where('registration_type', $registration->registration_type)->get(),
             'uuid' => $uuid,
             'registration' => $registration
