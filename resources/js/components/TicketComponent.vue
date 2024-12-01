@@ -5,7 +5,7 @@
                 <div slot="header" class="clearfix">
                     <span>LAMP WORLDWIDE AWTA {{ year }}</span>
 
-                    <el-button icon="el-icon-download" class="float-end p-1 mx-0" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
+                    <el-button icon="el-icon-download" class="block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
                 </div>
                 <div>
                     <div class="row">

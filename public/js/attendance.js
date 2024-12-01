@@ -7702,7 +7702,7 @@ var render = function render() {
       },
       slot: "header"
     }, [_c("span", [_vm._v("LAMP WORLDWIDE AWTA " + _vm._s(_vm.year))]), _vm._v(" "), _c("el-button", {
-      staticClass: "float-end p-1 mx-0",
+      staticClass: "block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden",
       attrs: {
         icon: "el-icon-download",
         type: "primary",

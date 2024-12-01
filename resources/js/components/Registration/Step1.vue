@@ -286,6 +286,7 @@ export default {
                     );
                 }
 
+                console.log('pasok');
                 await axios
                     .get(`/lookup/${this.ruleForm.lampIDNumber}`)
                     .then(async (response) => {
@@ -426,6 +427,11 @@ export default {
                         this.ruleForm.email = response.data.email;
                         this.ruleForm.clusterGroup = response.data.cluster_group;  
                         this.options = this.assignments[response.data.local_church];
+
+                        if (this.ruleForm.found.localChurch === 'Valenzuela') {
+                            this.ruleForm.clusterGroup = '';  
+                            this.options = this.assignments['Muntinlupa'];
+                        }
 
                         this.isLoading = false;
                     })

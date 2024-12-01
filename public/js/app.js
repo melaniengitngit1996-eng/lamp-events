@@ -7878,7 +7878,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 if (!(value.length === 9)) {
-                  _context2.next = 7;
+                  _context2.next = 8;
                   break;
                 }
 
@@ -7898,7 +7898,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", callback(new Error("Please input your LAMP ID Number")));
 
               case 5:
-                _context2.next = 7;
+                console.log('pasok');
+                _context2.next = 8;
                 return axios.get("/lookup/".concat(_this.ruleForm.lampIDNumber)).then( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(response) {
                     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -7922,7 +7923,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   callback(new Error(error.response.data.error));
                 });
 
-              case 7:
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -8093,9 +8094,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       _this2.ruleForm.email = response.data.email;
                       _this2.ruleForm.clusterGroup = response.data.cluster_group;
                       _this2.options = _this2.assignments[response.data.local_church];
+
+                      if (_this2.ruleForm.found.localChurch === 'Valenzuela') {
+                        _this2.ruleForm.clusterGroup = '';
+                        _this2.options = _this2.assignments['Muntinlupa'];
+                      }
+
                       _this2.isLoading = false;
 
-                    case 18:
+                    case 19:
                     case "end":
                       return _context5.stop();
                   }
@@ -10952,7 +10959,7 @@ var render = function render() {
       }), 1);
     })], 2), _vm._v(" "), _vm.errors[i] && (_vm.errors[i]["localChurch"] || _vm.errors[i]["clusterGroup"]) ? _c("small", {
       staticClass: "text-error"
-    }, [_vm.errors[i]["clusterGroup"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["clusterGroup"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]), _vm._v(" "), _c("tr", [_c("td", {
+    }, [_vm.errors[i]["clusterGroup"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["clusterGroup"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]), _vm._v(" "), _vm.data.step_1.attending_option === "Hybrid" ? _c("tr", [_c("td", {
       staticClass: "p-1",
       attrs: {
         colspan: "3"
@@ -10987,7 +10994,7 @@ var render = function render() {
       }, [_vm._v(_vm._s(date.event_date))]), _vm._v(" "), _c("br"), _vm._v(" "), _c("span", [_vm._v(_vm._s(date.available) + " left!")])]);
     }), 1), _vm._v(" "), _vm.errors[i] && _vm.errors[i]["booked"] ? _c("small", {
       staticClass: "text-error"
-    }, [_vm.errors[i]["booked"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["booked"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]), _vm._v(" "), _c("tr", [_c("td", {
+    }, [_vm.errors[i]["booked"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["booked"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]) : _vm._e(), _vm._v(" "), _c("tr", [_c("td", {
       staticClass: "p-1",
       attrs: {
         colspan: "3"
@@ -11574,7 +11581,7 @@ var render = function render() {
       },
       slot: "header"
     }, [_c("span", [_vm._v("LAMP WORLDWIDE AWTA " + _vm._s(_vm.year))]), _vm._v(" "), _c("el-button", {
-      staticClass: "float-end p-1 mx-0",
+      staticClass: "block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden",
       attrs: {
         icon: "el-icon-download",
         type: "primary",

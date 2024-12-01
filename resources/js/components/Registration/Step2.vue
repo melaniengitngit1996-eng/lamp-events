@@ -118,7 +118,7 @@
                                         </small>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr v-if="data.step_1.attending_option === 'Hybrid'">
                                     <td colspan="3" class="p-1">
                                         <label class="text-sm">Select Preferred Dates</label>
                                         <el-checkbox-group v-model="guest.booked" size="mini">
