@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Resources;
+use App\Enums\BookingStatus;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,7 +15,7 @@ class ExportRegistrationResource extends JsonResource
      */
     public function toArray($request)
     {
-        $booked = $this->bookings()->with('slot')->get()->toArray();
+        $booked = $this->bookings()->with('slot')->where('status', BookingStatus::Confirmed)->get()->toArray();
 
         $booked_dates = array_map(function ($date) {
             return $date['slot']['event_date'];
