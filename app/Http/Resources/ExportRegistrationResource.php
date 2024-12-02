@@ -15,7 +15,7 @@ class ExportRegistrationResource extends JsonResource
      */
     public function toArray($request)
     {
-        $booked = $this->bookings()->with('slot')->where('status', BookingStatus::Confirmed)->get()->toArray();
+        $booked = $this->bookings()->with('slot')->where('status', '!=', BookingStatus::Cancelled)->get()->toArray();
 
         $booked_dates = array_map(function ($date) {
             return $date['slot']['event_date'];
