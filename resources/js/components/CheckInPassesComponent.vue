@@ -70,7 +70,7 @@ export default {
             if ([4,8].includes(id))
                 return {
                     'image': 'day_4.png',
-                    'color': '#f6e54e'
+                    'color': 'rgb(44 159 104)'
                 }
         }
     }
