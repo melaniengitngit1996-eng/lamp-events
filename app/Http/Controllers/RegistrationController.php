@@ -117,7 +117,7 @@ class RegistrationController extends Controller
                     $errors[$key]['country'] = 'Country is required.';
                 }
 
-                if (count($value->booked) === 0) {
+                if (count($value->booked) === 0 && 'Hybrid' === $value->attendingOption) {
                     $errors[$key]['booked'] = 'Select preferred dates.';
                 }
 

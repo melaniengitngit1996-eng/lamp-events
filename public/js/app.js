@@ -8463,7 +8463,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           country: 'Philippines',
           category: 'Free',
           booked: [],
-          specificMedicalAssistance: ''
+          specificMedicalAssistance: '',
+          attendingOption: this.data.step_1.attendingOption
         }]
       },
       rules: {
@@ -8622,7 +8623,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         country: 'Philippines',
         category: 'Free',
         booked: [],
-        specificMedicalAssistance: ''
+        specificMedicalAssistance: '',
+        attendingOption: this.data.step_1.attendingOption
       });
     },
     removeClusterGroup: function removeClusterGroup(index) {

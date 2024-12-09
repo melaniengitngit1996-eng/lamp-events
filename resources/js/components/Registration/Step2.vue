@@ -380,7 +380,8 @@
                         country: 'Philippines',
                         category: 'Free',
                         booked: [],
-                        specificMedicalAssistance: ''
+                        specificMedicalAssistance: '',
+                        attendingOption: this.data.step_1.attendingOption
                     }]
                 },
                 rules: {
@@ -506,7 +507,8 @@
                     country: 'Philippines',
                     category: 'Free',
                     booked: [],
-                    specificMedicalAssistance: ''
+                    specificMedicalAssistance: '',
+                    attendingOption: this.data.step_1.attendingOption
                 });
             },
             removeClusterGroup(index) {
