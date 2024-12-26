@@ -10528,7 +10528,6 @@ var render = function render() {
     }
   }, [_c("el-option", {
     attrs: {
-      disabled: "",
       value: "Hybrid",
       label: "Hybrid"
     }
@@ -10961,7 +10960,7 @@ var render = function render() {
       }), 1);
     })], 2), _vm._v(" "), _vm.errors[i] && (_vm.errors[i]["localChurch"] || _vm.errors[i]["clusterGroup"]) ? _c("small", {
       staticClass: "text-error"
-    }, [_vm.errors[i]["clusterGroup"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["clusterGroup"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]), _vm._v(" "), _vm.data.step_1.attending_option === "Hybrid" ? _c("tr", [_c("td", {
+    }, [_vm.errors[i]["clusterGroup"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["clusterGroup"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]), _vm._v(" "), _vm.data.step_1.attendingOption === "Hybrid" ? _c("tr", [_c("td", {
       staticClass: "p-1",
       attrs: {
         colspan: "3"
