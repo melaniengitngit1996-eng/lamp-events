@@ -24,7 +24,6 @@
             </el-card>
         </div>
     </div>
-
     <div v-else class="row justify-content-center mb-4">
         <div class="col-md-3">
             <el-card shadow="always" class="mb-3 pb-0" style="border-top: 10px solid rgb(45 122 95)">
@@ -33,8 +32,7 @@
 
                 <div class="px-2 row">
                     <el-alert
-                        v-if="disabled"
-                        title="Members' booking & rebooking is already closed. For other concerns, please reach out to your local AWTA Registrars."
+                        title="We recently allowed visitors to check in, but due to unforeseen circumstances, it's now limited to members only. We apologize for any inconvenience."
                         type="warning"
                         :closable="false"
                         show-icon>
@@ -60,7 +58,8 @@
                     </div>
                     <div class="row mb-1">
                         <div class="col-md-12">
-                            <el-form-item class="transform-uppercase" label="LAMP ID" prop="referenceNumber" required :error="fieldErrors">
+                            <el-form-item class="transform-uppercase rm-margin" label="LAMP ID" prop="referenceNumber" required :error="fieldErrors">
+                                <small class="text-black-50 text-sm">Members may only check in.</small>
                                 <el-input :disabled="disabled" v-model="ruleForm.referenceNumber"></el-input>
                             </el-form-item>
                         </div>

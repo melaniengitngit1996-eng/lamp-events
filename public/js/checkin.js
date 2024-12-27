@@ -7252,14 +7252,14 @@ var render = function render() {
     staticClass: "mt-2 c-booking-subheader"
   }, [_vm._v("Type in your details to check in.")]), _vm._v(" "), _c("div", {
     staticClass: "px-2 row"
-  }, [_vm.disabled ? _c("el-alert", {
+  }, [_c("el-alert", {
     attrs: {
-      title: "Members' booking & rebooking is already closed. For other concerns, please reach out to your local AWTA Registrars.",
+      title: "We recently allowed visitors to check in, but due to unforeseen circumstances, it's now limited to members only. We apologize for any inconvenience.",
       type: "warning",
       closable: false,
       "show-icon": ""
     }
-  }) : _vm._e()], 1), _vm._v(" "), _c("el-form", {
+  })], 1), _vm._v(" "), _c("el-form", {
     ref: "ruleForm",
     attrs: {
       model: _vm.ruleForm,
@@ -7324,14 +7324,16 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "col-md-12"
   }, [_c("el-form-item", {
-    staticClass: "transform-uppercase",
+    staticClass: "transform-uppercase rm-margin",
     attrs: {
       label: "LAMP ID",
       prop: "referenceNumber",
       required: "",
       error: _vm.fieldErrors
     }
-  }, [_c("el-input", {
+  }, [_c("small", {
+    staticClass: "text-black-50 text-sm"
+  }, [_vm._v("Members may only check in.")]), _vm._v(" "), _c("el-input", {
     attrs: {
       disabled: _vm.disabled
     },
