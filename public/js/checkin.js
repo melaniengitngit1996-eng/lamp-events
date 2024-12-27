@@ -7326,7 +7326,7 @@ var render = function render() {
   }, [_c("el-form-item", {
     staticClass: "transform-uppercase",
     attrs: {
-      label: "LAMP ID / Guest Number",
+      label: "LAMP ID",
       prop: "referenceNumber",
       required: "",
       error: _vm.fieldErrors

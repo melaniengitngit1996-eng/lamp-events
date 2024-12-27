@@ -60,7 +60,7 @@
                     </div>
                     <div class="row mb-1">
                         <div class="col-md-12">
-                            <el-form-item class="transform-uppercase" label="LAMP ID / Guest Number" prop="referenceNumber" required :error="fieldErrors">
+                            <el-form-item class="transform-uppercase" label="LAMP ID" prop="referenceNumber" required :error="fieldErrors">
                                 <el-input :disabled="disabled" v-model="ruleForm.referenceNumber"></el-input>
                             </el-form-item>
                         </div>

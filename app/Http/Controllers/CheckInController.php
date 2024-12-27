@@ -6,6 +6,7 @@ use App\Enums\AttendingOption;
 use App\Enums\BookingStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\AttendanceType;
+use App\Enums\RegistrationType;
 use App\Models\Booking;
 use App\Models\Attendance;
 use App\Models\Registration;
@@ -25,6 +26,7 @@ class CheckInController extends Controller
             ->where('uuid', $request->referenceNumber)
             ->where('lastname', $request->lastName)
             ->where('local_church', $request->localChurch)
+            ->where('registration_type', RegistrationType::Member)
             ->withSum('payments', 'amount')
             ->first();
 
