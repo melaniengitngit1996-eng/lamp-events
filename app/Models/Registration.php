@@ -101,7 +101,7 @@ class Registration extends MyModel
      */
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'registration_uuid', 'uuid');
+        return $this->hasMany(Booking::class, 'registration_uuid', 'uuid')->orderBy('slot_id', 'asc');
     }
 
     /**

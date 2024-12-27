@@ -34,9 +34,19 @@ class PermissionsTableSeeder extends Seeder
             'Marj Frianeza'
         ];
 
+        $canAddSlots = [
+            'Alex Cello',
+            'Linda Valetin',
+            'Melanie Ngitngit',
+            'Key Sarmiento Garcia',
+            'Ann Jose',
+            'Jake Patrick Imperial',
+        ];
+
         foreach ($users as $user) {
             $isAdmin = in_array($user->name, $administrators);
             $isSuperAdmin = in_array($user->name, $superAdministrators);
+            $canAddSlot = in_array($user->name, $canAddSlots);
 
             $user->permissions()->create([
                 'can_edit_delegate' => $isAdmin || $isSuperAdmin,
@@ -47,7 +57,7 @@ class PermissionsTableSeeder extends Seeder
                 'can_view_registrations' => true,
                 'can_edit_lookup_data' => $isSuperAdmin,
                 'can_add_lookup_data' => $isSuperAdmin,
-                'can_add_slots' => $isSuperAdmin
+                'can_add_slots' => $canAddSlot
             ]);
         }
     }

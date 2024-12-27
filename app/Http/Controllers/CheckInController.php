@@ -44,7 +44,7 @@ class CheckInController extends Controller
 
         return [
             'delegate' => $registration,
-            'slots' => Slots::where('registration_type', $registration->registration_type)->get(),
+            'slots' => Slots::where('registration_type', $registration->registration_type)->orderBy('event_date', 'ASC')->get(),
         ];
     }
 

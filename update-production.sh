@@ -4,6 +4,7 @@ git pull origin version/2024
 
 nvm install 16.15.1
 npm run prod
+# no need to compile because the compiled js files are commitable
 
 rm ../public_html/js/app.js
 rm ../public_html/js/activities.js
