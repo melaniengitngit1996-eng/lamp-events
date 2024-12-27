@@ -12,13 +12,28 @@ use App\Models\Attendance;
 use App\Models\Registration;
 use App\Models\Slots;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CheckInController extends Controller
 {
     public function index(Request $request) {
-        return view('checkin.index', [
-            'loc' => $request->lo_c == 2 ? 'Onsite' : 'Online'
-        ]);
+        // Get the current time in Philippine Time (PHT, UTC+8)
+        $currentTime = Carbon::now('Asia/Manila');
+
+        // Define the start and end times
+        $startTime = Carbon::createFromTime(14, 0, 0, 'Asia/Manila'); // 2:00 PM
+        $endTime = Carbon::createFromTime(21, 0, 0, 'Asia/Manila');   // 9:00 PM
+
+        // Check if the current time is between 2 PM and 9 PM
+        $isWithinRange = $currentTime->between($startTime, $endTime);
+
+        if ($isWithinRange) {
+            return view('checkin.index', [
+                'loc' => $request->lo_c == 2 ? 'Onsite' : 'Online'
+            ]);
+        } else {
+            return view('checkin.countdown');
+        }
     }
 
     public function validation(Request $request) {
