@@ -13,7 +13,7 @@
 @section('script')
 <script>
     // Set the target date and time
-    const targetDate = new Date("December 28, 2024 14:00:00 GMT+8:00").getTime();
+    const targetDate = new Date("December 28, 2024 13:00:00 GMT+8:00").getTime();
 
     // Update the countdown every second
     const countdownInterval = setInterval(() => {
@@ -43,7 +43,7 @@
 <div class="px-4 text-center">
 <img height="300" width="300" class="mt-5" style="margin-top: 8%;" src="/images/choose.png" />
 <h3 class="font-monospace mt-5 w-auto">Online check-in is still closed.</h3>
-<p>Online check-in for members will open at 2:00 PM. Kindly wait until then. Thank you for your patience.</p>
+<p>Online check-in for members will open at <u>1:00 PM</u>. Kindly wait until then. Thank you for your patience.</p>
 
 <div id="countdown"></div>
 </div>

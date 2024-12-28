@@ -21,7 +21,7 @@ class CheckInController extends Controller
         $currentTime = Carbon::now('Asia/Manila');
 
         // Define the start and end times
-        $startTime = Carbon::createFromTime(14, 0, 0, 'Asia/Manila'); // 2:00 PM
+        $startTime = Carbon::createFromTime(13, 0, 0, 'Asia/Manila'); // 2:00 PM
         $endTime = Carbon::createFromTime(21, 0, 0, 'Asia/Manila');   // 9:00 PM
 
         // Check if the current time is between 2 PM and 9 PM
