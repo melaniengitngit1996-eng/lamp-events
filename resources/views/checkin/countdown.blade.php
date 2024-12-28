@@ -13,7 +13,7 @@
 @section('script')
 <script>
     // Set the target date and time
-    const targetDate = new Date("December 28, 2024 13:00:00 GMT+8:00").getTime();
+    const targetDate = new Date("December 29, 2024 13:00:00 GMT+8:00").getTime();
 
     // Update the countdown every second
     const countdownInterval = setInterval(() => {
