@@ -32,9 +32,15 @@
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        // Display the countdown
-        document.getElementById("countdown").innerHTML =
-            `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        // Construct the countdown string dynamically
+        let countdownString = "";
+        if (days > 0) countdownString += `${days}d `;
+        if (hours > 0) countdownString += `${hours}h `;
+        if (minutes > 0) countdownString += `${minutes}m `;
+        if (seconds >= 0) countdownString += `${seconds}s`; // Always include seconds
+
+        // Trim any trailing whitespace and update the countdown display
+        document.getElementById("countdown").innerHTML = countdownString.trim();
     }, 1000);
 </script>
 @endsection
