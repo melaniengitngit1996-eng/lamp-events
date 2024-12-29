@@ -7860,7 +7860,8 @@ var func = {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-      hour: 'numeric'
+      hour: 'numeric',
+      minute: 'numeric'
     };
     var today = new Date(date);
     return today.toLocaleDateString("en-US", options);

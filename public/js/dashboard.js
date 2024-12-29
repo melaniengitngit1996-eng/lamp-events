@@ -7453,6 +7453,7 @@ var render = function render() {
     }])
   }, [_vm._v(" "), _c("el-table-column", {
     attrs: {
+      sortable: "",
       prop: "count",
       label: "Local Church",
       fixed: "left",
@@ -7534,7 +7535,21 @@ var render = function render() {
         }, [_vm._v(_vm._s(scope.row.attendance_status))])];
       }
     }])
-  })], 1)], 1), _vm._v(" "), _vm.tableData.data.length > 0 ? _c("pagination", {
+  })], 1), _vm._v(" "), _c("el-table-column", {
+    attrs: {
+      prop: "created_at",
+      label: "Date & Time",
+      width: "180",
+      sortable: "",
+      align: "center"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function fn(scope) {
+        return [_vm._v("\n          " + _vm._s(_vm.$func.formatToDateTime(scope.row.created_at)) + "\n          ")];
+      }
+    }])
+  })], 1), _vm._v(" "), _vm.tableData.data.length > 0 ? _c("pagination", {
     staticClass: "m-0",
     attrs: {
       pagination: _vm.tableData,
@@ -8051,6 +8066,7 @@ var render = function render() {
     }])
   }, [_vm._v(" "), _c("el-table-column", {
     attrs: {
+      sortable: "",
       prop: "count",
       label: "Local Church",
       fixed: "left",
@@ -8127,6 +8143,20 @@ var render = function render() {
       label: "Notes",
       fixed: "left"
     }
+  }), _vm._v(" "), _c("el-table-column", {
+    attrs: {
+      prop: "created_at",
+      label: "Date & Time",
+      width: "180",
+      sortable: "",
+      align: "center"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function fn(scope) {
+        return [_vm._v("\n            " + _vm._s(_vm.$func.formatToDateTime(scope.row.created_at)) + "\n            ")];
+      }
+    }])
   })], 1)], 1), _vm._v(" "), _vm.tableData.data.length > 0 ? _c("pagination", {
     staticClass: "m-0",
     attrs: {
@@ -8212,7 +8242,8 @@ var func = {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-      hour: 'numeric'
+      hour: 'numeric',
+      minute: 'numeric'
     };
     var today = new Date(date);
     return today.toLocaleDateString("en-US", options);

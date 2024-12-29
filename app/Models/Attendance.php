@@ -17,6 +17,10 @@ class Attendance extends Model
         'notes'
     ];
 
+    protected $casts = [
+        'created_at' => 'date:M d, Y H:i A',
+    ];
+
     /**
      * Get the delegate that owns the payment.
      */

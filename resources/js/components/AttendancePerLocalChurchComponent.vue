@@ -66,6 +66,7 @@
                 </table>
             </template>
             <el-table-column
+              sortable
               prop="count"
               label="Local Church"
               fixed="left"
@@ -119,6 +120,16 @@
                 <el-tag size="mini" :type="scope.row.attendance_status === 'Pending' ? 'warning' : 'success'">{{ scope.row.attendance_status }}</el-tag>
               </template>
             </el-table-column>
+          </el-table-column>
+          <el-table-column
+              prop="created_at"
+              label="Date & Time"
+              width="180"
+              sortable
+              align="center">
+              <template slot-scope="scope">
+              {{ $func.formatToDateTime(scope.row.created_at) }}
+              </template>
           </el-table-column>
         </el-table>
   
