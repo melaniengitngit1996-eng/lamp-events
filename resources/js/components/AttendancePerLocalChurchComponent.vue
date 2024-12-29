@@ -66,6 +66,15 @@
                 </table>
             </template>
             <el-table-column
+              prop="count"
+              label="Local Church"
+              fixed="left"
+              align="center">
+              <template slot-scope="scope">
+                  {{ scope.row.registration.local_church }}
+              </template>
+            </el-table-column>
+            <el-table-column
               prop="registration.uuid"
               label="LAMP ID"
               fixed="left"

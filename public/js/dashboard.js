@@ -7138,10 +7138,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart.register(chart_js__WEBPACK_IMPORTED_
       return "".concat(percentage, "%");
     },
     view_attendance: function view_attendance(local_church) {
-      window.open("dashboard/attendance?local_church=".concat(local_church, "&awta_day=").concat(window.env.awta_day), "mywindow", "menubar=1,resizable=1,width=800,height=800");
+      window.open("dashboard/attendance?local_church=".concat(local_church, "&awta_day=").concat(window.env.awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
     },
     view_received_hg: function view_received_hg(awta_day) {
-      window.open("dashboard/received-hg?awta_day=".concat(awta_day), "mywindow", "menubar=1,resizable=1,width=1000,height=800");
+      window.open("dashboard/received-hg?awta_day=".concat(awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
     },
     getSummaries: function getSummaries(param) {
       var columns = param.columns,
@@ -7452,6 +7452,19 @@ var render = function render() {
       }
     }])
   }, [_vm._v(" "), _c("el-table-column", {
+    attrs: {
+      prop: "count",
+      label: "Local Church",
+      fixed: "left",
+      align: "center"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function fn(scope) {
+        return [_vm._v("\n              " + _vm._s(scope.row.registration.local_church) + "\n          ")];
+      }
+    }])
+  }), _vm._v(" "), _c("el-table-column", {
     attrs: {
       prop: "registration.uuid",
       label: "LAMP ID",
@@ -8037,6 +8050,19 @@ var render = function render() {
       }
     }])
   }, [_vm._v(" "), _c("el-table-column", {
+    attrs: {
+      prop: "count",
+      label: "Local Church",
+      fixed: "left",
+      align: "center"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function fn(scope) {
+        return [_vm._v("\n              " + _vm._s(scope.row.registration.local_church) + "\n          ")];
+      }
+    }])
+  }), _vm._v(" "), _c("el-table-column", {
     attrs: {
       prop: "registration.uuid",
       label: "LAMP ID",

@@ -226,12 +226,16 @@ class DashboardController extends Controller
     // views
     public function view_attendance_per_church(Request $request)
     {
-        // dd($request->awta_day);
-        $attendance = Attendance::where('local_church', $request->local_church);
+        if ($request->local_church) {
+            $attendance = Attendance::where('local_church', $request->local_church);
+        }
 
         if ($request->awta_day) {
-
-            $attendance = $attendance->whereIn('slot_id', config('settings.slots_allotment')[$request->awta_day]);
+            if ($request->local_church) {
+                $attendance = $attendance->whereIn('slot_id', config('settings.slots_allotment')[$request->awta_day]);
+            } else {
+                $attendance = Attendance::whereIn('slot_id', config('settings.slots_allotment')[$request->awta_day]);
+            }
         }
 
         $attendance = $attendance->pluck('registration_uuid');
@@ -246,8 +250,11 @@ class DashboardController extends Controller
             return $query->where('fullname', 'LIKE', "%$request->keyword%")
                 ->orWhere('uuid', $request->keyword);
         })
-            ->where('status', BookingStatus::Confirmed)
-            ->where('local_church', $request->local_church);
+        ->where('status', BookingStatus::Confirmed);
+
+        if ($request->local_church) {
+            $booking = $booking->where('local_church', $request->local_church);
+        }
 
         if ($request->registration_type) {
             $booking = $booking->whereHas('registration', function ($query) use ($request) {
