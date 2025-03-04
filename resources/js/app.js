@@ -19,6 +19,7 @@ Vue.component('banner-component', require('./components/BannerComponent.vue').de
 Vue.component('upload-component', require('./components/UploadComponent.vue').default);
 Vue.component('booking', require('./components/BookingComponent.vue').default);
 Vue.component('pagination', require('./components/Common/Pagination.vue').default);
+Vue.component('create-user-component', require('./components/CreateUserComponent.vue').default);
 
 import Vue from 'vue';
 import ElementUI from 'element-ui';
@@ -27,7 +28,7 @@ import '../css/app.css';
 import { Loading } from 'element-ui';
 import VueQRCodeComponent from 'vue-qrcode-component'
 
-import {func} from '../js/func.js';
+import { func } from '../js/func.js';
 
 import locale from 'element-ui/lib/locale/lang/en'
 
@@ -40,14 +41,14 @@ Vue.prototype.$func = func
 
 Vue.config.lang = 'en'
 
-Vue.use(ElementUI, {locale});
+Vue.use(ElementUI, { locale });
 
 Vue.component('qr-code', VueQRCodeComponent);
 
 const app = new Vue({
     el: '#app',
-    data: function() {
-        return { 
+    data: function () {
+        return {
             visible: false,
             search: null,
         }

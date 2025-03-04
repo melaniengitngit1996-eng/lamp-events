@@ -8064,7 +8064,7 @@ var render = function render() {
   return _c("div", [_c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-md-6"
+    staticClass: "col-md-8"
   }, [_c("div", {
     staticClass: "border-0 m-4 card shadow"
   }, [_c("div", {

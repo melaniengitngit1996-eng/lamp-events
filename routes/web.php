@@ -98,3 +98,6 @@ Route::get('/check-in/passes', [App\Http\Controllers\CheckInController::class, '
 Route::post('/slots', [App\Http\Controllers\SlotsController::class, 'store'])->name('slots.store');
 
 Route::get('/export/history', [App\Http\Controllers\ExportHistoryController::class, 'index'])->name('history.index');
+
+Route::get('users/mobile/create', [App\Http\Controllers\MobileUserController::class, 'create'])->name('user.create');
+Route::post('users/mobile', [App\Http\Controllers\MobileUserController::class, 'store'])->name('user.store');

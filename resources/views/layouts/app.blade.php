@@ -43,84 +43,79 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
 
-                    </ul>
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+    <el-container style="border: 1px solid #eee"  id="app">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <a href="{{ route('home') }}" style="display: block;font-size: 1.125rem;line-height: 1.3;padding: 0.82rem 0.5rem;transition: width 0.3s ease-in-out;white-space: nowrap;text-align: center;text-decoration: none;color: cornflowerblue;">
+                <span class="logo-lg">
+                    <span class="brand-text font-weight-light"><span style="font-weight: 600;">LAMP CHURCH</span>
+                </span>
+            </a>
+            
+            <el-menu :default-openeds="['4']">
+                <el-menu-item>
+                    <template slot="title"><i class="el-icon-message"></i>Data</template>
+                </el-menu-item>
+                
+                <el-submenu index="4">
+                    <template slot="title"><i class="el-icon-setting"></i>Navigator Three</template>
+                    <el-menu-item-group>
+                        <template slot="title">Group 1</template>
+                        <el-menu-item index="3-1">Option 1</el-menu-item>
+                        <el-menu-item index="3-2">Option 2</el-menu-item>
+                    </el-menu-item-group>
+                    <el-menu-item-group title="Group 2">
+                        <el-menu-item index="3-3">Option 3</el-menu-item>
+                    </el-menu-item-group>
+                    <el-submenu index="3-4">
+                        <template slot="title">Option 4</template>
+                        <el-menu-item index="3-4-1">Option 4-1</el-menu-item>
+                    </el-submenu>
+                </el-submenu>
+            </el-menu>
+        </el-aside>
+        
+        <el-container>
+            <el-header style="height: auto; text-align: right; font-size: 12px; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04); border-bottom: 1px solid #DCDFE6;">
+                <li class="nav-item dropdown" style="list-style: none; padding: 15px;">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ Auth::user()->name }}
+                    </a>
 
-                            {{-- @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign Up') }}</a>
-                                </li>
-                            @endif --}}
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('home') }}">
+                            {{ __('Registrations') }}
+                        </a>
+                        <a class="dropdown-item" href="{{ route('activities') }}">
+                            {{ __('Activities') }}
+                        </a>
+                        <a class="dropdown-item" href="{{ route('configurations') }}">
+                            {{ __('Configurations') }}
+                        </a>
+                        <a class="dropdown-item" href="{{ route('dashboard') }}">
+                            {{ __('Dashboard') }}
+                        </a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
 
-                            @if (Route::has('registration'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('registration') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            </el-header>
+          
+            <main class="py-4">
+                @yield('content')
+            </main>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}">
-                                        {{ __('Registrations') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('activities') }}">
-                                        {{ __('Activities') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('configurations') }}">
-                                        {{ __('Configurations') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('dashboard') }}">
-                                        {{ __('Dashboard') }}
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
-
-        @yield('footer')
-    </div>
+            @yield('footer')
+        </el-container>
+      </el-container>
 </body>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>

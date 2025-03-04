@@ -18,7 +18,6 @@ class CreateMobileUsersTable extends Migration
             $table->string('name');
             $table->string('username');
             $table->string('local_church');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

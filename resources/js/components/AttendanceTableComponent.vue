@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="border-0 m-4 card shadow">
                     <div class="card-body">
                         <table class="border text-center w-full" style="width: 100%">
