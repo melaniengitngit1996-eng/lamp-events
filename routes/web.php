@@ -84,9 +84,9 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 Route::get('/dashboard/attendance', [App\Http\Controllers\DashboardController::class, 'view_attendance_per_church'])->name('dashboard.attendance');
 Route::get('/dashboard/received-hg', [App\Http\Controllers\DashboardController::class, 'view_received_hg_per_church'])->name('dashboard.hg');
 
-Route::get('received-hg', [App\Http\Controllers\ReceivedHGController::class, 'index'])->name('hg.index');
-Route::get('received-hg/export', [App\Http\Controllers\ReceivedHGController::class, 'export'])->name('hg.export');
-Route::delete('received-hg/{id}/delete', [App\Http\Controllers\ReceivedHGController::class, 'destroy'])->name('hg.record.delete');
+Route::get('received-hg', [App\Http\Controllers\Api\ReceivedHGController::class, 'index'])->name('hg.index');
+Route::get('received-hg/export', [App\Http\Controllers\Api\ReceivedHGController::class, 'export'])->name('hg.export');
+Route::delete('received-hg/{id}/delete', [App\Http\Controllers\Api\ReceivedHGController::class, 'destroy'])->name('hg.record.delete');
 
 
 // online check in

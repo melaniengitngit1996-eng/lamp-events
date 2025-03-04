@@ -19,5 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // API Received HG
-Route::get('/delegate/{uuid}', [App\Http\Controllers\ReceivedHGController::class, 'show']);
-Route::post('/delegate/hg/{uuid}', [App\Http\Controllers\ReceivedHGController::class, 'store']);
+Route::get('/delegate/{uuid}', [App\Http\Controllers\Api\ReceivedHGController::class, 'show']);
+Route::post('/delegate/hg/{uuid}', [App\Http\Controllers\Api\ReceivedHGController::class, 'store']);
+Route::post('/login', [App\Http\Controllers\Api\LoginController::class, 'index']);

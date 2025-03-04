@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\ReceivedHG;
 use App\Models\Registration;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportReceivedHG;
 
-class ReceivedHGController extends Controller
+class ReceivedHGController
 {
     public function index(Request $request) {
         $search = json_decode($request->search);
