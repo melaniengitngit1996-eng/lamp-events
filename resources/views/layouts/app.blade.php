@@ -55,11 +55,15 @@
             
             <el-menu :default-openeds="['4']">
                 <el-menu-item>
-                    <template slot="title"><i class="el-icon-message"></i>Data</template>
+                    <template slot="title"><img class="mb-1" height="17" width="20" src="/images/portfolio.png" style="margin-right: 10px"/>Dashboard</template>
+                </el-menu-item>
+
+                <el-menu-item>
+                    <template slot="title"><img class="mb-1" height="17" width="20" src="/images/database.png" style="margin-right: 10px"/>AWTA Data</template>
                 </el-menu-item>
                 
-                <el-submenu index="4">
-                    <template slot="title"><i class="el-icon-setting"></i>Navigator Three</template>
+                {{-- <el-submenu index="4">
+                    <template slot="title"><img class="mb-1" height="20" width="24" src="/images/users.png" style="margin-right: 10px"/></i>Members</template>
                     <el-menu-item-group>
                         <template slot="title">Group 1</template>
                         <el-menu-item index="3-1">Option 1</el-menu-item>
@@ -72,7 +76,11 @@
                         <template slot="title">Option 4</template>
                         <el-menu-item index="3-4-1">Option 4-1</el-menu-item>
                     </el-submenu>
-                </el-submenu>
+                </el-submenu> --}}
+
+                <el-menu-item>
+                    <template slot="title"><img class="mb-1" height="17" width="20" src="/images/calendar.png" style="margin-right: 10px"/>Events</template>
+                </el-menu-item>
             </el-menu>
         </el-aside>
         
