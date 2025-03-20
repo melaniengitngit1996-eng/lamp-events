@@ -85,6 +85,7 @@
         </el-aside>
         
         <el-container>
+            @if (Auth::user())
             <el-header style="height: auto; text-align: right; font-size: 12px; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04); border-bottom: 1px solid #DCDFE6;">
                 <li class="nav-item dropdown" style="list-style: none; padding: 15px;">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -116,6 +117,7 @@
                     </div>
                 </li>
             </el-header>
+            @endif
           
             <main class="py-4">
                 @yield('content')
