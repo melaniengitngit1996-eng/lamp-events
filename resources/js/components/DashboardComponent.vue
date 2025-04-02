@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="max-width: 100% !important; margin: 0">
+    <div class="container m-0 p-0" style="max-width: 100% !important;">
         <div class="row">
             <div class="col-md-4">
                 <div class="card mb-3">

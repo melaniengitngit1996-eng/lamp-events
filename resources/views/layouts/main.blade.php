@@ -15,32 +15,26 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    @if (auth()->check())
-    <script>
-        window.auth_user = {!! json_encode(auth()->user()->load(['permissions'])); !!};
-        window.env = {
-            guest_booking_code: '{{ config('settings.guest_booking_code') }}',
-            guest_booking_limit: '{{ config('settings.guest_booking_limit') }}',
-            member_booking_limit: '{{ config('settings.member_booking_limit') }}',
-            cluster_groups: {!! json_encode(config('clustergroups')) !!},
-            year:'{{ config('settings.year') }}',
-            theme:'{{ config('settings.theme') }}',
-            fb_group_url: '{{ config('settings.fb_group_url') }}',
-            zoom: {!! json_encode(config('settings.zoom_details')) !!},
-        };
-    </script>
-    @endif
-
     <!-- Scripts -->
-    @yield('scripts')
+    <script src="{{ asset('js/dashboard.js?time=') }}{{ time() }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    {{-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"> --}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+        window.env = {
+            awta_day: '{{ config('settings.awta_day') }}',
+            cluster_groups: {!! json_encode(config('clustergroups')) !!},
+            fb_group_url: '{{ config('settings.fb_group_url') }}',
+            year:'{{ config('settings.year') }}',
+            zoom: {!! json_encode(config('settings.zoom_details')) !!},
+        };
+    </script>
 </head>
 <body>
     <el-container style="border: 1px solid #eee" id="app">
@@ -126,5 +120,5 @@
       </el-container>
 </body>
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+{{-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> --}}
 </html>
