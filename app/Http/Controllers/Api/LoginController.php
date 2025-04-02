@@ -16,7 +16,10 @@ class LoginController extends Controller
         $user = MobileUser::where('username', $request->username)->first();
 
         if (empty($user)) {
-            return response()->json(['error' => 'Invalid username.'], 403);
+            return response()->json([
+                'status' => 'not found',
+                'details' => []
+            ], 403);
         }
 
         return response()->json([
