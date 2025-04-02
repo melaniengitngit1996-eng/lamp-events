@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    /**
+     * Methods to bypass authentication.
+     * Methods: Show
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => []]);
+    }
+
     public function index()
     {
         $color_assignment = config('settings.chart_color');
