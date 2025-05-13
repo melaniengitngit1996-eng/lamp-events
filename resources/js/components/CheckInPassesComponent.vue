@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <center>
-                        <img :src="`/images/2024/${getImage(date.slot_id).image}`" class="my-3" width="100%">
+                        <img :src="`/images/${getImage(date.slot_id).image}`" class="my-3" width="100%">
                         </center>
                     </div>
                     <div class="col-md-7">

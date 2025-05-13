@@ -19,6 +19,11 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+// wip new routes
+Route::get('/register/{slug}', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('register');
+// --------
+
 if (env('CLOSE_REGISTRATION') === true) {
     Route::get('/registration/new', [App\Http\Controllers\RegistrationController::class, 'new'])->name('registration');
 }

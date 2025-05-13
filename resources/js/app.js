@@ -9,7 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 // registration page
-Vue.component('registration-component', require('./components/RegistrationComponent.vue').default);
+Vue.component('registration-component', require('./components/Registration/RegistrationComponent.vue').default);
 Vue.component('edit-registration-component', require('./components/EditRegistrationComponent.vue').default);
 Vue.component('edit-lookup-component', require('./components/EditLookupComponent.vue').default);
 Vue.component('create-lookup-component', require('./components/CreateLookUpComponent.vue').default);

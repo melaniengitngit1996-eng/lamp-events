@@ -7423,7 +7423,7 @@ var render = function render() {
     }, [_c("center", [_c("img", {
       staticClass: "my-3",
       attrs: {
-        src: "/images/2024/".concat(_vm.getImage(date.slot_id).image),
+        src: "/images/".concat(_vm.getImage(date.slot_id).image),
         width: "100%"
       }
     })])], 1), _vm._v(" "), _c("div", {

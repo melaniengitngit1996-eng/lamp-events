@@ -2,16 +2,6 @@
     <div>
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <img width="100%" class="mb-3 rounded shadow" src="/images/2024_banner_B.jpeg">
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <banner-component />
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
                 <component ref="myChild" v-bind:is="currentTabComponent" v-bind:data="currentTabData" :slots="slots" @change-step="changeStep" :closeRegForMember="false" @reset="reset" @submit="submit"/>
             </div>
         </div>
@@ -39,33 +29,13 @@
                 <!-- <el-button v-bind:type="(currentStep === 3 || (currentStep === 2 && data.step_1.registrationType === 'Guest')) ? 'primary' : ''" v-bind:plain="currentStep < 3" @click="$refs.myChild.submitForm('next')">{{ (currentStep === 3 || (currentStep === 2 && data.step_1.registrationType === 'Guest')) ? 'Submit' : 'Next' }}</el-button> -->
             </div>
         </div>
-
-        <el-dialog
-        :visible.sync="dialogVisible"
-        custom-class="responsive-dialog"
-        :close-on-click-modal="false"
-        :close-on-press-escape="false"
-        :show-close="false"
-        :destroy-on-close="false">
-        <span class="content">
-            <div class="m-0">
-                <el-checkbox v-model="isAllowing"/>&nbsp;&nbsp;I authorize LAMP Church to collect, use, and retain the personal information in this form for the purpose of attending AWTA {{year}}  (Annual Worship and Thanksgiving Assembly) and in the pursuit of any legal interests of the church.
-                <span v-if="display" class="error">
-                    Please check if you want to continue
-                </span>
-            </div>
-        </span>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="validateAuthorization()">Continue</el-button>
-        </span>
-        </el-dialog>
     </div>
 </template>
 
 <script>
-    import Step1 from "../components/Registration/Step1.vue";
-    import Step2 from "../components/Registration/Step2.vue";
-    import Step3 from "../components/Registration/Step3.vue";
+    import Step1 from "../../../components/Registration/1/Step1.vue";
+    import Step2 from "../../../components/Registration/1/Step2.vue";
+    import Step3 from "../../../components/Registration/1/Step3.vue";
 
     export default {
         components: {
@@ -77,6 +47,9 @@
             slots: {
                 required: false
             },
+            event: {
+                required: true
+            }
         },
         data() {
             return {
@@ -89,9 +62,6 @@
                     step_2: {},
                     step_3: {}
                 },
-                isAllowing: false,
-                dialogVisible: window.env.display_disclosure_prompt === 'yes',
-                display: false,
                 year: window.env.year
             }
         },
@@ -169,12 +139,6 @@
             },
             showTicket(uuid) {
                 window.location.href = `registration/ticket?id=${uuid}`;
-            },
-            validateAuthorization() {
-                if (!this.isAllowing)
-                    this.display = true
-                else
-                    this.dialogVisible = false
             }
         }
     }
