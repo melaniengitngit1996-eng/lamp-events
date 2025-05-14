@@ -2,7 +2,7 @@
     <div>
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <component ref="myChild" v-bind:is="currentTabComponent" v-bind:data="currentTabData" :slots="slots" @change-step="changeStep" :closeRegForMember="false" @reset="reset" @submit="submit"/>
+                <component ref="myChild" v-bind:is="currentTabComponent" v-bind:data="currentTabData" :slots="slots" @change-step="changeStep" :closeRegForMember="false" @reset="reset" @submit="submit" :event="event"/>
             </div>
         </div>
         <div class="row justify-content-center mb-5">

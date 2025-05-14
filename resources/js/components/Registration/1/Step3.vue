@@ -39,7 +39,10 @@
             slots: {
                 required: false,
                 type: Array
-            }
+            },
+            event: {
+                required: true
+            },
         },
         data() {
            return {

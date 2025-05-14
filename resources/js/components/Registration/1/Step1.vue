@@ -106,7 +106,8 @@
                             class="col-md-6"
                             v-if="
                                 ruleForm.attendingOption === 'Hybrid' &&
-                                ruleForm.registrationType === 'Guest'
+                                ruleForm.registrationType === 'Guest' &&
+                                event.with_guest_booking_code == 1
                             "
                         >
                             <el-form-item
@@ -271,6 +272,9 @@ export default {
         data: {
             required: true,
             type: Object,
+        },
+        event: {
+            required: true
         },
     },
     data() {

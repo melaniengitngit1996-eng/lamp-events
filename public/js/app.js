@@ -8175,6 +8175,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     data: {
       required: true,
       type: Object
+    },
+    event: {
+      required: true
     }
   },
   data: function data() {
@@ -8544,6 +8547,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     slots: {
       required: false,
       type: Array
+    },
+    event: {
+      required: true
     }
   },
   data: function data() {
@@ -8980,6 +8986,9 @@ __webpack_require__.r(__webpack_exports__);
     slots: {
       required: false,
       type: Array
+    },
+    event: {
+      required: true
     }
   },
   data: function data() {
@@ -10767,7 +10776,8 @@ var render = function render() {
     attrs: {
       data: _vm.currentTabData,
       slots: _vm.slots,
-      closeRegForMember: false
+      closeRegForMember: false,
+      event: _vm.event
     },
     on: {
       "change-step": _vm.changeStep,
@@ -10975,7 +10985,7 @@ var render = function render() {
       value: "Online",
       label: "Online"
     }
-  })], 1)], 1)], 1), _vm._v(" "), _vm.ruleForm.attendingOption === "Hybrid" && _vm.ruleForm.registrationType === "Guest" ? _c("div", {
+  })], 1)], 1)], 1), _vm._v(" "), _vm.ruleForm.attendingOption === "Hybrid" && _vm.ruleForm.registrationType === "Guest" && _vm.event.with_guest_booking_code == 1 ? _c("div", {
     staticClass: "col-md-6"
   }, [_c("el-form-item", {
     staticClass: "transform-uppercase",

@@ -271,6 +271,9 @@
                 required: false,
                 type: Array
             },
+            event: {
+                required: true
+            },
         },
         data() {
             var checkLastname = async (rule, value, callback) => {
