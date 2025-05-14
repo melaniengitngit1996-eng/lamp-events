@@ -301,7 +301,7 @@ export default {
             }
         };
         var checkBookingCode = async (rule, value, callback) => {
-            if (this.ruleForm.bookingCode != this.guest_booking_code) {
+            if (this.ruleForm.bookingCode != this.event.booking_code) {
                 callback(new Error("Incorrect booking code"));
             }
         };

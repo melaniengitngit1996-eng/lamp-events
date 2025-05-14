@@ -8254,7 +8254,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                if (_this.ruleForm.bookingCode != _this.guest_booking_code) {
+                if (_this.ruleForm.bookingCode != _this.event.booking_code) {
                   callback(new Error("Incorrect booking code"));
                 }
 
