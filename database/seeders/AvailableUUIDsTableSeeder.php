@@ -12,11 +12,11 @@ class AvailableUUIDsTableSeeder extends Seeder
     public function run()
     {
         AvailableUuid::create([
-            'year' => '2024',
+            'year' => '2025',
             'prefix' => 'LAMP',
             'start' => 1,
             'end' => 10000,
-            'cursor' => 1555
+            'cursor' => 1831
         ]);
     }
 }

@@ -21,8 +21,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 // wip new routes
-Route::get('/register/{slug}', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('register');
-Route::get('/registration/{slug}/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
+Route::get('/register/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('register');
+Route::get('/registration/{event:slug}/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
+Route::post('/registration/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'store'])->name('registration.store');
 // --------
 
 if (env('CLOSE_REGISTRATION') === true) {
@@ -34,7 +35,6 @@ Route::get('/registration/all', [App\Http\Controllers\RegistrationController::cl
 Route::get('/registration/validate', [App\Http\Controllers\RegistrationController::class, 'validation'])->name('registration.validation');
 
 // registration
-Route::post('/registration', [App\Http\Controllers\RegistrationController::class, 'store'])->name('registration.store');
 Route::get('/registration/{id}/edit', [App\Http\Controllers\RegistrationController::class, 'edit'])->name('registration.edit');
 Route::post('/registration/{id}/update', [App\Http\Controllers\RegistrationController::class, 'update'])->name('registration.update');
 Route::delete('/registration/{id}/delete', [App\Http\Controllers\RegistrationController::class, 'destroy'])->name('registration.delete');

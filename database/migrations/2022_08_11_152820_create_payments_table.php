@@ -15,12 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedBigInteger('registration_id');
             $table->string('registration_uuid');
             $table->decimal('amount', 9, 3);
             $table->date('date_paid')->nullable();
             $table->integer('user_id');
             $table->timestamps();
-            $table->foreign('registration_uuid')->references('uuid')->on('registrations')->onDelete('cascade');
+            $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
         });
     }
 

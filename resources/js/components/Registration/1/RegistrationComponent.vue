@@ -134,7 +134,7 @@
                 });
 
                 setTimeout(async () => {
-                    await axios.post("/registration", this.data)
+                    await axios.post(`/registration/${this.event.slug}`, this.data)
                     .then(async (response) => {
                         loading.close()
                         

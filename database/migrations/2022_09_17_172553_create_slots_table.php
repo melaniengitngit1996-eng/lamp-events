@@ -15,6 +15,7 @@ class CreateSlotsTable extends Migration
     {
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
+            $table->integer('event_id');
             $table->date('event_date');
             $table->integer('seat_count');
             $table->string('registration_type');

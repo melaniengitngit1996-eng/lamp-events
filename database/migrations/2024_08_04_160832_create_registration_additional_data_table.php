@@ -15,9 +15,10 @@ class CreateRegistrationAdditionalDataTable extends Migration
     {
         Schema::create('registration_additional_data', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('registration_id');
             $table->string('registration_uuid');
             $table->date('has_viewed_ticket')->nullable();
-            $table->foreign('registration_uuid')->references('uuid')->on('registrations')->onDelete('cascade');
+            $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
             $table->timestamps();
         });
     }

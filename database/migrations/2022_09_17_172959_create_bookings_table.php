@@ -16,9 +16,10 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('registration_id');
             $table->string('registration_uuid');
             $table->bigInteger('slot_id')->unsigned();
-            $table->foreign('registration_uuid')->references('uuid')->on('registrations')->onDelete('cascade');
+            $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
             $table->foreign('slot_id')->references('id')->on('slots')->onDelete('cascade');
             $table->string('local_church');
             $table->string('status')->default(BookingStatus::Pending);

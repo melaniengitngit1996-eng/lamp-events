@@ -15,11 +15,14 @@ class CreateReceivedHGSTable extends Migration
     {
         Schema::create('received_h_g_s', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('registration_id');
             $table->string('registration_uuid');
-            $table->bigInteger('slot_id')->unsigned();
+            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('slot_id')->unsigned();
             $table->string('local_church');
             $table->string('registration_type');
-            $table->foreign('registration_uuid')->references('uuid')->on('registrations')->onDelete('cascade');
+            $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->foreign('slot_id')->references('id')->on('slots')->onDelete('cascade');
             $table->text('notes');
             $table->timestamps();

@@ -15,11 +15,12 @@ class CreateSpecialRatesTable extends Migration
     {
         Schema::create('special_rates', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('registration_id');
             $table->string('registration_uuid');
             $table->decimal('rate', 9, 3);
             $table->text('note');
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('registration_uuid')->references('uuid')->on('registrations')->onDelete('cascade');
+            $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

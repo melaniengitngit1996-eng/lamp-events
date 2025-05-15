@@ -17,7 +17,8 @@ class CreateRegistrationsTable extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid')->unique();
+            $table->integer('event_id');
+            $table->string('uuid');
             $table->string('email')->nullable();
             $table->string('firstname');
             $table->string('lastname');

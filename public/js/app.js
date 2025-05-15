@@ -8116,7 +8116,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return axios.post("/registration", _this2.data).then( /*#__PURE__*/function () {
+                return axios.post("/registration/".concat(_this2.event.slug), _this2.data).then( /*#__PURE__*/function () {
                   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(response) {
                     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
                       while (1) {
