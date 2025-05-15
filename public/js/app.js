@@ -8095,6 +8095,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.data.step_3 = {};
       }
 
+      if (!this.event.with_booking) {
+        this.data.step_3 = {
+          booked: this.data.step_1.registrationType === 'Member' ? this.slots.member.map(function (item) {
+            return item.id;
+          }) : this.slots.guest.map(function (item) {
+            return item.id;
+          })
+        };
+      }
+
       var loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -8140,7 +8150,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       })), 1000);
     },
     showTicket: function showTicket(uuid) {
-      window.location.href = "registration/ticket?id=".concat(uuid);
+      window.location.href = "/registration/ticket?id=".concat(uuid);
     }
   }
 });
@@ -8275,7 +8285,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       ruleForm: {
         registrationType: "",
         withAwtaCard: "",
-        attendingOption: "",
+        attendingOption: this.event.with_booking ? "" : "Hybrid",
+        // set default as hybrid if booking id disabled
         lampIDNumber: "",
         clusterGroup: "",
         bookingCode: "",
@@ -8456,7 +8467,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 while (1) {
                   switch (_context6.prev = _context6.next) {
                     case 0:
-                      if (_this3.ruleForm.attendingOption === "Online") {
+                      if (_this3.ruleForm.attendingOption === "Online" || !_this3.event.with_booking) {
                         _this3.$emit("submit", _this3.ruleForm);
                       } else {
                         _this3.$emit("change-step", {
@@ -8492,7 +8503,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.ruleForm.found = {};
       } else if (scope === "reg-type") {
         this.ruleForm.withAwtaCard = "";
-        this.ruleForm.attendingOption = "";
+        this.ruleForm.attendingOption = this.event.with_booking ? "" : "Hybrid";
         this.ruleForm.lampIDNumber = "";
         this.ruleForm.bookingCode = "";
         this.ruleForm.found = {};
@@ -8546,7 +8557,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     slots: {
       required: false,
-      type: Array
+      type: Object
     },
     event: {
       required: true
@@ -8893,6 +8904,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return date;
       });
     });
+
+    if (this.event.with_booking) {
+      this.ruleForm.guests[0].booked = this.slots.guest.map(function (item) {
+        return item.id;
+      });
+    }
   },
   methods: {
     submitForm: function submitForm(action) {
@@ -8909,7 +8926,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.$refs['ruleForm'].validate(function (valid) {
         if (valid) {
-          if (_this3.data.step_1.registrationType === 'Guest' || _this3.data.step_1.registrationType === 'Member' && _this3.data.step_1.attendingOption === "Online") {
+          if (_this3.data.step_1.registrationType === 'Guest' || _this3.data.step_1.registrationType === 'Member' && _this3.data.step_1.attendingOption === "Online" || !_this3.event.with_booking) {
             _this3.$emit('submit', _this3.ruleForm);
           } else {
             _this3.$emit('change-step', {
@@ -8937,7 +8954,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         localChurch: '',
         country: 'Philippines',
         category: 'Free',
-        booked: [],
+        booked: this.event.with_booking ? [] : this.slots.guest.map(function (item) {
+          return item.id;
+        }),
         specificMedicalAssistance: '',
         attendingOption: this.data.step_1.attendingOption
       });
@@ -9254,14 +9273,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var msg = '<strong>Congratulations!</strong> Your registration has been accepted. ';
       if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '') msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
-      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid') msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local AWTA Registrars for help.</small>';
+      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid') msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
 
       if (this.registrations[0].attending_option === 'Online') {
         msg += "<br /><br /><small style=\"line-height: 0px;\">To watch the live broadcast, join our FB Group <br/><a href=\"".concat(window.env.fb_group_url, "\">").concat(window.env.fb_group_url, "</a></small>");
         msg += "<br /><br /><small style=\"line-height: 0px;\">You may also join us via <b>Zoom</b>:<br />\n                        <a href=\"".concat(this.zoom.link, "\">").concat(this.zoom.link, "</a><br /><br />\n                        Meeting ID: ").concat(this.zoom.id, " <br />\n                        Passcode:").concat(this.zoom.passcode, "</small> <br /><br />");
       }
 
-      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none') msg += '<br /><br /><small style="line-height: 0px;">Note: <i>A new LAMP ID Number is issued for you.</i> If you want to avail the physical card, an additional Php 35.00 will be required. Kindly reach out to your local AWTA Registrars for payment and issuance.</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to avail the new LAMP ID?</small>';else if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost') msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local AWTA Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
+      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none') msg += '<br /><br /><small style="line-height: 0px;">Note: <i>A new LAMP ID Number is issued for you.</i> If you want to avail the physical card, an additional Php 35.00 will be required. Kindly reach out to your local Registrars for payment and issuance.</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to avail the new LAMP ID?</small>';else if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost') msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
       this.$confirm(msg, 'You did it!', {
         confirmButtonText: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost') ? 'Yes' : 'Continue',
         cancelButtonText: 'No',
@@ -10797,7 +10816,7 @@ var render = function render() {
         return _vm.$refs.myChild.submitForm("back");
       }
     }
-  }, [_vm._v("Back")]) : _vm._e(), _vm._v(" "), this.currentStep === 1 && this.data.step_1.withAwtaCard === "yes" && this.data.step_1.attendingOption === "Online" || this.currentStep === 2 && (this.data.step_1.registrationType === "Guest" || this.data.step_1.registrationType === "Member" && this.data.step_1.attendingOption === "Online") || this.currentStep === 3 ? _c("el-button", {
+  }, [_vm._v("Back")]) : _vm._e(), _vm._v(" "), this.currentStep === 1 && this.data.step_1.withAwtaCard === "yes" && this.data.step_1.attendingOption === "Online" || this.currentStep === 2 && (this.data.step_1.registrationType === "Guest" || this.data.step_1.registrationType === "Member" && this.data.step_1.attendingOption === "Online") || this.currentStep === 3 || this.currentStep === 2 && !_vm.event.with_booking ? _c("el-button", {
     attrs: {
       type: "theme"
     },
@@ -10941,7 +10960,7 @@ var render = function render() {
       label: "Yes, I still have it.",
       value: "yes"
     }
-  })], 1)], 1)], 1) : _vm._e()])]), _vm._v(" "), _vm.ruleForm.registrationType != "" ? _c("el-card", {
+  })], 1)], 1)], 1) : _vm._e()])]), _vm._v(" "), _vm.ruleForm.registrationType != "" && _vm.event.with_booking ? _c("el-card", {
     staticClass: "mb-3",
     attrs: {
       shadow: "always"
@@ -10950,13 +10969,13 @@ var render = function render() {
     staticClass: "px-2 row"
   }, [_c("el-alert", {
     attrs: {
-      title: "All registration after ".concat(_vm.hybrid_registration_deadline, " is considered online. For further inquiries, please reach out to your local AWTA Registrars."),
+      title: "All registration after ".concat(_vm.hybrid_registration_deadline, " is considered online. For further inquiries, please reach out to your local Registrars."),
       type: "warning",
       "show-icon": ""
     }
   })], 1), _vm._v(" "), _c("div", {
     staticClass: "row"
-  }, [_c("div", {
+  }, [_vm.event.with_booking ? _c("div", {
     staticClass: "col-md-6"
   }, [_c("el-form-item", {
     attrs: {
@@ -10985,14 +11004,14 @@ var render = function render() {
       value: "Online",
       label: "Online"
     }
-  })], 1)], 1)], 1), _vm._v(" "), _vm.ruleForm.attendingOption === "Hybrid" && _vm.ruleForm.registrationType === "Guest" && _vm.event.with_guest_booking_code == 1 ? _c("div", {
+  })], 1)], 1)], 1) : _vm._e(), _vm._v(" "), _vm.ruleForm.attendingOption === "Hybrid" && _vm.ruleForm.registrationType === "Guest" && _vm.event.with_guest_booking_code && _vm.event.with_booking ? _c("div", {
     staticClass: "col-md-6"
   }, [_c("el-form-item", {
     staticClass: "transform-uppercase",
     attrs: {
       label: "Booking Code",
       prop: "bookingCode",
-      required: _vm.ruleForm.attendingOption === "Hybrid" && _vm.ruleForm.registrationType === "Guest"
+      required: _vm.ruleForm.attendingOption === "Hybrid" && _vm.ruleForm.registrationType === "Guest" && _vm.event.with_booking
     }
   }, [_c("el-input", {
     attrs: {
@@ -11409,7 +11428,7 @@ var render = function render() {
       }), 1);
     })], 2), _vm._v(" "), _vm.errors[i] && (_vm.errors[i]["localChurch"] || _vm.errors[i]["clusterGroup"]) ? _c("small", {
       staticClass: "text-error"
-    }, [_vm.errors[i]["clusterGroup"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["clusterGroup"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]), _vm._v(" "), _vm.data.step_1.attendingOption === "Hybrid" ? _c("tr", [_c("td", {
+    }, [_vm.errors[i]["clusterGroup"] ? _c("span", [_vm._v(_vm._s(_vm.errors[i]["clusterGroup"]))]) : _vm._e(), _vm._v(" \n                                     ")]) : _vm._e()], 1)]), _vm._v(" "), _vm.data.step_1.attendingOption === "Hybrid" && _vm.event.with_booking ? _c("tr", [_c("td", {
       staticClass: "p-1",
       attrs: {
         colspan: "3"

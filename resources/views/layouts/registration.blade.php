@@ -21,7 +21,6 @@
             guest_booking_limit: '{{ config('settings.guest_booking_limit') }}',
             member_booking_limit: '{{ config('settings.member_booking_limit') }}',
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
-            display_disclosure_prompt: '{{ config('settings.display_disclosure_prompt') }}',
             year:'{{ config('settings.year') }}',
             theme:'{{ config('settings.theme') }}',
             event_date:'{{ config('settings.event_date') }}',

@@ -61,7 +61,6 @@ class Registration extends MyModel
     public static function boot()
     {
         parent::boot();
-
         self::creating(function ($model) {
             $payment_config = Rates::where('category', $model->category)
                 ->where('attending_option', $model->attending_option)

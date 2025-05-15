@@ -68,20 +68,20 @@
                 </el-card>
 
                 <el-card
-                    v-if="ruleForm.registrationType != ''"
+                    v-if="ruleForm.registrationType != '' && event.with_booking"
                     shadow="always"
                     class="mb-3"
                 >
                     <div class="px-2 row">
                         <el-alert
-                            :title="`All registration after ${hybrid_registration_deadline} is considered online. For further inquiries, please reach out to your local AWTA Registrars.`"
+                            :title="`All registration after ${hybrid_registration_deadline} is considered online. For further inquiries, please reach out to your local Registrars.`"
                             type="warning"
                             show-icon
                         >
                         </el-alert>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div v-if="event.with_booking" class="col-md-6">
                             <el-form-item
                                 label="How will you attend the AWTA?"
                                 prop="attendingOption"
@@ -107,7 +107,8 @@
                             v-if="
                                 ruleForm.attendingOption === 'Hybrid' &&
                                 ruleForm.registrationType === 'Guest' &&
-                                event.with_guest_booking_code == 1
+                                event.with_guest_booking_code &&
+                                event.with_booking
                             "
                         >
                             <el-form-item
@@ -116,7 +117,8 @@
                                 prop="bookingCode"
                                 :required="
                                     ruleForm.attendingOption === 'Hybrid' &&
-                                    ruleForm.registrationType === 'Guest'
+                                    ruleForm.registrationType === 'Guest' &&
+                                    event.with_booking
                                 "
                             >
                                 <el-input
@@ -309,7 +311,7 @@ export default {
             ruleForm: {
                 registrationType: "",
                 withAwtaCard: "",
-                attendingOption: "",
+                attendingOption: this.event.with_booking ? "" : "Hybrid", // set default as hybrid if booking id disabled
                 lampIDNumber: "",
                 clusterGroup: "",
                 bookingCode: "",
@@ -466,7 +468,7 @@ export default {
                                 customClass: "prompt-message",
                             }
                         ).then(async () => {
-                            if (this.ruleForm.attendingOption === "Online") {
+                            if (this.ruleForm.attendingOption === "Online" || !this.event.with_booking) {
                                 this.$emit("submit", this.ruleForm);
                             } else {
                                 this.$emit("change-step", {
@@ -495,7 +497,7 @@ export default {
                 this.ruleForm.found = {};
             } else if (scope === "reg-type") {
                 this.ruleForm.withAwtaCard = "";
-                this.ruleForm.attendingOption = "";
+                this.ruleForm.attendingOption = this.event.with_booking ? "" : "Hybrid";
                 this.ruleForm.lampIDNumber = "";
                 this.ruleForm.bookingCode = "";
                 this.ruleForm.found = {};

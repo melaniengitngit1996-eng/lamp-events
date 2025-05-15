@@ -20,7 +20,7 @@ Please make sure to have your LAMP ID/guest ticket ready, either in printed or d
 <center>View Ticket</center>
 @endcomponent
 
-If you have any questions or require further information, please feel free to reach out to our local AWTA Registrars. They will be more than happy to assist you.
+If you have any questions or require further information, please feel free to reach out to our local Registrars. They will be more than happy to assist you.
 
 We can't wait to worship and give thanks together. See you there!
 

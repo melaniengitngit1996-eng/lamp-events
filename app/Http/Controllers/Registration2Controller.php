@@ -16,7 +16,7 @@ class Registration2Controller extends Controller
             abort(404);
         }
 
-        if ($event->close_registration == true) {
+        if ($event->close_registration) {
             return view('registration.closed');
         }
 

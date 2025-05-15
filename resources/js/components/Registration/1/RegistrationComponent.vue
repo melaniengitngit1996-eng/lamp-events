@@ -13,7 +13,8 @@
                         (this.currentStep === 1 && this.data.step_1.withAwtaCard === 'yes' && this.data.step_1.attendingOption === 'Online') ||
                         (this.currentStep === 2 && 
                             (this.data.step_1.registrationType === 'Guest' || (this.data.step_1.registrationType === 'Member' && this.data.step_1.attendingOption === 'Online'))) ||
-                        this.currentStep === 3
+                        this.currentStep === 3 ||
+                        this.currentStep === 2 && !event.with_booking
                     "
                     type="theme" 
                     @click="$refs.myChild.submitForm('next')">
@@ -120,6 +121,12 @@
                     this.data.step_3 = {};
                 }
 
+                if (!this.event.with_booking) {
+                    this.data.step_3 = {
+                        booked: this.data.step_1.registrationType === 'Member' ? this.slots.member.map(item => item.id) : this.slots.guest.map(item => item.id)
+                    }
+                }
+
                 const loading = this.$loading({
                     lock: true,
                     text: 'Loading',
@@ -138,7 +145,7 @@
                 }, 1000);
             },
             showTicket(uuid) {
-                window.location.href = `registration/ticket?id=${uuid}`;
+                window.location.href = `/registration/ticket?id=${uuid}`;
             }
         }
     }

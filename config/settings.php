@@ -8,7 +8,6 @@ return [
     'member_booking_limit' => env('MEMBER_BOOKING_LIMIT'),
     'guest_slot_today' => env('SLOT_ID_TODAY_GUEST'),
     'member_slot_today' => env('SLOT_ID_TODAY_MEMBER'),
-    'display_disclosure_prompt' => env('DISPLAY_DISCLOSURE_PROMPT'),
     'payment_due_date' => env('PAYMENT_DUE_DATE'),
     'api_key' => env('API_KEY'),
     'awta_day' => env('AWTA_DAY'),

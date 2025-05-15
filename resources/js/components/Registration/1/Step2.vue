@@ -118,7 +118,7 @@
                                         </small>
                                     </td>
                                 </tr>
-                                <tr v-if="data.step_1.attendingOption === 'Hybrid'">
+                                <tr v-if="data.step_1.attendingOption === 'Hybrid' && event.with_booking">
                                     <td colspan="3" class="p-1">
                                         <label class="text-sm">Select Preferred Dates</label>
                                         <el-checkbox-group v-model="guest.booked" size="mini">
@@ -269,7 +269,7 @@
             },
             slots: {
                 required: false,
-                type: Array
+                type: Object
             },
             event: {
                 required: true
@@ -475,6 +475,10 @@
                     return date;
                 });
             });
+
+            if (this.event.with_booking) {
+                this.ruleForm.guests[0].booked = this.slots.guest.map(item => item.id);
+            }
         },
         methods: {
             submitForm(action) {
@@ -485,7 +489,7 @@
 
                 this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
-                        if (this.data.step_1.registrationType === 'Guest' || (this.data.step_1.registrationType === 'Member' && this.data.step_1.attendingOption === "Online")) {
+                        if (this.data.step_1.registrationType === 'Guest' || (this.data.step_1.registrationType === 'Member' && this.data.step_1.attendingOption === "Online") || !this.event.with_booking) {
                             this.$emit('submit', this.ruleForm);
                         } else {
                             this.$emit('change-step', {destination: 'step_3', current: 'step_2', data: this.ruleForm});
@@ -509,7 +513,7 @@
                     localChurch: '',
                     country: 'Philippines',
                     category: 'Free',
-                    booked: [],
+                    booked: this.event.with_booking ? [] : this.slots.guest.map(item => item.id),
                     specificMedicalAssistance: '',
                     attendingOption: this.data.step_1.attendingOption
                 });

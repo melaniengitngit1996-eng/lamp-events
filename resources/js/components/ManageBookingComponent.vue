@@ -21,7 +21,7 @@
                             Hybrid Attendees should book for intended AWTA days only. Visitors will need to coordinate with their cluster local coordinators for their bookings.<br/><br/>
 
                             Rebooking is until {{rebooking_deadline}} only. <br/><br/>
-                            For any booking issues/concerns, kindly reach out to your local AWTA Registrars.<br/><br/>
+                            For any booking issues/concerns, kindly reach out to your local Registrars.<br/><br/>
 
                             Book now — hurry while seats last!
                             </small>
@@ -36,7 +36,7 @@
                         <div class="px-2 row">
                             <el-alert
                                 v-if="disabled"
-                                title="Members' booking & rebooking is already closed. For other concerns, please reach out to your local AWTA Registrars."
+                                title="Members' booking & rebooking is already closed. For other concerns, please reach out to your local Registrars."
                                 type="warning"
                                 :closable="false"
                                 show-icon>
