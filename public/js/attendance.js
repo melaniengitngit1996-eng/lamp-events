@@ -7187,6 +7187,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       "default": false,
       type: Boolean,
       required: false
+    },
+    event: {
+      required: false
     }
   },
   data: function data() {
@@ -7220,7 +7223,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       var msg = '<strong>Congratulations!</strong> Your registration has been accepted. ';
       if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '') msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
-      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid') msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
+      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].rate > 0) msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
 
       if (this.registrations[0].attending_option === 'Online') {
         msg += "<br /><br /><small style=\"line-height: 0px;\">To watch the live broadcast, join our FB Group <br/><a href=\"".concat(window.env.fb_group_url, "\">").concat(window.env.fb_group_url, "</a></small>");
@@ -7701,7 +7704,9 @@ var render = function render() {
         slot: "header"
       },
       slot: "header"
-    }, [_c("span", [_vm._v("LAMP WORLDWIDE AWTA " + _vm._s(_vm.year))]), _vm._v(" "), _c("el-button", {
+    }, [_c("span", {
+      staticClass: "text-uppercase"
+    }, [_vm._v(_vm._s(_vm.event.name))]), _vm._v(" "), _c("el-button", {
       staticClass: "block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden",
       attrs: {
         icon: "el-icon-download",

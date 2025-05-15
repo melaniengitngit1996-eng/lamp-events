@@ -3,7 +3,7 @@
         <div v-bind:class="{'col-lg-12 mb-4' : isRebooking, 'col-md-6 col-lg-4 mb-4' : !isRebooking}" v-for="(registration, i) in registrations" :key="i">
             <el-card :id="`capture_${i}`" class="box-card ticket-header">
                 <div slot="header" class="clearfix">
-                    <span>LAMP WORLDWIDE AWTA {{ year }}</span>
+                    <span class="text-uppercase">{{ event.name }}</span>
 
                     <el-button icon="el-icon-download" class="block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
                 </div>
@@ -95,6 +95,9 @@ export default {
             type: Boolean,
             required: false
         },
+        event: {
+            required: false
+        },
     },
     data() {
         return {
@@ -130,7 +133,7 @@ export default {
             if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '')
                 msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
 
-            if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid')
+            if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].rate > 0)
                 msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
             
             if (this.registrations[0].attending_option === 'Online') {

@@ -145,7 +145,7 @@
                 }, 1000);
             },
             showTicket(uuid) {
-                window.location.href = `/registration/ticket?id=${uuid}`;
+                window.location.href = `/registration/${this.event.slug}/ticket?id=${uuid}`;
             }
         }
     }
