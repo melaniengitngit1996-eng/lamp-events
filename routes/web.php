@@ -29,6 +29,13 @@ Route::post('/registration/{event:slug}', [App\Http\Controllers\Registration2Con
 Route::get('/registration/all', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('registration.index');
 Route::get('/registration/{id}/edit', [App\Http\Controllers\Registration2Controller::class, 'edit'])->name('registration.edit');
 Route::delete('/registration/{registration}/delete', [App\Http\Controllers\Registration2Controller::class, 'destroy'])->name('registration.delete');
+Route::post('/registration/{registration}/update', [App\Http\Controllers\Registration2Controller::class, 'update'])->name('registration.update');
+Route::get('/registration/{id}/resend-mail', [App\Http\Controllers\Registration2Controller::class, 'resend_mail'])->name('registration.resend_mail');
+Route::get('/registration/validate', [App\Http\Controllers\Registration2Controller::class, 'validation'])->name('registration.validation');
+
+if (env('CLOSE_REGISTRATION') === true) {
+    Route::get('/registration/new', [App\Http\Controllers\Registration2Controller::class, 'new'])->name('registration');
+}
 
 // payments
 Route::get('/payments/{registration}/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payments.create');
@@ -40,17 +47,6 @@ Route::get('/booking/{registration}/edit', [App\Http\Controllers\BookingControll
 Route::post('/booking/{id}/update', [App\Http\Controllers\BookingController::class, 'update'])->name('booking.update');
 Route::get('/booking/{id}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking.show');
 // --------
-
-if (env('CLOSE_REGISTRATION') === true) {
-    Route::get('/registration/new', [App\Http\Controllers\RegistrationController::class, 'new'])->name('registration');
-}
-
-Route::get('/registration', [App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
-Route::get('/registration/validate', [App\Http\Controllers\RegistrationController::class, 'validation'])->name('registration.validation');
-
-// registration
-Route::post('/registration/{id}/update', [App\Http\Controllers\RegistrationController::class, 'update'])->name('registration.update');
-Route::get('/registration/{id}/resend-mail', [App\Http\Controllers\RegistrationController::class, 'resend_mail'])->name('registration.resend_mail');
 
 // ticket
 Route::get('/ticket/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('ticket.show');

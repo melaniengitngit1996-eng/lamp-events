@@ -23,6 +23,13 @@ use App\Models\AvailableUuid;
 
 class Registration2Controller extends Controller
 {
+    public function __construct()
+    {
+        $auth_exeptions = ['validation', 'store', 'show', 'update', 'create'];
+        
+        $this->middleware('auth', ['except' => $auth_exeptions]);
+    }
+
     /**
      * list all registrations
      *
@@ -110,7 +117,7 @@ class Registration2Controller extends Controller
     /**
      * show registration ticket
      *
-     * @param  String $slug
+     * @param String $slug
      */
     public function show(Event $event, Request $request)
     {
@@ -141,7 +148,7 @@ class Registration2Controller extends Controller
     /**
      * Store a newly created registration in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request  $request
      */
     public function store(Event $event, Request $request)
     {
@@ -383,7 +390,7 @@ class Registration2Controller extends Controller
     /**
      * View edit page for registration
      *
-     * @param $id
+     * @param $registration_id
      */
     public function edit($registration_id)
     {
@@ -392,6 +399,11 @@ class Registration2Controller extends Controller
         ]);
     }
 
+    /**
+     * Delete registration
+     *
+     * @param  Registration $registration
+     */
     public function destroy(Registration $registration)
     {
         $registration->bookings()->delete();
@@ -401,5 +413,206 @@ class Registration2Controller extends Controller
         $registration->attendances()->delete();
 
         return $registration->delete();
+    }
+
+    /**
+     * Update registration
+     *
+     * @param Registration $registration
+     * @param Request $request
+     */
+    public function update(Registration $registration, Request $request)
+    {
+        if (isset($request->avail_new_lamp_id)) { // save answer for newly registered members
+            $registration->lookup()->update([
+                'lamp_id' => $registration->uuid,
+                'avail_new_lamp_id' => $request->avail_new_lamp_id,
+            ]);
+
+            $registration->additional_data()->update([
+                'registration_uuid' =>  $registration->uuid,
+                'has_viewed_ticket' => NOW(),
+            ]);
+        } elseif (isset($request->mark_as_viewed)) { // mark as viewed for guests
+            $registration->additional_data()->updateOrCreate([
+                'registration_uuid' => $registration->uuid,
+                'has_viewed_ticket' => NOW(),
+            ]);
+        } else {
+            $registration->update([
+                'email' => $request->email,
+                'firstname' => $request->firstName,
+                'lastname' => $request->lastName,
+                'fullname' => $request->firstName . ' ' . $request->lastName,
+                'facebook_name' => $request->facebookName,
+                'local_church' => $request->localChurch,
+                'cluster_group' => $request->clusterGroup,
+                'country' => $request->country,
+                'category' => $request->category,
+                'attending_option' => $request->attendingOption,
+                'with_awta_card' => $request->withAwtaCard,
+                'can_book_rate' => $request->bookingRate,
+                'can_book_days' => $request->canBookDays,
+                'rate' => $request->rate,
+                'rebooking_limit' => $request->rebookingLimit,
+                'visitor_to_member' => $request->visitorToMember ? date('Y-m-d', strtotime($request->visitorToMember)) : NULL,
+            ]);
+
+            $lookup = LookUp::where('lamp_id',  $registration->uuid)->first();
+            
+            if ($lookup) {
+                $lookup->update([
+                    'email' => $request->email,
+                    'firstname' => $request->firstName,
+                    'lastname' => $request->lastName,
+                    'fullname' => $request->firstName . ' ' . $request->lastName,
+                    'facebook_name' => $request->facebookName,
+                    'local_church' => $request->localChurch,
+                    'country' => $request->country,
+                    'category' => $request->category,
+                    'cluster_group' => $request->clusterGroup
+                ]);
+            }
+
+            // if has booking
+            Booking::where('registration_id',$registration->id)->update([
+                'local_church' => $request->localChurch,
+            ]);
+
+            if ($registration->registration_type === 'Member') {
+                $registration->lookup()->update([
+                    'lamp_id' => $uuid,
+                    'avail_new_lamp_id' => $request->availNewLAMPID,
+                ]);
+            }
+        }
+
+        if ($request->notes) {
+            $registration->updateStaffNotes($registration, $registration->notes, array($request->notes));
+        }
+
+        return $this->updatePaymentStatus($registration->uuid, false);
+    }
+
+    /**
+     * Resend email notification
+     *
+     * @param $id
+     */
+    public function resend_mail($id)
+    {
+        $registration = Registration::find($id);
+
+        $registration->updateActivities($registration, $registration->activities, array(
+            'resent email notification'
+        ));
+
+        $this->notify($id);
+    }
+
+    /**
+     * Validation if already registered
+     *
+     * @param Request $request
+     */
+    public function validation(Request $request)
+    {
+        $isBulk = $request->isBulk === 'true';
+        $booked = [];
+        if ($isBulk) {
+            $errors = [];
+
+            foreach ($request->data as $key => $value) {
+                $value = json_decode($value);
+
+                if (!$value->firstName) {
+                    $errors[$key]['firstName'] = 'First Name is required.';
+                }
+
+                if (!$value->lastName) {
+                    $errors[$key]['lastName'] = 'Last Name is required.';
+                }
+
+                if (!$value->facebookName) {
+                    $errors[$key]['facebookName'] = 'Facebook Name is required.';
+                }
+
+                if (!$value->clusterGroup) {
+                    $errors[$key]['clusterGroup'] = 'Cluster Group is required.';
+                }
+
+                if (!$value->localChurch) {
+                    $errors[$key]['localChurch'] = 'Local Church is required.';
+                }
+
+                if (!$value->country) {
+                    $errors[$key]['country'] = 'Country is required.';
+                }
+
+                if (count($value->booked) === 0 && 'Hybrid' === $value->attendingOption) {
+                    $errors[$key]['booked'] = 'Select preferred dates.';
+                }
+
+                if (!array_key_exists($key, $errors)) {
+                    $validation = $this->checkIfAlreadyRegistered((object) [
+                        'firstName' => $value->firstName,
+                        'lastName' => $value->lastName,
+                        'localChurch' => $value->localChurch
+                    ]);
+
+                    if ($validation && array_key_exists('error', $validation)) {
+                        $errors[$key]['invalid'] = $validation['error'];
+                    }
+                }
+
+                $booked = array_unique(array_merge($booked, $value->booked));
+            }
+
+            // check all slot if available
+            $booking_error = [];
+            $availability = [];
+            foreach ($booked as $slot_id) {
+                $slot = Slots::where('id', $slot_id)->first();
+                
+                if ($slot->available <= 0) {
+                    $booking_error[] = $slot_id;
+                }
+
+                $availability[] = $slot->available;
+            }
+            
+            // loop on all reg if has error with slot availability
+            foreach ($request->data as $key => $value) {
+                $value = json_decode($value);
+
+                if (count(array_intersect($value->booked, $booking_error)) > 0) {
+                    $errors[$key]['booked'] = 'Some dates are already taken. Please refresh the page and try again.';
+                }
+            }
+
+            if (count($errors) > 0) {
+                return response()->json(['errors' => $errors], 500);
+            }
+        } else {
+            $validation = $this->checkIfAlreadyRegistered($request);
+
+            if (array_key_exists('error', $validation)) {
+                return response()->json(['error' => $validation['error']], 500);
+            }
+        }
+    }
+
+    /**
+     * Form for guests after registration is closed
+     *
+     * @param Request $request
+     */
+    public function new() {
+        return view('registration.create', [
+            'slots' => [
+                'member' => Slots::where('registration_type', RegistrationType::Member)->get(),
+                'guest' => Slots::where('registration_type', RegistrationType::Guest)->get()
+            ]
+        ]);
     }
 }
