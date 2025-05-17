@@ -8216,7 +8216,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 5:
                 _context2.next = 7;
-                return axios.get("/lookup/".concat(_this.event.slug, "/").concat(_this.ruleForm.lampIDNumber)).then( /*#__PURE__*/function () {
+                return axios.get("/lookup/".concat(_this.event.slug, "/").concat(_this.ruleForm.lampIDNumber, "/find")).then( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(response) {
                     return _regeneratorRuntime().wrap(function _callee$(_context) {
                       while (1) {
@@ -8388,7 +8388,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (value.length === 9) {
           this.resetData("awta-card");
           this.isLoading = true;
-          axios.get("/lookup/".concat(this.event.slug, "/").concat(this.ruleForm.lampIDNumber)).then( /*#__PURE__*/function () {
+          axios.get("/lookup/".concat(this.event.slug, "/").concat(this.ruleForm.lampIDNumber, "/find")).then( /*#__PURE__*/function () {
             var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(response) {
               return _regeneratorRuntime().wrap(function _callee5$(_context5) {
                 while (1) {

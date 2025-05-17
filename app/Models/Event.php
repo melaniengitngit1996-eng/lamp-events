@@ -13,7 +13,8 @@ class Event extends Model
         'with_booking' => 'boolean',
         'with_guest_booking_code' => 'boolean',
         'close_registration' => 'boolean',
-        'display_disclosure_prompt' => 'boolean'
+        'display_disclosure_prompt' => 'boolean',
+        'enable_online_checkin' => 'boolean'
     ];
 
     public function slots()

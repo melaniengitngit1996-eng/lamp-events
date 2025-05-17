@@ -21,7 +21,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 // wip new routes
-Route::get('/lookup/{event:slug}/{id}', [App\Http\Controllers\LookUpController::class, 'show'])->name('lookup.show');
+Route::get('/lookup/{event:slug}/{id}/find', [App\Http\Controllers\LookUpController::class, 'show'])->name('lookup.show');
 
 Route::get('/register/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'create'])->name('register');
 Route::get('/registration/{event:slug}/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
@@ -94,10 +94,10 @@ Route::delete('received-hg/{id}/delete', [App\Http\Controllers\Api\ReceivedHGCon
 
 
 // online check in
-Route::get('/check-in', [App\Http\Controllers\CheckInController::class, 'index'])->name('check-in');
-Route::get('/check-in/validate', [App\Http\Controllers\CheckInController::class, 'validation'])->name('check-in.validation');
-Route::post('/check-in/{id}', [App\Http\Controllers\CheckInController::class, 'update'])->name('check-in.update');
-Route::get('/check-in/passes', [App\Http\Controllers\CheckInController::class, 'show'])->name('check-in.attendance');
+Route::get('/check-in/{event:slug}', [App\Http\Controllers\CheckInController::class, 'index'])->name('check-in');
+Route::get('/check-in/{event}/validate', [App\Http\Controllers\CheckInController::class, 'validation'])->name('check-in.validation');
+Route::post('/check-in/{event}/{id}/edit', [App\Http\Controllers\CheckInController::class, 'update'])->name('check-in.update');
+Route::get('/check-in/{event:slug}/passes', [App\Http\Controllers\CheckInController::class, 'show'])->name('check-in.attendance');
 
 Route::post('/slots', [App\Http\Controllers\SlotsController::class, 'store'])->name('slots.store');
 

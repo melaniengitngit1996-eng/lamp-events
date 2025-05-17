@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             @if($_REQUEST['id'] == $all)
-            <el-link type="primary" class="float-end" href="/check-in">Check In Another Delegate</el-link>
+            <el-link type="primary" class="float-end" href="/check-in/{{$event->slug}}">Check In Another Delegate</el-link>
             @else
             <el-link type="primary" class="float-end" href="/check-in/passes?id={{ $all }}">View All Passes</el-link>
             @endif

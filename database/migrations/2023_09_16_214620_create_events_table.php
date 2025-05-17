@@ -29,6 +29,7 @@ class CreateEventsTable extends Migration
             $table->integer('active_guest_slot_id')->nullable();
             $table->integer('active_member_slot_id')->nullable();
             $table->boolean('display_disclosure_prompt')->default(true);
+            $table->integer('enable_online_checkin')->default(0);
             $table->string('fb_group_url')->nullable();
             $table->text('zoom_url')->nullable();
             $table->string('zoom_id', 20)->nullable();

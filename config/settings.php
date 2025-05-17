@@ -6,8 +6,6 @@ return [
     'theme' => env('THEME'),
     'guest_booking_limit' => env('GUEST_BOOKING_LIMIT'),
     'member_booking_limit' => env('MEMBER_BOOKING_LIMIT'),
-    'guest_slot_today' => env('SLOT_ID_TODAY_GUEST'),
-    'member_slot_today' => env('SLOT_ID_TODAY_MEMBER'),
     'payment_due_date' => env('PAYMENT_DUE_DATE'),
     'api_key' => env('API_KEY'),
     'awta_day' => env('AWTA_DAY'),

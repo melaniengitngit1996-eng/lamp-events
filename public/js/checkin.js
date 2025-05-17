@@ -6948,6 +6948,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     loc: {
       type: String,
       "default": false
+    },
+    event: {
+      required: false
     }
   },
   data: function data() {
@@ -7012,7 +7015,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                       background: 'rgba(0, 0, 0, 0.7)'
                     });
                     _this.fieldErrors, _this.error = null;
-                    axios.get("/check-in/validate", {
+                    axios.get("/check-in/".concat(_this.event.id, "/validate"), {
                       params: _this.ruleForm
                     }).then( /*#__PURE__*/function () {
                       var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(response) {
@@ -7083,7 +7086,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   background: 'rgba(0, 0, 0, 0.7)'
                 });
                 _context4.next = 3;
-                return axios.post("/check-in/".concat(_this2.retrieved.details.uuid), {
+                return axios.post("/check-in/".concat(_this2.event.id, "/").concat(_this2.retrieved.details.id, "/edit"), {
                   booking: id,
                   loc: _this2.loc
                 }).then( /*#__PURE__*/function () {
@@ -7094,7 +7097,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         switch (_context3.prev = _context3.next) {
                           case 0:
                             data = response.data[response.data.length - 1];
-                            window.location.href = "check-in/passes?id=".concat(data.id);
+                            window.location.href = "check-in/".concat(_this2.event.id, "/passes?id=").concat(data.id);
 
                           case 2:
                           case "end":
@@ -7118,7 +7121,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       })));
     },
     viewPass: function viewPass(id) {
-      window.open("check-in/passes?id=".concat(id), "mywindow", "menubar=1,resizable=1,width=800,height=800");
+      window.open("/check-in/".concat(this.event.slug, "/passes?id=").concat(id), "mywindow", "menubar=1,resizable=1,width=800,height=800");
     }
   }
 });
@@ -7415,7 +7418,7 @@ var render = function render() {
       staticClass: "col-md-6 col-lg-4 mb-4"
     }, [_c("el-card", {
       staticClass: "box-card add-clip",
-      style: "border-bottom: 10px solid ".concat(_vm.getImage(date.slot_id).color)
+      style: "border-bottom: 10px solid ".concat(_vm.getImage(i + 1).color)
     }, [_c("div", {
       staticClass: "row"
     }, [_c("div", {
@@ -7423,7 +7426,7 @@ var render = function render() {
     }, [_c("center", [_c("img", {
       staticClass: "my-3",
       attrs: {
-        src: "/images/".concat(_vm.getImage(date.slot_id).image),
+        src: "/images/".concat(_vm.getImage(i + 1).image),
         width: "100%"
       }
     })])], 1), _vm._v(" "), _c("div", {
@@ -7451,7 +7454,7 @@ var render = function render() {
       slot: "label"
     }, [_c("i", {
       staticClass: "el-icon-date"
-    })]), _vm._v("\n                            " + _vm._s(_vm.$func.formatToDateTime(date.created_at)) + "  "), _c("el-tag", {
+    })]), _vm._v("\n                            " + _vm._s(date.created_at) + "  "), _c("el-tag", {
       attrs: {
         size: "mini"
       }

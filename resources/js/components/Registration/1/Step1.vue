@@ -292,7 +292,7 @@ export default {
                 }
 
                 await axios
-                    .get(`/lookup/${this.event.slug}/${this.ruleForm.lampIDNumber}`)
+                    .get(`/lookup/${this.event.slug}/${this.ruleForm.lampIDNumber}/find`)
                     .then(async (response) => {
                         callback();
                     })
@@ -411,7 +411,7 @@ export default {
                     this.isLoading = true;
                     
                     axios
-                    .get(`/lookup/${this.event.slug}/${this.ruleForm.lampIDNumber}`)
+                    .get(`/lookup/${this.event.slug}/${this.ruleForm.lampIDNumber}/find`)
                     .then(async (response) => {
                         this.ruleForm.found.email = response.data.email;
                         this.ruleForm.found.firstName = response.data.firstname;

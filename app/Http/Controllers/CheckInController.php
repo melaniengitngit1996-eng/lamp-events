@@ -8,6 +8,7 @@ use App\Enums\PaymentStatus;
 use App\Enums\AttendanceType;
 use App\Enums\RegistrationType;
 use App\Models\Booking;
+use App\Models\Event;
 use App\Models\Attendance;
 use App\Models\Registration;
 use App\Models\Slots;
@@ -16,29 +17,31 @@ use Carbon\Carbon;
 
 class CheckInController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Event $event, Request $request) {
         // Get the current time in Philippine Time (PHT, UTC+8)
         $currentTime = Carbon::now('Asia/Manila');
 
         // Define the start and end times
-        $startTime = Carbon::createFromTime(13, 0, 0, 'Asia/Manila'); // 1:00 PM
+        $startTime = Carbon::createFromTime(0, 0, 0, 'Asia/Manila'); // 1:00 PM
         $endTime = Carbon::createFromTime(21, 0, 0, 'Asia/Manila');   // 9:00 PM
 
         // Check if the current time is between 2 PM and 9 PM
-        $isWithinRange = $currentTime->between($startTime, $endTime);
+        $isWithinRange = $currentTime->between($startTime, $endTime) && $event->enable_online_checkin;
 
         if ($isWithinRange) {
             return view('checkin.index', [
-                'loc' => $request->lo_c == 2 ? 'Onsite' : 'Online'
+                'loc' => $request->lo_c == 2 ? 'Onsite' : 'Online',
+                'event' => $event
             ]);
         } else {
             return view('checkin.countdown');
         }
     }
 
-    public function validation(Request $request) {
+    public function validation(Event $event, Request $request) {
         $registration = Registration::with('bookings', 'bookings.slot')
             ->where('uuid', $request->referenceNumber)
+            ->where('event_id', $event->id)
             ->where('lastname', $request->lastName)
             ->where('local_church', $request->localChurch)
             ->where('registration_type', RegistrationType::Member)
@@ -63,8 +66,8 @@ class CheckInController extends Controller
         ];
     }
 
-    public function update($uuid, Request $request) {
-        $registration = Registration::with('bookings', 'bookings.slot')->where('uuid', $uuid)->first();
+    public function update(Event $event, $registration_id, Request $request) {
+        $registration = Registration::with('bookings', 'bookings.slot')->where('id', $registration_id)->first();
 
         if (!$registration) {
             return response()->json(['error' => 'Not found. Please check the details and try again.'], 500);
@@ -88,14 +91,14 @@ class CheckInController extends Controller
         return $registration->attendances()->get();
     }
 
-    public function show(Request $request) {
+    public function show(Event $event, Request $request) {
         $attendance = Attendance::with('registration', 'slot')->whereIn('id', explode(',', $request->id))->get();
-
-        $all = Attendance::where('registration_uuid', $attendance[0]->registration_uuid)->get()->pluck('id');
+        $all = Attendance::where('registration_id', $attendance[0]->registration_id)->get()->pluck('id');
 
         return view('checkin.show', [
             'passes' => $attendance,
-            'all' => implode(',', $all->toArray())
+            'all' => implode(',', $all->toArray()),
+            'event' => $event
         ]);
     }
 }

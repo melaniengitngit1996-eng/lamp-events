@@ -35,10 +35,10 @@ class DashboardController extends Controller
             'members' => (object) $this->get_member_attendance($color_assignment, $local_churches),
             'guests' => (object) $this->get_guest_attendance($color_assignment, $local_churches),
             'trend' => (object) $this->get_all_attendance(),
-            'progress' => (object) $this->get_attendance_progress(),
+            'progress' => (object) $this->get_attendance_progress($event),
             'received_hg' => (Array) $this->get_all_list_received_hg(),
-            'guest_current_date' => Slots::where('id', env('SLOT_ID_TODAY_GUEST'))->first()->event_date,
-            'member_current_date' => Slots::where('id', env('SLOT_ID_TODAY_MEMBER'))->first()->event_date
+            'guest_current_date' => Slots::where('id', $event->active_guest_slot_id)->first()->event_date,
+            'member_current_date' => Slots::where('id', $event->active_member_slot_id)->first()->event_date
         ]);
     }
 
@@ -167,13 +167,13 @@ class DashboardController extends Controller
         return $data;
     }
 
-    private function get_attendance_progress()
+    private function get_attendance_progress(Event $event)
     {
         $data = [];
 
         foreach (config('clustergroups') as $local_church => $clusters) {
-            $actual_attendance = Attendance::where('local_church', $local_church)->whereIn('slot_id', [config('settings.guest_slot_today'), config('settings.member_slot_today')])->count();
-            $expected_attendance = Booking::where('local_church', $local_church)->whereIn('slot_id', [config('settings.guest_slot_today'), config('settings.member_slot_today')])->where('status', BookingStatus::Confirmed)->count();
+            $actual_attendance = Attendance::where('local_church', $local_church)->whereIn('slot_id', [$event->active_guest_slot_id, $event->active_member_slot_id])->count();
+            $expected_attendance = Booking::where('local_church', $local_church)->whereIn('slot_id', [$event->active_guest_slot_id, $event->active_member_slot_id])->where('status', BookingStatus::Confirmed)->count();
 
             $percentage = $expected_attendance === 0 ? 0 : (($actual_attendance / $expected_attendance) * 100);
             $percentage = fmod($percentage, 1) !== 0.0 ? number_format($percentage, 2) : $percentage;

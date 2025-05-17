@@ -49,7 +49,7 @@ class AttendanceController extends Controller
     {
         $local_churches = explode(',', env('LOCAL_CHURCHES'));
 
-        $slots = Slots::where('registration_type', 'Member')->where('id', env('SLOT_ID_TODAY_MEMBER'))->get();
+        $slots = Slots::where('registration_type', 'Member')->where('id', $event->active_member_slot_id)->get();
         $attendance_count = [];
 
         foreach ($slots as $slot) {

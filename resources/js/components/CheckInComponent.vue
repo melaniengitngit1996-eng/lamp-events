@@ -89,6 +89,9 @@ export default {
         loc: {
             type: String,
             default: false,
+        },
+        event: {
+            required: false
         }
     },
     data () {
@@ -143,7 +146,7 @@ export default {
 
                     this.fieldErrors, this.error = null
 
-                    axios.get("/check-in/validate", { params: this.ruleForm })
+                    axios.get(`/check-in/${this.event.id}/validate`, { params: this.ruleForm })
                     .then(async (response) => {
                         loading.close()
 
@@ -179,19 +182,19 @@ export default {
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
 
-                await axios.post(`/check-in/${this.retrieved.details.uuid}`, {
+                await axios.post(`/check-in/${this.event.id}/${this.retrieved.details.id}/edit`, {
                     booking: id,
                     loc: this.loc
                 })
                 .then(async (response) => {
                     var data = response.data[response.data.length-1];
-                    window.location.href = `check-in/passes?id=${data.id}`;
+                    window.location.href = `check-in/${this.event.id}/passes?id=${data.id}`;
                 });
             });
         },
         viewPass(id) {
             window.open(
-                `check-in/passes?id=${id}`,
+                `/check-in/${this.event.slug}/passes?id=${id}`,
                 "mywindow",
                 "menubar=1,resizable=1,width=800,height=800"
             );

@@ -1,11 +1,11 @@
 <template>
     <div class="row justify-content-center my-4">
         <div class="col-md-6 col-lg-4 mb-4" v-for="(date, i) in passes" :key="i">
-            <el-card class="box-card add-clip" :style="`border-bottom: 10px solid ${getImage(date.slot_id).color}`">
+            <el-card class="box-card add-clip" :style="`border-bottom: 10px solid ${getImage(i+1).color}`">
                 <div class="row">
                     <div class="col-md-4">
                         <center>
-                        <img :src="`/images/${getImage(date.slot_id).image}`" class="my-3" width="100%">
+                        <img :src="`/images/${getImage(i+1).image}`" class="my-3" width="100%">
                         </center>
                     </div>
                     <div class="col-md-7">
@@ -32,7 +32,7 @@
                                 <template slot="label">
                                     <i class="el-icon-date"></i>
                                 </template>
-                                {{ $func.formatToDateTime(date.created_at) }}&nbsp;&nbsp;<el-tag size="mini">{{ date.notes }}</el-tag>
+                                {{ date.created_at }}&nbsp;&nbsp;<el-tag size="mini">{{ date.notes }}</el-tag>
                             </el-descriptions-item>
                         </el-descriptions>
                     </div>
