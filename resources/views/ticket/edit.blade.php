@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="el-tabs__content">
-                    <ticket-component :registrations="{{ json_encode([$registration]) }}"/>
+                    <ticket-component :registrations="{{ json_encode([$registration]) }}" :event="{{ $event }}"/>
                 </div>
             </div>
         </div>

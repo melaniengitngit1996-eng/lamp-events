@@ -20,4 +20,9 @@ class Event extends Model
     {
         return $this->hasMany(Slots::class, 'event_id', 'id');
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
+    }
 }

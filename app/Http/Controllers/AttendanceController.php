@@ -150,11 +150,10 @@ class AttendanceController extends Controller
 
         $slot_id = $registration->registration_type === 'Member' ? env('SLOT_ID_TODAY_MEMBER') : env('SLOT_ID_TODAY_GUEST');
 
-        $attendance = Attendance::where('registration_uuid', $request->details['uuid'])->where('slot_id', $slot_id)->first();
+        $attendance = $registration->attendances->where('slot_id', $slot_id)->first();
 
         if (!$attendance) {
             return Attendance::create([
-                'registration_uuid' => $request->details['uuid'],
                 'slot_id' => $slot_id,
                 'registration_type' => $registration->registration_type,
                 'local_church' => $request->details['local_church'],

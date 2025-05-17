@@ -183,7 +183,7 @@ class LookUpController extends Controller
             ]);
 
             // if has booking
-            Booking::where('registration_uuid',$awtaNumber)->update([
+            $registration->bookings()->update([
                 'local_church' => $request->localChurch,
             ]);
         }

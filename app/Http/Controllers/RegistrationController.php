@@ -520,7 +520,7 @@ class RegistrationController extends Controller
             }
 
             // if has booking
-            Booking::where('registration_uuid',$uuid)->update([
+            Booking::where('registration_id',$registration->id)->update([
                 'local_church' => $request->localChurch,
             ]);
 

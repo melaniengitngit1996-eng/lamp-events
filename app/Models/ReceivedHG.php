@@ -24,7 +24,7 @@ class ReceivedHG extends Model
      */
     public function registration()
     {
-        return $this->belongsTo(Registration::class, 'registration_uuid', 'uuid');
+        return $this->belongsTo(Registration::class);
     }
 
     /**

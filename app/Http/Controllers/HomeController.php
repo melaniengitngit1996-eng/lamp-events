@@ -166,43 +166,43 @@ class HomeController extends Controller
                     'attended' => DB::table('attendances')
                         ->whereIn('slot_id', array(1, 2, 3, 4))
                         ->where('local_church', $local_church)
-                        ->count(DB::raw('DISTINCT registration_uuid')),
+                        ->count(DB::raw('DISTINCT registration_id')),
                     'total' => DB::table('bookings')
                         ->whereIn('slot_id', array(1, 2, 3, 4))
                         ->where('local_church', $local_church)
                         ->where('status', BookingStatus::Confirmed)
-                        ->count(DB::raw('DISTINCT registration_uuid')),
+                        ->count(DB::raw('DISTINCT registration_id')),
                     'cancelled' => DB::table('bookings')
                         ->whereIn('slot_id', array(1, 2, 3, 4))
                         ->where('local_church', $local_church)
                         ->where('status', BookingStatus::Cancelled)
-                        ->count(DB::raw('DISTINCT registration_uuid')),
+                        ->count(DB::raw('DISTINCT registration_id')),
                     'pending' => DB::table('bookings')
                         ->whereIn('slot_id', array(1, 2, 3, 4))
                         ->where('local_church', $local_church)
                         ->where('status', BookingStatus::Pending)
-                        ->count(DB::raw('DISTINCT registration_uuid'))
+                        ->count(DB::raw('DISTINCT registration_id'))
                 ],
                 'guest' => [
                     'attended' => DB::table('attendances')
                         ->whereIn('slot_id', array(5, 6, 7, 8))
                         ->where('local_church', $local_church)
-                        ->count(DB::raw('DISTINCT registration_uuid')),
+                        ->count(DB::raw('DISTINCT registration_id')),
                     'total' => DB::table('bookings')
                         ->whereIn('slot_id', array(5, 6, 7, 8))
                         ->where('local_church', $local_church)
                         ->where('status', BookingStatus::Confirmed)
-                        ->count(DB::raw('DISTINCT registration_uuid')),
+                        ->count(DB::raw('DISTINCT registration_id')),
                     'cancelled' => DB::table('bookings')
                         ->whereIn('slot_id', array(5, 6, 7, 8))
                         ->where('local_church', $local_church)
                         ->where('status', BookingStatus::Cancelled)
-                        ->count(DB::raw('DISTINCT registration_uuid')),
+                        ->count(DB::raw('DISTINCT registration_id')),
                     'pending' => DB::table('bookings')
                         ->whereIn('slot_id', array(5, 6, 7, 8))
                         ->where('local_church', $local_church)
                         ->where('status', BookingStatus::Pending)
-                        ->count(DB::raw('DISTINCT registration_uuid'))
+                        ->count(DB::raw('DISTINCT registration_id'))
                 ]
             ];
 
@@ -213,36 +213,36 @@ class HomeController extends Controller
             'member' => [
                 'attended' => DB::table('attendances')
                     ->whereIn('slot_id', array(1, 2, 3, 4))
-                    ->count(DB::raw('DISTINCT registration_uuid')),
+                    ->count(DB::raw('DISTINCT registration_id')),
                 'total' => DB::table('bookings')
                     ->whereIn('slot_id', array(1, 2, 3, 4))
                     ->where('status', BookingStatus::Confirmed)
-                    ->count(DB::raw('DISTINCT registration_uuid')),
+                    ->count(DB::raw('DISTINCT registration_id')),
                 'cancelled' => DB::table('bookings')
                     ->whereIn('slot_id', array(1, 2, 3, 4))
                     ->where('status', BookingStatus::Cancelled)
-                    ->count(DB::raw('DISTINCT registration_uuid')),
+                    ->count(DB::raw('DISTINCT registration_id')),
                 'pending' => DB::table('bookings')
                     ->whereIn('slot_id', array(1, 2, 3, 4))
                     ->where('status', BookingStatus::Pending)
-                    ->count(DB::raw('DISTINCT registration_uuid'))
+                    ->count(DB::raw('DISTINCT registration_id'))
             ],
             'guest' => [
                 'attended' => DB::table('attendances')
                     ->whereIn('slot_id', array(5, 6, 7, 8))
-                    ->count(DB::raw('DISTINCT registration_uuid')),
+                    ->count(DB::raw('DISTINCT registration_id')),
                 'total' => DB::table('bookings')
                     ->whereIn('slot_id', array(5, 6, 7, 8))
                     ->where('status', BookingStatus::Confirmed)
-                    ->count(DB::raw('DISTINCT registration_uuid')),
+                    ->count(DB::raw('DISTINCT registration_id')),
                 'pending' => DB::table('bookings')
                     ->whereIn('slot_id', array(5, 6, 7, 8))
                     ->where('status', BookingStatus::Pending)
-                    ->count(DB::raw('DISTINCT registration_uuid')),
+                    ->count(DB::raw('DISTINCT registration_id')),
                 'cancelled' => DB::table('bookings')
                     ->whereIn('slot_id', array(5, 6, 7, 8))
                     ->where('status', BookingStatus::Cancelled)
-                    ->count(DB::raw('DISTINCT registration_uuid')),
+                    ->count(DB::raw('DISTINCT registration_id')),
             ]
         ];
 

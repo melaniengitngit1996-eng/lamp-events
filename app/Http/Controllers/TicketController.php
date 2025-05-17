@@ -27,14 +27,15 @@ class TicketController extends Controller
 
     public function edit($id)
     {
-        $registration = Registration::with('bookings', 'bookings.slot')->find($id);
+        $registration = Registration::with('bookings', 'bookings.slot', 'event')->find($id);
 
         $registration->booked_dates = array_map(function ($dates) {
             return $dates['slot']['event_date'];
         }, $registration->bookings->toArray());
 
         return view('ticket.edit', [
-            'registration' => $registration
+            'registration' => $registration,
+            'event' => $registration->event()->first()
         ]);
     }
 }

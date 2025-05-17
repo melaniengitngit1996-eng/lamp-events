@@ -58,7 +58,6 @@ class Controller extends BaseController
         foreach ($bookings as $booking) {
             Booking::create([
                 'registration_id' => $registration->id,
-                'registration_uuid' => $registration['uuid'],
                 'slot_id' => $booking,
                 'local_church' => $registration['local_church'],
                 'status' => $registration->payment_status === PaymentStatus::Paid || $registration->payment_status === PaymentStatus::Free ? BookingStatus::Confirmed : BookingStatus::Pending
@@ -115,7 +114,7 @@ class Controller extends BaseController
         if ($auto_enable_booking && $registration->attending_option === AttendingOption::Hybrid) {
             if ($totalAmountPaid >= $canBookRate) {
                 if ($registration->booking_status === BookingStatus::Pending) {
-                    Booking::where('registration_uuid', $uuid)->update([
+                    Booking::where('registration_id', $registration->id)->update([
                         'status' => BookingStatus::Confirmed
                     ]);
 

@@ -11,7 +11,6 @@ class Attendance extends Model
 
     protected $fillable = [
         'registration_id',
-        'registration_uuid',
         'slot_id',
         'local_church',
         'registration_type',
@@ -27,7 +26,7 @@ class Attendance extends Model
      */
     public function registration()
     {
-        return $this->belongsTo(Registration::class, 'registration_uuid', 'uuid');
+        return $this->belongsTo(Registration::class);
     }
 
     /**
