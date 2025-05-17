@@ -60,10 +60,6 @@ export default {
             required: true,
             type: String
         },
-        uuid: {
-            required: true,
-            type: String
-        },
         user: {
             required: false,
             type: Object
@@ -147,7 +143,7 @@ export default {
 
                 if (valid) {
                     setTimeout(async () => {
-                        await axios.post(`/payments/${this.uuid}`, this.ruleForm)
+                        await axios.post(`/payments/${this.data.id}`, this.ruleForm)
                         .then(async (response) => {
                             loading.close()
                             
@@ -172,7 +168,7 @@ export default {
             })
         },
         viewDetails() {
-          window.location.href = `/registration/${this.uuid}/edit`;
+          window.location.href = `/registration/${this.data.id}/edit`;
         },
     }
 }

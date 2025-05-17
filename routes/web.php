@@ -21,9 +21,24 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 // wip new routes
-Route::get('/register/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('register');
+Route::get('/lookup/{event:slug}/{id}', [App\Http\Controllers\LookUpController::class, 'show'])->name('lookup.show');
+
+Route::get('/register/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'create'])->name('register');
 Route::get('/registration/{event:slug}/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
 Route::post('/registration/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'store'])->name('registration.store');
+Route::get('/registration/all', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('registration.index');
+Route::get('/registration/{id}/edit', [App\Http\Controllers\Registration2Controller::class, 'edit'])->name('registration.edit');
+Route::delete('/registration/{registration}/delete', [App\Http\Controllers\Registration2Controller::class, 'destroy'])->name('registration.delete');
+
+// payments
+Route::get('/payments/{registration}/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payments.create');
+Route::delete('/payments/{payment}/delete', [App\Http\Controllers\PaymentController::class, 'destroy'])->name('payments.delete');
+Route::post('/payments/{registration}', [App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');
+
+// booking
+Route::get('/booking/{registration}/edit', [App\Http\Controllers\BookingController::class, 'edit'])->name('booking.edit');
+Route::post('/booking/{id}/update', [App\Http\Controllers\BookingController::class, 'update'])->name('booking.update');
+Route::get('/booking/{id}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking.show');
 // --------
 
 if (env('CLOSE_REGISTRATION') === true) {
@@ -31,13 +46,10 @@ if (env('CLOSE_REGISTRATION') === true) {
 }
 
 Route::get('/registration', [App\Http\Controllers\RegistrationController::class, 'create'])->name('registration');
-Route::get('/registration/all', [App\Http\Controllers\RegistrationController::class, 'index'])->name('registration.index');
 Route::get('/registration/validate', [App\Http\Controllers\RegistrationController::class, 'validation'])->name('registration.validation');
 
 // registration
-Route::get('/registration/{id}/edit', [App\Http\Controllers\RegistrationController::class, 'edit'])->name('registration.edit');
 Route::post('/registration/{id}/update', [App\Http\Controllers\RegistrationController::class, 'update'])->name('registration.update');
-Route::delete('/registration/{id}/delete', [App\Http\Controllers\RegistrationController::class, 'destroy'])->name('registration.delete');
 Route::get('/registration/{id}/resend-mail', [App\Http\Controllers\RegistrationController::class, 'resend_mail'])->name('registration.resend_mail');
 
 // ticket
@@ -53,16 +65,10 @@ Route::get('/lookup', [App\Http\Controllers\LookUpController::class, 'index'])->
 Route::get('/lookup/create', [App\Http\Controllers\LookUpController::class, 'create'])->name('lookup.create');
 Route::post('/lookup', [App\Http\Controllers\LookUpController::class, 'store'])->name('lookup.store');
 Route::get('/lookup/validate', [App\Http\Controllers\LookUpController::class, 'validation'])->name('lookup.validation');
-Route::get('/lookup/{id}', [App\Http\Controllers\LookUpController::class, 'show'])->name('lookup.show');
 Route::get('/lookup/{id}/edit', [App\Http\Controllers\LookUpController::class, 'edit'])->name('lookup.edit');
 Route::post('/lookup/{id}/update', [App\Http\Controllers\LookUpController::class, 'update'])->name('lookup.update');
 Route::post('/lookup-upload', [App\Http\Controllers\LookUpController::class, 'upload'])->name('lookup.upload.func');
 Route::get('/upload', [App\Http\Controllers\LookUpController::class, 'upload_view'])->name('lookup.upload.view');
-
-// payments
-Route::get('/payments/{id}/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payments.create');
-Route::delete('/payments/{id}/delete', [App\Http\Controllers\PaymentController::class, 'destroy'])->name('payments.delete');
-Route::post('/payments/{id}', [App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');
 
 // activities
 Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
@@ -77,9 +83,6 @@ Route::get('/attendances/export', [App\Http\Controllers\AttendanceController::cl
 // booking
 Route::get('/booking', [App\Http\Controllers\BookingController::class, 'create'])->name('booking.create');
 Route::get('/booking/validate', [App\Http\Controllers\BookingController::class, 'validation'])->name('booking.validation');
-Route::get('/booking/{id}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking.show');
-Route::get('/booking/{id}/edit', [App\Http\Controllers\BookingController::class, 'edit'])->name('booking.edit');
-Route::post('/booking/{id}/update', [App\Http\Controllers\BookingController::class, 'update'])->name('booking.update');
 
 // config
 Route::get('/config', [App\Http\Controllers\ConfigurationController::class, 'show'])->name('configurations');

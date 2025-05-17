@@ -24,11 +24,70 @@ use App\Models\AvailableUuid;
 class Registration2Controller extends Controller
 {
     /**
+     * list all registrations
+     *
+     * @param  String $slug
+     */
+    public function index(Request $request)
+    {
+        $search = json_decode($request->search);
+
+        $registration = Registration::withSum('payments', 'amount')->with('event');
+
+        if ($search->payment_status) {
+            $registration = $registration->where('payment_status', '=', $search->payment_status);
+        }
+
+        if ($search->booking_status) {
+            $registration = $registration->where('booking_status', '=', $search->booking_status);
+        }
+
+        if ($search->registration_type) {
+            $registration = $registration->where('registration_type', '=', $search->registration_type);
+        }
+
+        if ($search->attending_option) {
+            $registration = $registration->where('attending_option', '=', $search->attending_option);
+        }
+
+        if ($search->category) {
+            $registration = $registration->where('category', '=', $search->category);
+        }
+
+        if ($search->local_church) {
+            $registration = $registration->where('local_church', '=', $search->local_church);
+        }
+
+        if ($search->keyword) {
+            $registration = $registration->where('fullname', 'LIKE', "%$search->keyword%")
+                ->orWhere('uuid', 'LIKE', "%$search->keyword%");
+        }
+
+        $registration = $registration->paginate(10);
+
+        $registration->map(function ($item) {
+            $booked_dates = $item->bookings()->with('slot')->get()->toArray();
+
+            $item->booked_dates = array_map(function ($date) {
+                return $date['slot']['event_date'];
+            }, $booked_dates);
+
+            $attended_dates = $item->attendances()->with('slot')->get()->toArray();
+
+            $item->attended_dates = array_map(function ($date) {
+                return $date['slot']['event_date'];
+            }, $attended_dates);
+        });
+
+        return $registration;
+    }
+
+    /**
      * show dynamic registration form
      *
      * @param  String $slug
      */
-    public function index(Event $event) {
+    public function create(Event $event) {
         if (empty($event)) {
             abort(404);
         }
@@ -61,7 +120,7 @@ class Registration2Controller extends Controller
 
         $uuid = explode(',', $request->id);
 
-        $registration = (array) Registration::with('bookings', 'bookings.slot', 'additional_data', 'lookup')->whereIn('uuid', $uuid)->get()->toArray();
+        $registration = (array) Registration::with('bookings', 'bookings.slot', 'additional_data', 'lookup')->where('event_id', $event->id)->whereIn('uuid', $uuid)->get()->toArray();
 
         $registration = array_map(function ($data) {
             $data['booked_dates'] = array_map(function ($dates) {
@@ -83,7 +142,6 @@ class Registration2Controller extends Controller
      * Store a newly created registration in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Event $event, Request $request)
     {
@@ -245,7 +303,7 @@ class Registration2Controller extends Controller
                 $this->book($registration, $request->step_3['booked']);
             }
 
-            $registration = $this->updatePaymentStatus($registration->uuid, false);
+            $registration = $this->updatePaymentStatus($registration->id, false);
 
             // if ($registration->attending_option === AttendingOption::Hybrid) {
             $this->notify($registration->id);
@@ -284,7 +342,7 @@ class Registration2Controller extends Controller
 
                     $this->book($registration, $details->booked);
 
-                    $registration = $this->updatePaymentStatus($registration->uuid, false);
+                    $registration = $this->updatePaymentStatus($registration->id, false);
 
                     $registered[] = $registration->uuid;
                 }
@@ -315,10 +373,33 @@ class Registration2Controller extends Controller
                     'booking_activities' => []
                 ]);
 
-                $registration = $this->updatePaymentStatus($registration->uuid, false);
+                $registration = $this->updatePaymentStatus($registration->id, false);
 
                 return $registration->uuid;
             }
         }
+    }
+
+    /**
+     * View edit page for registration
+     *
+     * @param $id
+     */
+    public function edit($registration_id)
+    {
+        return view('registration.edit', [
+            'registration' => Registration::with('lookup')->where('id', $registration_id)->first()
+        ]);
+    }
+
+    public function destroy(Registration $registration)
+    {
+        $registration->bookings()->delete();
+
+        $registration->payments()->delete();
+
+        $registration->attendances()->delete();
+
+        return $registration->delete();
     }
 }

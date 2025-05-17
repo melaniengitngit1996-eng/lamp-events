@@ -19,14 +19,14 @@
                         <div class="el-tabs__nav-scroll">
                             <div role="tablist" class="el-tabs__nav is-top" style="transform: translateX(0px);">
                                 <div id="tab-0" aria-controls="pane-0" role="tab" tabindex="0" class="el-tabs__item is-top">
-                                    <el-link :underline="false" href="/registration/{{ $registration->uuid }}/edit">Registration Details</el-link>
+                                    <el-link :underline="false" href="/registration/{{ $registration->id }}/edit">Registration Details</el-link>
                                 </div>
                                 <div id="tab-1" aria-controls="pane-1" role="tab" tabindex="-1" class="el-tabs__item is-top">
-                                    <el-link :underline="false" href="/payments/{{ $registration->uuid }}/create">Payments</el-link>
+                                    <el-link :underline="false" href="/payments/{{ $registration->id }}/create">Payments</el-link>
                                 </div>
                                 @if (auth()->user()->permissions->can_edit_delegate === 1 && $registration->attending_option === 'Hybrid')
                                 <div id="tab-2" aria-controls="pane-2" role="tab" tabindex="-1" class="el-tabs__item is-top is-active">
-                                    <el-link :underline="false" href="/booking/{{ $registration->uuid }}/edit">Booking</el-link>
+                                    <el-link :underline="false" href="/booking/{{ $registration->id }}/edit">Booking</el-link>
                                 </div>
                                 @endif
                                 <div id="tab-3" aria-controls="pane-3" role="tab" tabindex="-1" class="el-tabs__item is-top">
@@ -40,7 +40,7 @@
                     <p>Booking Status: <el-tag type="{{$registration->booking_status === 'Confirmed' ? 'success' : ($registration->booking_status === 'Cancelled' ? 'danger' : 'warning')}}">{{ $registration->booking_status }}</el-tag></p>
                     <p>Date Booked: {{ date("M d, Y h:i A", strtotime($registration->booked_date)) }}</p>
                     
-                    <booking :booked_dates="{{ $booked_dates }}" :slots="{{ $slots }}" uuid="{{ $uuid }}" :can_book_days="{{ $registration->can_book_days }}" :self_redirect="{{ true }}" :is_admin="{{ true }}"/>
+                    <booking :booked_dates="{{ $booked_dates }}" :slots="{{ $slots }}" :registration="{{ $registration }}" :self_redirect="{{ true }}" :is_admin="{{ true }}"/>
                 </div>
             </div>
         </div>

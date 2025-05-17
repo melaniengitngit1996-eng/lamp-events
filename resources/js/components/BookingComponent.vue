@@ -37,10 +37,6 @@
 <script>
 export default {
     props: {
-        uuid: {
-            required: true,
-            type: String
-        },
         booked_dates: {
             required: false,
             type: Array
@@ -48,10 +44,6 @@ export default {
         slots: {
             required: false,
             type: Array
-        },
-        can_book_days: {
-            required: true,
-            type: Number
         },
         self_redirect: {
             required: true,
@@ -66,6 +58,9 @@ export default {
             default: false,
             type: Boolean,
             required: false
+        },
+        registration: {
+            required: true,
         }
     },
     data () {
@@ -87,7 +82,7 @@ export default {
         this.dates = this.slots.map(({event_date, id, available, seat_count}) => ({event_date, id, available, seat_count}) );
         this.ruleForm.booked = this.booked_dates.map(function (date) { return date.slot.id; });
         this.initial = this.booked_dates.map(function (date) { return date.slot.id; });
-        this.max = this.can_book_days
+        this.max = this.registration.can_book_days
     },
     methods: {
         submitForm(formName) {
@@ -104,7 +99,7 @@ export default {
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
 
-                    await axios.post(`/booking/${this.uuid}/update`, {
+                    await axios.post(`/booking/${this.registration.id}/update`, {
                         dates: this.ruleForm.booked,
                         is_admin: this.is_admin
                     })
@@ -123,7 +118,7 @@ export default {
                                 if (this.self_redirect)
                                     window.location.reload();
                                 else
-                                    window.location.href = `booking/${this.uuid}`;
+                                    window.location.href = `booking/${this.registration.id}`;
                             }
                         });
                     }).catch((error) => {

@@ -11,7 +11,6 @@ class Booking extends Model
 
     protected $fillable = [
         'registration_id',
-        'registration_uuid',
         'slot_id',
         'local_church',
         'status'
@@ -28,7 +27,7 @@ class Booking extends Model
      */
     public function getAttendanceStatusAttribute()
     {
-        $attendance = Attendance::where('registration_uuid', $this->registration_uuid)->where('slot_id', $this->slot_id)->first();
+        $attendance = Attendance::where('registration_id', $this->registration_id)->where('slot_id', $this->slot_id)->first();
 
         return $attendance ? $attendance->notes : 'Pending';
     }
@@ -46,7 +45,7 @@ class Booking extends Model
      */
     public function registration()
     {
-        return $this->belongsTo(Registration::class, 'registration_uuid', 'uuid');
+        return $this->belongsTo(Registration::class);
     }
 
     /**
@@ -62,6 +61,6 @@ class Booking extends Model
      */
     public function getAttendanceAttribute()
     {
-        return Attendance::where('registration_uuid', $this->registration_uuid)->where('slot_id', $this->slot_id)->first();
+        return Attendance::where('registration_id', $this->registration_id)->where('slot_id', $this->slot_id)->first();
     }
 }

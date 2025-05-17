@@ -13,6 +13,7 @@ class SlotsTableSeeder extends Seeder
         Slots::truncate();
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
+        // awta
         Slots::insert([
             [
                 'event_id' => 1,
@@ -79,6 +80,43 @@ class SlotsTableSeeder extends Seeder
                 'updated_at' => NOW(),
                 'created_at' => NOW()
             ]
+        ]);
+
+        // anniversary
+        Slots::insert([
+            [
+                'event_id' => 2,
+                'event_date' => date("Y-m-d", strtotime("06/21/2025")),
+                'seat_count' => 600,
+                'registration_type' => 'Member',
+                'updated_at' => NOW(),
+                'created_at' => NOW()
+            ],
+
+            [
+                'event_id' => 2,
+                'event_date' => date("Y-m-d", strtotime("06/22/2025")),
+                'seat_count' => 600,
+                'registration_type' => 'Member',
+                'updated_at' => NOW(),
+                'created_at' => NOW()
+            ],
+            [
+                'event_id' => 2,
+                'event_date' => date("Y-m-d", strtotime("06/21/2025")),
+                'seat_count' => 175,
+                'registration_type' => 'Guest',
+                'updated_at' => NOW(),
+                'created_at' => NOW()
+            ],
+            [
+                'event_id' => 2,
+                'event_date' => date("Y-m-d", strtotime("06/22/2025")),
+                'seat_count' => 175,
+                'registration_type' => 'Guest',
+                'updated_at' => NOW(),
+                'created_at' => NOW()
+            ],
         ]);
     }
 }

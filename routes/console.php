@@ -88,7 +88,7 @@ Artisan::command('cancel-bookings', function () {
                 ])->notify(new Registered($registration));
             }
 
-            $registration->updateBookingActivities($registration->uuid, $registration->booking_activities, array('Booking cancelled due to unsettled payment.'));
+            $registration->updateBookingActivities($registration, $registration->booking_activities, array('Booking cancelled due to unsettled payment.'));
 
             $this->comment('[' . $registration->uuid . '] ' . $registration->fullname . '\'s booking is now cancelled. Date Booked: ' . $registration->booked_date);
         }

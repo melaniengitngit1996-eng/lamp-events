@@ -33,7 +33,7 @@ class MyModel extends Model
         return $this->trackable;
     }
 
-    function updateStaffNotes($uuid, $details, array $messages)
+    function updateStaffNotes(Registration $registration, $details, array $messages)
     {
         $notes = $details;
 
@@ -45,14 +45,14 @@ class MyModel extends Model
             ]);
         }
 
-        $registration = Registration::where('uuid', $uuid)->update([
+        $registration = $registration->update([
             'notes' => $notes
         ]);
 
         return $registration;
     }
 
-    function updateActivities($uuid, $details, array $messages)
+    function updateActivities(Registration $registration, $details, array $messages)
     {
         $activities = $details;
 
@@ -64,14 +64,14 @@ class MyModel extends Model
             ]);
         }
 
-        $registration = Registration::where('uuid', $uuid)->update([
+        $registration = $registration->update([
             'activities' => $activities
         ]);
 
         return $registration;
     }
 
-    function updateBookingActivities($uuid, $details, array $messages)
+    function updateBookingActivities(Registration $registration, $details, array $messages)
     {
         $booking_activities = $details;
 
@@ -83,7 +83,7 @@ class MyModel extends Model
             ]);
         }
 
-        $registration = Registration::where('uuid', $uuid)->update([
+        $registration = $registration->update([
             'booking_activities' => $booking_activities
         ]);
 

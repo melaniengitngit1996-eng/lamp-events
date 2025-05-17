@@ -19,14 +19,14 @@
                         <div class="el-tabs__nav-scroll">
                             <div role="tablist" class="el-tabs__nav is-top" style="transform: translateX(0px);">
                                 <div id="tab-0" aria-controls="pane-0" role="tab" tabindex="0" class="el-tabs__item is-top">
-                                    <el-link :underline="false" href="/registration/{{ $registration->uuid }}/edit">Registration Details</el-link>
+                                    <el-link :underline="false" href="/registration/{{ $registration->id }}/edit">Registration Details</el-link>
                                 </div>
                                 <div id="tab-1" aria-controls="pane-1" role="tab" tabindex="-1" class="el-tabs__item is-top is-active" aria-selected="true">
-                                    <el-link :underline="false" href="/payments/{{ $registration->uuid }}/create">Payments</el-link>
+                                    <el-link :underline="false" href="/payments/{{ $registration->id }}/create">Payments</el-link>
                                 </div>
                                 @if (auth()->user()->permissions->can_edit_delegate === 1 && $registration->attending_option === 'Hybrid')
                                 <div id="tab-2" aria-controls="pane-2" role="tab" tabindex="-1" class="el-tabs__item is-top">
-                                    <el-link :underline="false" href="/booking/{{ $registration->uuid }}/edit">Booking</el-link>
+                                    <el-link :underline="false" href="/booking/{{ $registration->id }}/edit">Booking</el-link>
                                 </div>
                                 @endif
                                 <div id="tab-3" aria-controls="pane-3" role="tab" tabindex="-1" class="el-tabs__item is-top">
@@ -72,7 +72,7 @@
                         </div>
                     </div>
 
-                    <add-payment ref="child" registration="{{ $registration }}" uuid="{{ $uuid}}" :user="{{ $user }}" :balance="{{ floatval($balance) }}"/>
+                    <add-payment ref="child" registration="{{ $registration }}" :user="{{ $user }}" :balance="{{ floatval($balance) }}"/>
                 </div>
             </div>
         </div>

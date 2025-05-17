@@ -11,7 +11,6 @@ class Payment extends Model
 
     protected $fillable = [
         'registration_id',
-        'registration_uuid',
         'amount',
         'user_id',
         'date_paid'
@@ -22,7 +21,7 @@ class Payment extends Model
         parent::boot();
 
         self::deleting(function ($model) {
-            $registration = Registration::where('uuid', $model->registration_uuid)->first();
+            $registration = Registration::where('id', $model->registration_id)->first();
 
             self::logActivity('deleted a payment of ' . $registration->fullname, $registration->fullname);
         });

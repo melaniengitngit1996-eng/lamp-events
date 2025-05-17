@@ -533,17 +533,10 @@ class RegistrationController extends Controller
         }
 
         if ($request->notes) {
-            $registration->updateStaffNotes($registration->uuid, $registration->notes, array($request->notes));
+            $registration->updateStaffNotes($registration, $registration->notes, array($request->notes));
         }
 
         return $this->updatePaymentStatus($uuid, false);
-    }
-
-    public function edit($uuid)
-    {
-        return view('registration.edit', [
-            'registration' => Registration::with('lookup')->where('uuid', $uuid)->first()
-        ]);
     }
 
     public function export()
@@ -574,7 +567,7 @@ class RegistrationController extends Controller
     {
         $registration = Registration::find($id);
 
-        $registration->updateActivities($registration->uuid, $registration->activities, array(
+        $registration->updateActivities($registration, $registration->activities, array(
             'resent email notification'
         ));
 

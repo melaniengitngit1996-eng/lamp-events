@@ -9887,7 +9887,7 @@ var render = function render() {
       fn: function fn(scope) {
         return [_c("a", {
           attrs: {
-            href: "/registration/".concat(scope.row.uuid, "/edit")
+            href: "/registration/".concat(scope.row.id, "/edit")
           }
         }, [_c("el-button", {
           attrs: {
@@ -9912,7 +9912,7 @@ var render = function render() {
           },
           on: {
             click: function click($event) {
-              return _vm.deleteRegistration(scope.row.uuid);
+              return _vm.deleteRegistration(scope.row.id);
             }
           }
         }, [_vm._v("Delete")]) : _vm._e()];

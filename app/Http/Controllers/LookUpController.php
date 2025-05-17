@@ -7,6 +7,7 @@ use App\Imports\LookUpImport;
 use App\Models\LookUp;
 use App\Models\Booking;
 use App\Models\Registration;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
@@ -85,7 +86,7 @@ class LookUpController extends Controller
      * @param  String $awtaNumber
      * @return \App\Models\LookUp
      */
-    public function show($awtaNumber)
+    public function show(Event $event, $awtaNumber)
     {
         $lookUp = LookUp::where('lamp_id', $awtaNumber)->first();
 
@@ -93,7 +94,7 @@ class LookUpController extends Controller
             return response()->json(['error' => 'Data not found. Please reach out to your local coordinator.'], 404);
         }
 
-        $isRegistered = Registration::where('uuid', $lookUp->lamp_id)->first();
+        $isRegistered = Registration::where('event_id', $event->id)->where('uuid', $lookUp->lamp_id)->first();
 
         if ($isRegistered) {
             return response()->json(['error' => 'Sorry, this LAMP ID number is already registered.'], 500);

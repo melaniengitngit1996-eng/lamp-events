@@ -74,20 +74,13 @@ class EventsTableSeeder extends Seeder
                 'zoom_id' => null,
                 'zoom_password' => null,
                 'with_booking' => false,
-                'banner_file_name' => '2023_awta_banner.jpg',
-                'border_color' => '#42BAB6',
-                'form_description_block' => '<p class="text-sm">
-            BE BLESSED PHYSICALLY, MATERIALLY, & SPIRITUALLY <br/>
-            Event Date: December 26-30, 2023 <br/>
-            Event Place: Calamba Tent <br/>
-            Theme: Growing in the body of Christ
-        </p>
-
-        <p class="text-sm mb-0">
-            Chosen people of God in the Old Testament gather for a so-called solemn assembly (Leviticus 23:36, Joel 1:14) where "offering made by fire unto the Lord" are given to celebrate God. But with Christ\'s death as ultimate sacrifice for all, today, animal sacrifices are no longer offered. Yet true worshipers of God continue to offer & make fire in the form of praise, worship & thanksgiving. <br/><br/>
-
-            Annually, LAMP Church gathers & invites every one to congregate for one purpose -- offer worship & thanksgiving to the Lord of lords!
-        </p>',
+                'banner_file_name' => '2025_anniversary_banner.png',
+                'border_color' => '#DA6209',
+                'form_description_block' => '<p class="text-sm pb-0 mb-0">
+                    BE BLESSED PHYSICALLY, MATERIALLY, &amp; SPIRITUALLY <br data-v-1d9a9682="">
+                    Event Date: June 21–22, 2025 <br data-v-1d9a9682="">
+                    Event Place: CCT Tagaytay Retreat And Training Center
+                </p>',
                 'created_at' => null,
                 'updated_at' => null,
             ],

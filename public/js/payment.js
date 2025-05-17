@@ -6949,10 +6949,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       required: true,
       type: String
     },
-    uuid: {
-      required: true,
-      type: String
-    },
     user: {
       required: false,
       type: Object
@@ -7055,7 +7051,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                           switch (_context2.prev = _context2.next) {
                             case 0:
                               _context2.next = 2;
-                              return axios.post("/payments/".concat(_this2.uuid), _this2.ruleForm).then( /*#__PURE__*/function () {
+                              return axios.post("/payments/".concat(_this2.data.id), _this2.ruleForm).then( /*#__PURE__*/function () {
                                 var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(response) {
                                   return _regeneratorRuntime().wrap(function _callee$(_context) {
                                     while (1) {
@@ -7114,7 +7110,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }());
     },
     viewDetails: function viewDetails() {
-      window.location.href = "/registration/".concat(this.uuid, "/edit");
+      window.location.href = "/registration/".concat(this.data.id, "/edit");
     }
   }
 });

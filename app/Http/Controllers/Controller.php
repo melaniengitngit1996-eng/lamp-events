@@ -66,9 +66,9 @@ class Controller extends BaseController
         }
     }
 
-    function updatePaymentStatus($uuid, $auto_enable_booking)
+    function updatePaymentStatus($registration_id, $auto_enable_booking)
     {
-        $registration = Registration::with('bookings', 'bookings.slot')->withSum('payments', 'amount')->where('uuid', $uuid)->first();
+        $registration = Registration::with('bookings', 'bookings.slot')->withSum('payments', 'amount')->where('id', $registration_id)->first();
 
         $balance = floatval($registration->rate);
 

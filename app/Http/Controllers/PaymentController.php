@@ -15,16 +15,13 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($uuid) {
-        $registration = Registration::where('uuid', $uuid)->with('payments')->first();
-
+    public function create(Registration $registration) {
         $balance = floatval($registration->rate);
         $balance-= floatval(array_sum(array_column($registration->payments->toArray(), 'amount')));
         
         return view('payments.create', [
             'registration' => $registration,
             'balance' => $balance,
-            'uuid' => $uuid,
             'user' => Auth::user()
         ]);
     }
@@ -36,23 +33,19 @@ class PaymentController extends Controller
      * @param  Object $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $uuid) {
-        $registration = Registration::where('uuid', $uuid)->first();
-
+    public function store(Request $request, Registration $registration) {
         $registration->payments()->create([
             'amount' => $request->amount,
             'user_id' => Auth::user()->id,
             'date_paid' => date("Y-m-d", strtotime($request->date))
         ]);
         
-        return $this->updatePaymentStatus($uuid, true);
+        return $this->updatePaymentStatus($registration->id, true);
     }
 
-    public function destroy($id) {
-        $payment = Payment::find($id);
-        
+    public function destroy(Payment $payment) {     
         $payment->delete();
 
-        return $this->updatePaymentStatus($payment->registration_uuid, false);
+        return $this->updatePaymentStatus($payment->registration_id, false);
     }
 }

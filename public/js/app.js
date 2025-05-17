@@ -6988,10 +6988,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    uuid: {
-      required: true,
-      type: String
-    },
     booked_dates: {
       required: false,
       type: Array
@@ -6999,10 +6995,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     slots: {
       required: false,
       type: Array
-    },
-    can_book_days: {
-      required: true,
-      type: Number
     },
     self_redirect: {
       required: true,
@@ -7017,6 +7009,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       "default": false,
       type: Boolean,
       required: false
+    },
+    registration: {
+      required: true
     }
   },
   data: function data() {
@@ -7055,7 +7050,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.initial = this.booked_dates.map(function (date) {
       return date.slot.id;
     });
-    this.max = this.can_book_days;
+    this.max = this.registration.can_book_days;
   },
   methods: {
     submitForm: function submitForm(formName) {
@@ -7084,7 +7079,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                               background: 'rgba(0, 0, 0, 0.7)'
                             });
                             _context2.next = 3;
-                            return axios.post("/booking/".concat(_this.uuid, "/update"), {
+                            return axios.post("/booking/".concat(_this.registration.id, "/update"), {
                               dates: _this.ruleForm.booked,
                               is_admin: _this.is_admin
                             }).then( /*#__PURE__*/function () {
@@ -7104,7 +7099,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                                           center: true,
                                           type: 'success',
                                           callback: function callback(action) {
-                                            if (_this.self_redirect) window.location.reload();else window.location.href = "booking/".concat(_this.uuid);
+                                            if (_this.self_redirect) window.location.reload();else window.location.href = "booking/".concat(_this.registration.id);
                                           }
                                         });
 
@@ -8200,7 +8195,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 if (!(value.length === 9)) {
-                  _context2.next = 8;
+                  _context2.next = 7;
                   break;
                 }
 
@@ -8220,9 +8215,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.abrupt("return", callback(new Error("Please input your LAMP ID Number")));
 
               case 5:
-                console.log('pasok');
-                _context2.next = 8;
-                return axios.get("/lookup/".concat(_this.ruleForm.lampIDNumber)).then( /*#__PURE__*/function () {
+                _context2.next = 7;
+                return axios.get("/lookup/".concat(_this.event.slug, "/").concat(_this.ruleForm.lampIDNumber)).then( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(response) {
                     return _regeneratorRuntime().wrap(function _callee$(_context) {
                       while (1) {
@@ -8245,7 +8239,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   callback(new Error(error.response.data.error));
                 });
 
-              case 8:
+              case 7:
               case "end":
                 return _context2.stop();
             }
@@ -8394,7 +8388,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (value.length === 9) {
           this.resetData("awta-card");
           this.isLoading = true;
-          axios.get("/lookup/".concat(this.ruleForm.lampIDNumber)).then( /*#__PURE__*/function () {
+          axios.get("/lookup/".concat(this.event.slug, "/").concat(this.ruleForm.lampIDNumber)).then( /*#__PURE__*/function () {
             var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(response) {
               return _regeneratorRuntime().wrap(function _callee5$(_context5) {
                 while (1) {
@@ -9240,6 +9234,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       "default": false,
       type: Boolean,
       required: false
+    },
+    event: {
+      required: false
     }
   },
   data: function data() {
@@ -9249,8 +9246,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         link: null,
         id: null,
         passcode: null
-      },
-      enable_lamp_id_availment: false
+      }
     };
   },
   mounted: function mounted() {
@@ -9273,19 +9269,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       var msg = '<strong>Congratulations!</strong> Your registration has been accepted. ';
-      if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '' && this.registrations[0].email != null) msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
-      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid') msg += '<br />'; // msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
+      if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '') msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
+      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].rate > 0) msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
 
       if (this.registrations[0].attending_option === 'Online') {
         msg += "<br /><br /><small style=\"line-height: 0px;\">To watch the live broadcast, join our FB Group <br/><a href=\"".concat(window.env.fb_group_url, "\">").concat(window.env.fb_group_url, "</a></small>");
         msg += "<br /><br /><small style=\"line-height: 0px;\">You may also join us via <b>Zoom</b>:<br />\n                        <a href=\"".concat(this.zoom.link, "\">").concat(this.zoom.link, "</a><br /><br />\n                        Meeting ID: ").concat(this.zoom.id, " <br />\n                        Passcode:").concat(this.zoom.passcode, "</small> <br /><br />");
       }
 
-      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none') msg += '<br /><br /><small style="line-height: 0px;">Note: <i>A new LAMP ID Number is issued for you.</i> If you want to avail the physical card, an additional Php 35.00 will be required. Kindly reach out to your local Registrars for payment and issuance.</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to avail the new LAMP ID?</small>';else if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost' && this.enable_lamp_id_availment) msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
+      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none') msg += '<br /><br /><small style="line-height: 0px;">Note: <i>A new LAMP ID Number is issued for you.</i> If you want to avail the physical card, an additional Php 35.00 will be required. Kindly reach out to your local Registrars for payment and issuance.</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to avail the new LAMP ID?</small>';else if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost') msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
       this.$confirm(msg, 'You did it!', {
-        confirmButtonText: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost' && this.enable_lamp_id_availment) ? 'Yes' : 'Continue',
+        confirmButtonText: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost') ? 'Yes' : 'Continue',
         cancelButtonText: 'No',
-        showCancelButton: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost' && this.enable_lamp_id_availment),
+        showCancelButton: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost'),
         type: 'success',
         showClose: false,
         closeOnPressEscape: false,
@@ -9298,7 +9294,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(_this.registrations[0].registration_type === 'Member' && (_this.registrations[0].with_awta_card == 'none' || _this.registrations[0].with_awta_card == 'lost') && _this.enable_lamp_id_availment)) {
+                if (!(_this.registrations[0].registration_type === 'Member' && (_this.registrations[0].with_awta_card == 'none' || _this.registrations[0].with_awta_card == 'lost'))) {
                   _context.next = 5;
                   break;
                 }
@@ -12023,7 +12019,9 @@ var render = function render() {
         slot: "header"
       },
       slot: "header"
-    }, [_c("span", [_vm._v("LAMP CHURCH 38TH ANNIVERSARY")]), _vm._v(" "), _c("el-button", {
+    }, [_c("span", {
+      staticClass: "text-uppercase"
+    }, [_vm._v(_vm._s(_vm.event.name))]), _vm._v(" "), _c("el-button", {
       staticClass: "block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden",
       attrs: {
         icon: "el-icon-download",

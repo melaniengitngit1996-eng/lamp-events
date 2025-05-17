@@ -45,6 +45,7 @@ class Registration extends MyModel
         'activities' => 'array',
         'booking_activities' => 'array',
         'is_received_hg' => 'date:M d, Y',
+        'event' => 'object'
     ];
 
     protected $appends = [
@@ -63,7 +64,8 @@ class Registration extends MyModel
     {
         parent::boot();
         self::creating(function ($model) {
-            $payment_config = Rates::where('category', $model->category)
+            $payment_config = Rates::where('event_id', $model->event_id)
+                ->where('category', $model->category)
                 ->where('attending_option', $model->attending_option)
                 ->first();
 
@@ -81,7 +83,7 @@ class Registration extends MyModel
 
         self::updated(function ($model) {
             if (count($model->getFillableChanges()) > 0) {
-                $model->updateActivities($model->uuid, $model->activities, array(
+                $model->updateActivities($model, $model->activities, array(
                     'updated ' . implode(', ', $model->getFillableChanges())
                 ));
             }
@@ -93,7 +95,7 @@ class Registration extends MyModel
      */
     public function payments()
     {
-        return $this->hasMany(Payment::class, 'registration_uuid', 'uuid');
+        return $this->hasMany(Payment::class);
     }
 
     /**
@@ -101,7 +103,7 @@ class Registration extends MyModel
      */
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'registration_uuid', 'uuid')->orderBy('slot_id', 'asc');
+        return $this->hasMany(Booking::class)->orderBy('slot_id', 'asc');
     }
 
     /**
@@ -117,11 +119,19 @@ class Registration extends MyModel
     }
 
     /**
+     * Get the event tagged
+     */
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id', 'id');
+    }
+
+    /**
      * Get the attendance for the delegate.
      */
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'registration_uuid', 'uuid');
+        return $this->hasMany(Attendance::class);
     }
 
     public function lookup()

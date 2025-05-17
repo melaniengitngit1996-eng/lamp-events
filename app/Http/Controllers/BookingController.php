@@ -22,14 +22,11 @@ class BookingController extends Controller
         return view('booking.create');
     }
 
-    public function edit($uuid)
+    public function edit(Registration $registration)
     {
-        $registration = Registration::where('uuid', $uuid)->first();
-
         return view('booking.edit', [
             'booked_dates' => $registration->bookings()->with(['slot'])->where('status', '!=', BookingStatus::Cancelled)->get(),
-            'slots' => Slots::where('registration_type', $registration->registration_type)->get(),
-            'uuid' => $uuid,
+            'slots' => Slots::where('event_id', $registration->event_id)->where('registration_type', $registration->registration_type)->get(),
             'registration' => $registration
         ]);
     }
@@ -40,9 +37,9 @@ class BookingController extends Controller
      * @param  String $uuid
      * @return \Illuminate\Http\Response
      */
-    public function show($uuid)
+    public function show($registration_id)
     {
-        $registration = Registration::with('bookings', 'bookings.slot')->where('uuid', $uuid)->first();
+        $registration = Registration::with('bookings', 'bookings.slot')->where('id', $registration_id)->first();
 
         $registration->booked_dates = array_map(function ($dates) {
             return $dates['slot']['event_date'];
@@ -53,10 +50,9 @@ class BookingController extends Controller
         ]);
     }
 
-    public function update($uuid, Request $request)
+    public function update($registration_id, Request $request)
     {
-
-        $registration = Registration::withSum('payments', 'amount')->where('uuid', $uuid)->first();
+        $registration = Registration::withSum('payments', 'amount')->where('id', $registration_id)->first();
 
         if ($registration->is_booking_bypassed) {
             return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire AWTA days.'], 500);
@@ -119,7 +115,6 @@ class BookingController extends Controller
 
                 // store bookings
                 $registration->bookings()->create([
-                    'registration_uuid' => $registration->uuid,
                     'slot_id' => $date,
                     'local_church' => $registration->local_church,
                     'status' => $booking_status
@@ -136,9 +131,9 @@ class BookingController extends Controller
                     ]);
 
                     if ($hasPermission) {
-                        $registration->updateBookingActivities($registration->uuid, $registration->booking_activities, array('This delegate was rebooked by ' . auth()->user()->name . ' for ' . implode(', ', $dates)));
+                        $registration->updateBookingActivities($registration, $registration->booking_activities, array('This delegate was rebooked by ' . auth()->user()->name . ' for ' . implode(', ', $dates)));
                     } else {
-                        $registration->updateBookingActivities($registration->uuid, $registration->booking_activities, array($registration->fullname . ' rebooked for ' . implode(', ', $dates)));
+                        $registration->updateBookingActivities($registration, $registration->booking_activities, array($registration->fullname . ' rebooked for ' . implode(', ', $dates)));
                     }
                 }
             } else {
@@ -147,7 +142,7 @@ class BookingController extends Controller
         }
 
         if (count($new_booked_dates) === 0 && count($old_booked_dates) > 0) {
-            $registration->updateBookingActivities($registration->uuid, $registration->booking_activities, array('Removed all the booked dates by ' . auth()->user()->name));
+            $registration->updateBookingActivities($registration, $registration->booking_activities, array('Removed all the booked dates by ' . auth()->user()->name));
         }
 
         if ($hasChanges) {
