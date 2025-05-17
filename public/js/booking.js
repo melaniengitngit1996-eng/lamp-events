@@ -7335,9 +7335,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       "default": false,
       type: Boolean,
       required: false
-    },
-    event: {
-      required: false
     }
   },
   data: function data() {
@@ -7347,7 +7344,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         link: null,
         id: null,
         passcode: null
-      }
+      },
+      enable_lamp_id_availment: false
     };
   },
   mounted: function mounted() {
@@ -7370,19 +7368,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       var msg = '<strong>Congratulations!</strong> Your registration has been accepted. ';
-      if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '') msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
-      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].rate > 0) msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
+      if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '' && this.registrations[0].email != null) msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
+      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid') msg += '<br />'; // msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
 
       if (this.registrations[0].attending_option === 'Online') {
         msg += "<br /><br /><small style=\"line-height: 0px;\">To watch the live broadcast, join our FB Group <br/><a href=\"".concat(window.env.fb_group_url, "\">").concat(window.env.fb_group_url, "</a></small>");
         msg += "<br /><br /><small style=\"line-height: 0px;\">You may also join us via <b>Zoom</b>:<br />\n                        <a href=\"".concat(this.zoom.link, "\">").concat(this.zoom.link, "</a><br /><br />\n                        Meeting ID: ").concat(this.zoom.id, " <br />\n                        Passcode:").concat(this.zoom.passcode, "</small> <br /><br />");
       }
 
-      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none') msg += '<br /><br /><small style="line-height: 0px;">Note: <i>A new LAMP ID Number is issued for you.</i> If you want to avail the physical card, an additional Php 35.00 will be required. Kindly reach out to your local Registrars for payment and issuance.</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to avail the new LAMP ID?</small>';else if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost') msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
+      if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none') msg += '<br /><br /><small style="line-height: 0px;">Note: <i>A new LAMP ID Number is issued for you.</i> If you want to avail the physical card, an additional Php 35.00 will be required. Kindly reach out to your local Registrars for payment and issuance.</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to avail the new LAMP ID?</small>';else if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost' && this.enable_lamp_id_availment) msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
       this.$confirm(msg, 'You did it!', {
-        confirmButtonText: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost') ? 'Yes' : 'Continue',
+        confirmButtonText: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost' && this.enable_lamp_id_availment) ? 'Yes' : 'Continue',
         cancelButtonText: 'No',
-        showCancelButton: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost'),
+        showCancelButton: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost' && this.enable_lamp_id_availment),
         type: 'success',
         showClose: false,
         closeOnPressEscape: false,
@@ -7395,7 +7393,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(_this.registrations[0].registration_type === 'Member' && (_this.registrations[0].with_awta_card == 'none' || _this.registrations[0].with_awta_card == 'lost'))) {
+                if (!(_this.registrations[0].registration_type === 'Member' && (_this.registrations[0].with_awta_card == 'none' || _this.registrations[0].with_awta_card == 'lost') && _this.enable_lamp_id_availment)) {
                   _context.next = 5;
                   break;
                 }
@@ -7888,9 +7886,7 @@ var render = function render() {
         slot: "header"
       },
       slot: "header"
-    }, [_c("span", {
-      staticClass: "text-uppercase"
-    }, [_vm._v(_vm._s(_vm.event.name))]), _vm._v(" "), _c("el-button", {
+    }, [_c("span", [_vm._v("LAMP CHURCH 38TH ANNIVERSARY")]), _vm._v(" "), _c("el-button", {
       staticClass: "block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden",
       attrs: {
         icon: "el-icon-download",
