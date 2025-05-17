@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.attendance')
 
 @section('scripts')
 <script src="{{ asset('js/attendance.js?time=') }}{{ time() }}" defer></script>
