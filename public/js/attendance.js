@@ -6948,6 +6948,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     count: {
       required: true,
       type: Array
+    },
+    event: {
+      required: true
     }
   },
   data: function data() {
@@ -7013,7 +7016,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this2.retrieved = null;
                 if (!_this2.input) _this2.error = 'Please enter LAMP ID/Guest number.';
                 _context2.next = 6;
-                return axios.get("/attendance/" + _this2.input).then( /*#__PURE__*/function () {
+                return axios.get("/attendance/".concat(_this2.event.id, "/") + _this2.input).then( /*#__PURE__*/function () {
                   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(response) {
                     return _regeneratorRuntime().wrap(function _callee$(_context) {
                       while (1) {
@@ -7063,7 +7066,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _context4.next = 3;
-                return axios.post("/attendance", {
+                return axios.post("/attendance/".concat(_this3.event.id), {
                   details: _this3.retrieved.delegate
                 }).then( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(response) {

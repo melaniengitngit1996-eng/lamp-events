@@ -9,6 +9,7 @@ use App\Enums\PaymentStatus;
 use App\Models\Attendance;
 use App\Models\Booking;
 use App\Models\Registration;
+use App\Models\Event;
 use App\Models\Slots;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +45,7 @@ class AttendanceController extends Controller
         return $attendances->paginate(10);
     }
 
-    public function index(Request $request)
+    public function index(Event $event, Request $request)
     {
         $local_churches = explode(',', env('LOCAL_CHURCHES'));
 
@@ -99,24 +100,25 @@ class AttendanceController extends Controller
 
         return view('attendance.index', [
             'count' => json_encode($attendance_count),
-            'guest_current_date' => Slots::where('id', env('SLOT_ID_TODAY_GUEST'))->first()->event_date,
-            'member_current_date' => Slots::where('id', env('SLOT_ID_TODAY_MEMBER'))->first()->event_date
+            'guest_current_date' => Slots::where('id', $event->active_guest_slot_id)->first()->event_date,
+            'member_current_date' => Slots::where('id', $event->active_member_slot_id)->first()->event_date,
+            'event' => $event
         ]);
     }
 
-    public function show($uuid, Request $request)
+    public function show(Event $event, $uuid, Request $request)
     {
         if (!$uuid) {
             return response()->json(['error' => 'Please enter LAMP ID/Guest number.'], 500);
         }
 
-        $registration = Registration::where('uuid', $uuid)->first();
+        $registration = Registration::where('uuid', $uuid)->where('event_id', $event->id)->first();
 
         if (!$registration) {
             return response()->json(['error' => 'Not found. Please check the number and try again.'], 500);
         }
 
-        $slot_id = $registration->registration_type === 'Member' ? env('SLOT_ID_TODAY_MEMBER') : env('SLOT_ID_TODAY_GUEST');
+        $slot_id = $registration->registration_type === 'Member' ? $event->active_member_slot_id : $event->active_guest_slot_id;
 
         $isBooked = $registration->bookings()->where('slot_id', $slot_id)->first();
 
@@ -144,16 +146,16 @@ class AttendanceController extends Controller
         ];
     }
 
-    public function store(Request $request)
+    public function store(Event $event, Request $request)
     {
-        $registration = Registration::where('uuid', $request->details['uuid'])->first();
+        $registration = Registration::where('uuid', $request->details['uuid'])->where('event_id', $event->id)->first();
 
-        $slot_id = $registration->registration_type === 'Member' ? env('SLOT_ID_TODAY_MEMBER') : env('SLOT_ID_TODAY_GUEST');
+        $slot_id = $registration->registration_type === 'Member' ? $event->active_member_slot_id : $event->active_guest_slot_id;
 
         $attendance = $registration->attendances->where('slot_id', $slot_id)->first();
 
         if (!$attendance) {
-            return Attendance::create([
+            return $registration->attendances()->create([
                 'slot_id' => $slot_id,
                 'registration_type' => $registration->registration_type,
                 'local_church' => $request->details['local_church'],

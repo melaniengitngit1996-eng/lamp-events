@@ -70,9 +70,9 @@ Route::get('/upload', [App\Http\Controllers\LookUpController::class, 'upload_vie
 Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
 
 // attendance
-Route::get('/attendance', [App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance.index');
-Route::get('/attendance/{id}', [App\Http\Controllers\AttendanceController::class, 'show'])->name('attendance.show');
-Route::post('/attendance', [App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store');
+Route::get('/attendance/{event:slug}/check', [App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('/attendance/{event}/{id}', [App\Http\Controllers\AttendanceController::class, 'show'])->name('attendance.show');
+Route::post('/attendance/{event}', [App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store');
 Route::get('/attendances', [App\Http\Controllers\AttendanceController::class, 'all'])->name('attendance.all');
 Route::get('/attendances/export', [App\Http\Controllers\AttendanceController::class, 'export'])->name('attendance.export');
 
@@ -84,7 +84,7 @@ Route::get('/booking/validate', [App\Http\Controllers\BookingController::class, 
 Route::get('/config', [App\Http\Controllers\ConfigurationController::class, 'show'])->name('configurations');
 
 // dashboard
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard/{event:slug}/view', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/attendance', [App\Http\Controllers\DashboardController::class, 'view_attendance_per_church'])->name('dashboard.attendance');
 Route::get('/dashboard/received-hg', [App\Http\Controllers\DashboardController::class, 'view_received_hg_per_church'])->name('dashboard.hg');
 

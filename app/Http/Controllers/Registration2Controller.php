@@ -278,7 +278,9 @@ class Registration2Controller extends Controller
             // checking if the member is in the master list
             if ($lookup) {
                 $update = [
-                    'is_registered' => true
+                    'is_registered' => true,
+                    'cluster_group' => $cluster_group,
+                    'email' => $email,
                 ];
 
                 if (is_null($lookup['old_lamp_card_number'])) {
@@ -302,6 +304,7 @@ class Registration2Controller extends Controller
                     'local_church' => $local_church,
                     'country' => $country,
                     'can_book_days' => config('settings.member_booking_limit'),
+                    'cluster_group' => $cluster_group,
                     'is_registered' => true
                 ]);
             }
@@ -430,12 +433,10 @@ class Registration2Controller extends Controller
             ]);
 
             $registration->additional_data()->update([
-                'registration_uuid' =>  $registration->uuid,
                 'has_viewed_ticket' => NOW(),
             ]);
         } elseif (isset($request->mark_as_viewed)) { // mark as viewed for guests
             $registration->additional_data()->updateOrCreate([
-                'registration_uuid' => $registration->uuid,
                 'has_viewed_ticket' => NOW(),
             ]);
         } else {

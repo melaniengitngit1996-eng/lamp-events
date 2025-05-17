@@ -158,6 +158,9 @@ export default {
         required: true,
         type: Array
     },
+    event: {
+        required: true
+    },
   },
   data() {
     return {
@@ -217,7 +220,7 @@ export default {
       if (! this.input)
         this.error = 'Please enter LAMP ID/Guest number.'
 
-      await axios.get(`/attendance/` + this.input)
+      await axios.get(`/attendance/${this.event.id}/` + this.input)
       .then(async (response) => {
         this.loading = false;
         this.retrieved = response.data
@@ -230,7 +233,7 @@ export default {
     },
     async attendance() {
       if (! this.retrieved.attended) {
-        await axios.post(`/attendance`, {
+        await axios.post(`/attendance/${this.event.id}`, {
           details: this.retrieved.delegate
         })
         .then(async (response) => {

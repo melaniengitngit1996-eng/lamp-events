@@ -7,6 +7,7 @@ use App\Enums\RegistrationType;
 use App\Models\Attendance;
 use App\Models\Booking;
 use App\Models\Registration;
+use App\Models\Event;
 use App\Models\ReceivedHG;
 use App\Models\Slots;
 use Illuminate\Http\Request;
@@ -23,13 +24,13 @@ class DashboardController extends Controller
         $this->middleware('auth', ['except' => []]);
     }
 
-    public function index()
+    public function index(Event $event)
     {
         $color_assignment = config('settings.chart_color');
 
         $local_churches = array_keys(config('clustergroups'));
 
-        return view('dashboard', [
+        return view('dashboard.index', [
             'all' => (object) $this->get_local_churches_attendance($color_assignment, $local_churches),
             'members' => (object) $this->get_member_attendance($color_assignment, $local_churches),
             'guests' => (object) $this->get_guest_attendance($color_assignment, $local_churches),

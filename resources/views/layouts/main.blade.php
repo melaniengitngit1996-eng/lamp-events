@@ -47,7 +47,7 @@
             
             <el-menu :default-openeds="['4']">
                 <el-menu-item class="{{ request()->is('dashboard') ? 'el-menu-item__active' : '' }}">
-                    <template slot="title"><el-link href="/dashboard" :underline="false"><img class="mb-1" height="17" width="20" src="/images/portfolio.png" style="margin-right: 10px"/>Dashboard</el-link></template>
+                    <template slot="title"><el-link href="/dashboard/3847934834/view" :underline="false"><img class="mb-1" height="17" width="20" src="/images/portfolio.png" style="margin-right: 10px"/>Dashboard</el-link></template>
                 </el-menu-item>
 
                 <el-menu-item class="{{ request()->is('home') || request()->is('/') ? 'el-menu-item__active' : '' }}">
@@ -93,9 +93,6 @@
                         </a>
                         <a class="dropdown-item" href="{{ route('configurations') }}">
                             {{ __('Configurations') }}
-                        </a>
-                        <a class="dropdown-item" href="{{ route('dashboard') }}">
-                            {{ __('Dashboard') }}
                         </a>
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();

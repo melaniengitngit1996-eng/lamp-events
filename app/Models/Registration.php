@@ -111,7 +111,7 @@ class Registration extends MyModel
      */
     public function additional_data()
     {
-        return $this->hasOne(RegistrationAdditionalData::class, 'registration_uuid', 'uuid');
+        return $this->hasOne(RegistrationAdditionalData::class);
     }
 
     public function available_bookings($id) {
