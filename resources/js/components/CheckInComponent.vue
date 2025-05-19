@@ -2,7 +2,7 @@
 <div>
     <div v-if="!validated" class="row justify-content-center">
         <div class="col-md-3">
-            <img width="100%" class="mb-3 rounded shadow" src="/images/2024_banner_B.jpeg">
+            <img width="100%" class="mb-3 rounded shadow" :src="`/images/banners/${event.banner_file_name}`">
         </div>
     </div>
 
@@ -26,7 +26,7 @@
     </div>
     <div v-else class="row justify-content-center mb-4">
         <div class="col-md-3">
-            <el-card shadow="always" class="mb-3 pb-0" style="border-top: 10px solid rgb(45 122 95)">
+            <el-card shadow="always" class="mb-3 pb-0" :style="`border-top: 10px solid ${event.border_color}`">
                 <h3>Online Check In</h3>
                 <p class="mt-2 c-booking-subheader">Type in your details to check in.</p>
 
@@ -74,8 +74,8 @@
             </el-card>
 
             <div class="row">
-                <div class="col-md-12">
-                    <el-button :loading="isLoading" :autofocus="true" type="theme" @click="validateDelegate('ruleForm')" :disabled="disabled">Continue</el-button>
+                <div class="col-md-12" :style="`--theme-color: ${themeColor}`">
+                    <el-button :loading="isLoading" :autofocus="true" type="theme" class="el-button--theme" @click="validateDelegate('ruleForm')" :disabled="disabled">Continue</el-button>
                 </div>
             </div>
         </div>
@@ -96,6 +96,7 @@ export default {
     },
     data () {
       return {
+        themeColor: this.event.border_color,
         ruleForm: {
             'lastName': '',
             'localChurch': '',
@@ -202,3 +203,20 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.el-button--theme {
+    color: #FFF !important;
+    background-color: var(--theme-color) !important;
+    border-color: var(--theme-color) !important;
+}
+
+.el-link.el-link--theme:hover {
+    color: var(--theme-color) !important;
+}
+
+.el-link.el-link--theme {
+    color: var(--theme-color) !important;
+    text-decoration: none !important;
+}
+</style>

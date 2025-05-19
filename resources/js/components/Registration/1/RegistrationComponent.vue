@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="row justify-content-center mb-5">
-            <div class="col-md-6">
+            <div class="col-md-6" :style="`--theme-color: ${themeColor}`">
                 <el-button v-if="currentStep > 1" plain @click="$refs.myChild.submitForm('back')">Back</el-button>
                 <el-button 
                     v-if="
@@ -17,6 +17,7 @@
                         this.currentStep === 2 && !event.with_booking
                     "
                     type="theme" 
+                    class="el-button--theme"
                     @click="$refs.myChild.submitForm('next')">
                     Submit
                 </el-button>
@@ -54,6 +55,7 @@
         },
         data() {
             return {
+                themeColor: this.event.border_color,
                 currentStep: 1,
                 currentTabComponent: null,
                 currentTabData: null,
@@ -150,3 +152,21 @@
         }
     }
 </script>
+
+
+<style scoped>
+.el-button--theme {
+    color: #FFF !important;
+    background-color: var(--theme-color) !important;
+    border-color: var(--theme-color) !important;
+}
+
+.el-link.el-link--theme:hover {
+    color: var(--theme-color) !important;
+}
+
+.el-link.el-link--theme {
+    color: var(--theme-color) !important;
+    text-decoration: none !important;
+}
+</style>
