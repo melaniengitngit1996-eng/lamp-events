@@ -215,6 +215,9 @@ export default {
         received_hg: {
             type: Array,
             defaults: false,
+        },
+        event: {
+            required: false,
         }
     },
     name: "BarChart",
@@ -245,14 +248,14 @@ export default {
         },
         view_attendance(local_church) {
             window.open(
-                `dashboard/attendance?local_church=${local_church}&awta_day=${window.env.awta_day}`,
+                `/dashboard/${this.event.slug}/attendance?local_church=${local_church}&awta_day=${window.env.awta_day}`,
                 "mywindow",
                 "menubar=1,resizable=1,width=1200,height=800"
             );
         },
         view_received_hg(awta_day) {
             window.open(
-                `dashboard/received-hg?awta_day=${awta_day}`,
+                `/dashboard/${this.event.slug}/received-hg?awta_day=${awta_day}`,
                 "mywindow",
                 "menubar=1,resizable=1,width=1200,height=800"
             );

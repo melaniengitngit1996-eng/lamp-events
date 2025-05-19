@@ -313,7 +313,7 @@ class Registration2Controller extends Controller
                 $this->book($registration, $request->step_3['booked']);
             }
 
-            $registration = $this->updatePaymentStatus($registration->id, false);
+            $registration = $this->updatePaymentStatus($registration->id, true);
 
             // if ($registration->attending_option === AttendingOption::Hybrid) {
             $this->notify($registration->id);
@@ -352,7 +352,7 @@ class Registration2Controller extends Controller
 
                     $this->book($registration, $details->booked);
 
-                    $registration = $this->updatePaymentStatus($registration->id, false);
+                    $registration = $this->updatePaymentStatus($registration->id, true);
 
                     $registered[] = $registration->uuid;
                 }
@@ -383,7 +383,7 @@ class Registration2Controller extends Controller
                     'booking_activities' => []
                 ]);
 
-                $registration = $this->updatePaymentStatus($registration->id, false);
+                $registration = $this->updatePaymentStatus($registration->id, true);
 
                 return $registration->uuid;
             }

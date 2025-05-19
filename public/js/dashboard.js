@@ -6936,7 +6936,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['absents'],
+  props: ['absents', 'event', 'days'],
   data: function data() {
     return {
       search: {
@@ -7097,6 +7097,9 @@ chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart.register(chart_js__WEBPACK_IMPORTED_
     received_hg: {
       type: Array,
       defaults: false
+    },
+    event: {
+      required: false
     }
   },
   name: "BarChart",
@@ -7138,10 +7141,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart.register(chart_js__WEBPACK_IMPORTED_
       return "".concat(percentage, "%");
     },
     view_attendance: function view_attendance(local_church) {
-      window.open("dashboard/attendance?local_church=".concat(local_church, "&awta_day=").concat(window.env.awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
+      window.open("/dashboard/".concat(this.event.slug, "/attendance?local_church=").concat(local_church, "&awta_day=").concat(window.env.awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
     },
     view_received_hg: function view_received_hg(awta_day) {
-      window.open("dashboard/received-hg?awta_day=".concat(awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
+      window.open("/dashboard/".concat(this.event.slug, "/received-hg?awta_day=").concat(awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
     },
     getSummaries: function getSummaries(param) {
       var columns = param.columns,
@@ -7186,7 +7189,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['data'],
+  props: ['data', 'event', 'days'],
   data: function data() {
     return {
       search: {
@@ -7418,27 +7421,15 @@ var render = function render() {
             },
             expression: "search.awta_day"
           }
-        }, [_c("el-option", {
-          attrs: {
-            label: "Day 1",
-            value: "Day 1"
-          }
-        }), _vm._v(" "), _c("el-option", {
-          attrs: {
-            label: "Day 2",
-            value: "Day 2"
-          }
-        }), _vm._v(" "), _c("el-option", {
-          attrs: {
-            label: "Day 3",
-            value: "Day 3"
-          }
-        }), _vm._v(" "), _c("el-option", {
-          attrs: {
-            label: "Day 4",
-            value: "Day 4"
-          }
-        })], 1)], 1), _vm._v(" "), _c("td", [_c("br"), _vm._v(" "), _c("el-button", {
+        }, _vm._l(_vm.days, function (value, day) {
+          return _c("el-option", {
+            key: day,
+            attrs: {
+              label: day,
+              value: day
+            }
+          });
+        }), 1)], 1), _vm._v(" "), _c("td", [_c("br"), _vm._v(" "), _c("el-button", {
           attrs: {
             size: "mini",
             type: "primary"
@@ -8030,27 +8021,15 @@ var render = function render() {
             },
             expression: "search.awta_day"
           }
-        }, [_c("el-option", {
-          attrs: {
-            label: "Day 1",
-            value: "Day 1"
-          }
-        }), _vm._v(" "), _c("el-option", {
-          attrs: {
-            label: "Day 2",
-            value: "Day 2"
-          }
-        }), _vm._v(" "), _c("el-option", {
-          attrs: {
-            label: "Day 3",
-            value: "Day 3"
-          }
-        }), _vm._v(" "), _c("el-option", {
-          attrs: {
-            label: "Day 4",
-            value: "Day 4"
-          }
-        })], 1)], 1), _vm._v(" "), _c("td", [_c("br"), _vm._v(" "), _c("el-button", {
+        }, _vm._l(_vm.days, function (value, day) {
+          return _c("el-option", {
+            key: day,
+            attrs: {
+              label: day,
+              value: day
+            }
+          });
+        }), 1)], 1), _vm._v(" "), _c("td", [_c("br"), _vm._v(" "), _c("el-button", {
           attrs: {
             size: "mini",
             type: "primary"

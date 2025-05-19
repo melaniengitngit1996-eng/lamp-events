@@ -8,7 +8,8 @@
         :guests="{{ json_encode($guests) }}"
         :trend="{{ json_encode($trend) }}"
         :progress="{{ json_encode($progress) }}"
-        :received_hg="{{ json_encode($received_hg) }}" />
+        :received_hg="{{ json_encode($received_hg) }}"
+        :event="{{ $event }}" />
 </div>
 @endsection
 

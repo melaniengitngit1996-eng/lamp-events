@@ -17,6 +17,7 @@ class SlotsTableSeeder extends Seeder
         Slots::insert([
             [
                 'event_id' => 1,
+                'description' => 'Day 1',
                 'event_date' => date("Y-m-d", strtotime("12/26/2024")),
                 'seat_count' => 600,
                 'registration_type' => 'Member',
@@ -26,6 +27,7 @@ class SlotsTableSeeder extends Seeder
 
             [
                 'event_id' => 1,
+                'description' => 'Day 2',
                 'event_date' => date("Y-m-d", strtotime("12/27/2024")),
                 'seat_count' => 600,
                 'registration_type' => 'Member',
@@ -34,6 +36,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 1,
+                'description' => 'Day 3',
                 'event_date' => date("Y-m-d", strtotime("12/28/2024")),
                 'seat_count' => 600,
                 'registration_type' => 'Member',
@@ -42,6 +45,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 1,
+                'description' => 'Day 4',
                 'event_date' => date("Y-m-d", strtotime("12/29/2024")),
                 'seat_count' => 600,
                 'registration_type' => 'Member',
@@ -50,6 +54,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 1,
+                'description' => 'Day 1',
                 'event_date' => date("Y-m-d", strtotime("12/26/2024")),
                 'seat_count' => 175,
                 'registration_type' => 'Guest',
@@ -58,6 +63,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 1,
+                'description' => 'Day 2',
                 'event_date' => date("Y-m-d", strtotime("12/27/2024")),
                 'seat_count' => 175,
                 'registration_type' => 'Guest',
@@ -66,6 +72,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 1,
+                'description' => 'Day 3',
                 'event_date' => date("Y-m-d", strtotime("12/28/2024")),
                 'seat_count' => 175,
                 'registration_type' => 'Guest',
@@ -74,6 +81,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 1,
+                'description' => 'Day 4',
                 'event_date' => date("Y-m-d", strtotime("12/29/2024")),
                 'seat_count' => 175,
                 'registration_type' => 'Guest',
@@ -86,6 +94,7 @@ class SlotsTableSeeder extends Seeder
         Slots::insert([
             [
                 'event_id' => 2,
+                'description' => 'Day 1',
                 'event_date' => date("Y-m-d", strtotime("06/21/2025")),
                 'seat_count' => 600,
                 'registration_type' => 'Member',
@@ -95,6 +104,7 @@ class SlotsTableSeeder extends Seeder
 
             [
                 'event_id' => 2,
+                'description' => 'Day 2',
                 'event_date' => date("Y-m-d", strtotime("06/22/2025")),
                 'seat_count' => 600,
                 'registration_type' => 'Member',
@@ -103,6 +113,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 2,
+                'description' => 'Day 1',
                 'event_date' => date("Y-m-d", strtotime("06/21/2025")),
                 'seat_count' => 175,
                 'registration_type' => 'Guest',
@@ -111,6 +122,7 @@ class SlotsTableSeeder extends Seeder
             ],
             [
                 'event_id' => 2,
+                'description' => 'Day 2',
                 'event_date' => date("Y-m-d", strtotime("06/22/2025")),
                 'seat_count' => 175,
                 'registration_type' => 'Guest',

@@ -43,10 +43,7 @@
                 <td width="120">
                   <small>AWTA Day</small>
                   <el-select size="mini" v-model="search.awta_day" placeholder="select">
-                    <el-option label="Day 1" value="Day 1"></el-option>
-                    <el-option label="Day 2" value="Day 2"></el-option>
-                    <el-option label="Day 3" value="Day 3"></el-option>
-                    <el-option label="Day 4" value="Day 4"></el-option>
+                    <el-option v-for="(value, day) in days" :key="day" :label="day" :value="day"></el-option>
                   </el-select>
                 </td>
                 <td>
@@ -139,7 +136,7 @@
   
   <script>
     export default {
-      props: ['data'],
+      props: ['data', 'event', 'days'],
       data() {
         return {
           search: {

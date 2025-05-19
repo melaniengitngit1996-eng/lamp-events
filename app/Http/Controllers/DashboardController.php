@@ -29,20 +29,26 @@ class DashboardController extends Controller
         $color_assignment = config('settings.chart_color');
 
         $local_churches = array_keys(config('clustergroups'));
+        $slots = $event->slots;
+
+        $groupedSlots = $slots->groupBy('description')->map(function ($items) {
+            return $items->pluck('id')->all();
+        })->toArray();
 
         return view('dashboard.index', [
-            'all' => (object) $this->get_local_churches_attendance($color_assignment, $local_churches),
-            'members' => (object) $this->get_member_attendance($color_assignment, $local_churches),
-            'guests' => (object) $this->get_guest_attendance($color_assignment, $local_churches),
-            'trend' => (object) $this->get_all_attendance(),
+            'all' => (object) $this->get_local_churches_attendance($groupedSlots, $color_assignment, $local_churches),
+            'members' => (object) $this->get_member_attendance($groupedSlots, $color_assignment, $local_churches),
+            'guests' => (object) $this->get_guest_attendance($groupedSlots, $color_assignment, $local_churches),
+            'trend' => (object) $this->get_all_attendance($groupedSlots),
             'progress' => (object) $this->get_attendance_progress($event),
-            'received_hg' => (Array) $this->get_all_list_received_hg(),
+            'received_hg' => (Array) $this->get_all_list_received_hg($groupedSlots),
             'guest_current_date' => Slots::where('id', $event->active_guest_slot_id)->first()->event_date,
-            'member_current_date' => Slots::where('id', $event->active_member_slot_id)->first()->event_date
+            'member_current_date' => Slots::where('id', $event->active_member_slot_id)->first()->event_date,
+            'event' => $event
         ]);
     }
 
-    private function get_local_churches_attendance($color_assignment, $local_churches)
+    private function get_local_churches_attendance($groupedSlots, $color_assignment, $local_churches)
     {
         $data = [
             'data' => [
@@ -54,7 +60,7 @@ class DashboardController extends Controller
             ]
         ];
 
-        foreach (config('settings.slots_allotment') as $day => $slots) {
+        foreach ($groupedSlots as $day => $slots) {
             $count = [];
 
             foreach ($local_churches as $local_church) {
@@ -73,7 +79,7 @@ class DashboardController extends Controller
         return $data;
     }
 
-    private function get_member_attendance($color_assignment, $local_churches)
+    private function get_member_attendance($groupedSlots, $color_assignment, $local_churches)
     {
         $data = [
             'data' => [
@@ -85,7 +91,7 @@ class DashboardController extends Controller
             ]
         ];
 
-        foreach (config('settings.slots_allotment') as $day => $slots) {
+        foreach ($groupedSlots as $day => $slots) {
             $count = [];
 
             foreach ($local_churches as $local_church) {
@@ -104,7 +110,7 @@ class DashboardController extends Controller
         return $data;
     }
 
-    private function get_guest_attendance($color_assignment, $local_churches)
+    private function get_guest_attendance($groupedSlots, $color_assignment, $local_churches)
     {
         $data = [
             'data' => [
@@ -116,7 +122,7 @@ class DashboardController extends Controller
             ]
         ];
 
-        foreach (config('settings.slots_allotment') as $day => $slots) {
+        foreach ($groupedSlots as $day => $slots) {
             $count = [];
 
             foreach ($local_churches as $local_church) {
@@ -135,10 +141,10 @@ class DashboardController extends Controller
         return $data;
     }
 
-    private function get_all_attendance()
+    private function get_all_attendance($groupedSlots)
     {
         $data = [
-            'labels' => array_keys(config('settings.slots_allotment')),
+            'labels' => array_keys($groupedSlots),
             'datasets' => [
                 [
                     'label' => 'Member',
@@ -158,7 +164,7 @@ class DashboardController extends Controller
             ]
         ];
 
-        foreach (config('settings.slots_allotment') as $day => $slots) {
+        foreach ($groupedSlots as $day => $slots) {
             $data['datasets'][0]['data'][] = Attendance::where('registration_type', RegistrationType::Member)->whereIn('slot_id', $slots)->count();
             $data['datasets'][1]['data'][] = Attendance::where('registration_type', RegistrationType::Guest)->whereIn('slot_id', $slots)->count();
             $data['datasets'][2]['data'][] = Attendance::whereIn('slot_id', $slots)->count();
@@ -188,8 +194,8 @@ class DashboardController extends Controller
         return $data;
     }
 
-    public function get_all_list_received_hg() {
-        $allotments = config('settings.slots_allotment');
+    public function get_all_list_received_hg($groupedSlots) {
+        $allotments = $groupedSlots;
         $data = [];
 
         foreach ($allotments as $day => $allotment) {
@@ -234,26 +240,32 @@ class DashboardController extends Controller
     }
 
     // views
-    public function view_attendance_per_church(Request $request)
+    public function view_attendance_per_church(Event $event, Request $request)
     {
         if ($request->local_church) {
             $attendance = Attendance::where('local_church', $request->local_church);
         }
 
+        $slots = $event->slots;
+
+        $groupedSlots = $slots->groupBy('description')->map(function ($items) {
+            return $items->pluck('id')->all();
+        });
+
         if ($request->awta_day) {
             if ($request->local_church) {
-                $attendance = $attendance->whereIn('slot_id', config('settings.slots_allotment')[$request->awta_day]);
+                $attendance = $attendance->whereIn('slot_id', $groupedSlots[$request->awta_day]);
             } else {
-                $attendance = Attendance::whereIn('slot_id', config('settings.slots_allotment')[$request->awta_day]);
+                $attendance = Attendance::whereIn('slot_id', $groupedSlots[$request->awta_day]);
             }
         }
 
-        $attendance = $attendance->pluck('registration_uuid');
+        $attendance = $attendance->pluck('registration_id');
 
         $booking = Booking::with('registration');
 
         if ($request->awta_day) {
-            $booking = $booking->whereIn('slot_id', config('settings.slots_allotment')[$request->awta_day]);
+            $booking = $booking->whereIn('slot_id', $groupedSlots[$request->awta_day]);
         }
 
         $booking = $booking->whereHas('registration', function ($query) use ($request) {
@@ -274,11 +286,11 @@ class DashboardController extends Controller
 
         if ($request->attendance) {
             if ($request->attendance === 'Present') {
-                $booking = $booking->whereIn('registration_uuid', $attendance->toArray());
+                $booking = $booking->whereIn('registration_id', $attendance->toArray());
             }
 
             if ($request->attendance === 'Not Yet Present') {
-                $booking = $booking->whereNotIn('registration_uuid', $attendance->toArray());
+                $booking = $booking->whereNotIn('registration_id', $attendance->toArray());
             }
         }
 
@@ -286,21 +298,29 @@ class DashboardController extends Controller
 
         $booking->getCollection()->transform(function ($value) use ($attendance) {
             // Your code here
-            $value->attendance = in_array($value->registration_uuid, $attendance->toArray()) ? 'Present' : 'Not Yet Present';
+            $value->attendance = in_array($value->registration_id, $attendance->toArray()) ? 'Present' : 'Not Yet Present';
 
             return $value;
         });
 
         return view('dashboard.attendance', [
-            'absents' => $booking
+            'absents' => $booking,
+            'event' => $event,
+            'days' => $event->slots->groupBy('description')
         ]);
     }
 
-    public function view_received_hg_per_church(Request $request) {
+    public function view_received_hg_per_church(Event $event, Request $request) {
         $received_hg = ReceivedHG::with('registration', 'slot');
 
+        $slots = $event->slots;
+
+        $groupedSlots = $slots->groupBy('description')->map(function ($items) {
+            return $items->pluck('id')->all();
+        });
+
         if ($request->awta_day) {
-            $received_hg = $received_hg->whereIn('slot_id', config('settings.slots_allotment')[$request->awta_day]);
+            $received_hg = $received_hg->whereIn('slot_id', $groupedSlots[$request->awta_day]);
         }
 
         if ($request->local_church) {
@@ -319,9 +339,11 @@ class DashboardController extends Controller
         }
 
         $received_hg = $received_hg->paginate(10);
-
+        
         return view('dashboard.received_hg', [
-            'data' => $received_hg
+            'data' => $received_hg,
+            'event' => $event,
+            'days' => $event->slots->groupBy('description')
         ]);
     }
 }

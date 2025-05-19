@@ -13,12 +13,6 @@ return [
     'rebooking_deadline' => env('REBOOKING_DEADLINE'),
     'hybrid_registration_deadline' => env('HYBRID_REGISTRATION_DEADLINE'),
     'fb_group_url' => env('FB_GROUP_URL'),
-    'slots_allotment' => [
-        'Day 1' => [1, 5],
-        'Day 2' => [2, 6],
-        'Day 3' => [3, 7],
-        'Day 4' => [4, 8]
-    ],
     'zoom_details' => [
         'link' => env('ZOOM_LINK'),
         'id' => env('ZOOM_ID'),
