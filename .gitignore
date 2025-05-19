@@ -17,3 +17,17 @@ yarn-error.log
 /public/css/app.css
 /public/js/*.js
 /public_html/js/*.js
+
+# git rm --cached public/js/app.js  
+# git rm --cached public/js/attendance.js  
+# git rm --cached public/js/booking.js  
+# git rm --cached public/js/checkin.js  
+# git rm --cached public/js/payment.js  
+# git rm --cached public/js/registration.js  
+
+# git rm --cached public_html/js/app.js  
+# git rm --cached public_html/js/attendance.js  
+# git rm --cached public_html/js/booking.js  
+# git rm --cached public_html/js/checkin.js  
+# git rm --cached public_html/js/payment.js  
+# git rm --cached public_html/js/registration.js  
