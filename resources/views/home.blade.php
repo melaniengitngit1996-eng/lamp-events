@@ -34,7 +34,7 @@
 
         @if (auth()->user()->permissions->can_add_slots === 1)
             <el-tab-pane label="Slots">
-                <slots-table :slots="{{ $slots_list }}" />
+                <slots-table :slots="{{ $slots_list }}" :event="{{ $event }}" />
             </el-tab-pane>
         @endif
 

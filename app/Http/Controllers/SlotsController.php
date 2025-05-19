@@ -4,16 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Slots;
+use App\Models\Event;
 
 class SlotsController extends Controller
 {
-    public function index() {
+    public function index(Event $event) {
         return view('slots.index', [
-            'slots' => Slots::all()
+            'slots' => Slots::where('event_id', $event->id)->get()
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Event $event, Request $request) {
         $slot = Slots::find($request->selected['id']);
 
         if (empty($slot)) {

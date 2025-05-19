@@ -12,6 +12,12 @@
                 width="180">
             </el-table-column>
             <el-table-column
+                prop="description"
+                label="Description"
+                align="center"
+                width="180">
+            </el-table-column>
+            <el-table-column
                 prop="event_date"
                 label="Event Date"
                 align="center"
@@ -73,6 +79,9 @@
 <script>
 export default {
     props: {
+        event: {
+            required: true,
+        },
         slots: {
             required: true,
             type: Array
@@ -99,9 +108,9 @@ export default {
     methods: {
         objectSpanMethod({ row, column, rowIndex, columnIndex }) {
             if (columnIndex === 0) {
-                if (rowIndex % 4 === 0) {
+                if (rowIndex % (this.slots.length/2) === 0) {
                     return {
-                        rowspan: 4,
+                        rowspan: (this.slots.length/2),
                         colspan: 1
                     };
                 } else {
@@ -120,7 +129,7 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate(async (valid) => {
                 if (valid) {
-                    await axios.post("/slots", {
+                    await axios.post(`/${this.event.slug}/slots`, {
                         selected: this.selected,
                         additional_count: this.ruleForm.number,
                         notes: this.ruleForm.notes
