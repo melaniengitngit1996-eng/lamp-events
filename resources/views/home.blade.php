@@ -39,7 +39,7 @@
         @endif
 
         <el-tab-pane label="Received HG">
-            <received-hg-table />
+            <received-hg-table :event="{{ $event }}" />
         </el-tab-pane>
     </el-tabs>
 </div>

@@ -90,8 +90,8 @@ Route::get('/config', [App\Http\Controllers\ConfigurationController::class, 'sho
 Route::get('/dashboard/{event:slug}/attendance', [App\Http\Controllers\DashboardController::class, 'view_attendance_per_church'])->name('dashboard.attendance');
 Route::get('/dashboard/{event:slug}/received-hg', [App\Http\Controllers\DashboardController::class, 'view_received_hg_per_church'])->name('dashboard.hg');
 
-Route::get('received-hg/{event:slug}', [App\Http\Controllers\Api\ReceivedHGController::class, 'index'])->name('hg.index');
-Route::get('received-hg/{event:slug}/export', [App\Http\Controllers\Api\ReceivedHGController::class, 'export'])->name('hg.export');
+Route::get('{event:slug}/received-hg', [App\Http\Controllers\Api\ReceivedHGController::class, 'index'])->name('hg.index');
+Route::get('{event:slug}/received-hg/export', [App\Http\Controllers\Api\ReceivedHGController::class, 'export'])->name('hg.export');
 Route::delete('received-hg/{id}/delete', [App\Http\Controllers\Api\ReceivedHGController::class, 'destroy'])->name('hg.record.delete');
 
 

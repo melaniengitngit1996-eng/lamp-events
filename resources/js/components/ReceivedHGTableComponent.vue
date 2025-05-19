@@ -45,7 +45,7 @@
                                         </p>
                                         <p v-if="history.length > 10">...</p>
                                     </template>
-                                    <a href="/received-hg/export" class="float-end" slot="reference" @click="refreshHistory()">
+                                    <a :href="`/${event.slug}/received-hg/export`" class="float-end" slot="reference" @click="refreshHistory()">
                                     <el-button type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
                                     </a>
                                 </el-popover>
@@ -130,6 +130,11 @@
 
 <script>
   export default {
+    props: {
+        event: {
+            required: true
+        }
+    },
     data() {
       return {
         search: '',
@@ -161,7 +166,7 @@
             this.tableData.current_page = 1;
             
           axios
-              .get(`/received-hg`, {
+              .get(`/${this.event.slug}/received-hg`, {
                   params: {
                       search: this.search,
                       page: this.tableData.current_page,
@@ -179,7 +184,7 @@
         },
         fetchHistory() {
             axios
-            .get(`/export/history`, {
+            .get(`/${this.event.slug}/export/history`, {
                     params: {
                     type: 'received hg'
                 }})
@@ -206,7 +211,7 @@
             });
 
             setTimeout(async () => {
-                await axios.delete(`/received-hg/${id}/delete`)
+                await axios.delete(`/${this.event.slug}/received-hg/${id}/delete`)
                 .then(async (response) => {
                 loading.close()
                 
