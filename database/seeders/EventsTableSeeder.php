@@ -19,7 +19,7 @@ class EventsTableSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Annual Worship & Thanksgiving Assembly 2025',
                 'description' => null,
-                'slug' => '3847934834',
+                'slug' => '9876545674',
                 'local_church' => 'General',
                 'template_id' => 1,
                 'theme' => null,

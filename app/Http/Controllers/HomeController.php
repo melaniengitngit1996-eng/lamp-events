@@ -6,6 +6,7 @@ use App\Models\Registration;
 use Illuminate\Http\Request;
 use App\Http\Resources\RegistrationResource;
 use App\Models\LookUp;
+use App\Models\Event;
 use App\Models\Slots;
 use App\Models\Attendance;
 use App\Enums\BookingStatus;
@@ -23,8 +24,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Request $request)
-    {
+    public function index() {
+        return redirect()->route('home.index', ['event' => 9876545674]);
+    }
+
+    public function show(Event $event, Request $request) {
         $slots_members = Slots::where('registration_type', 'Member')->with('bookings')->get()->map(function ($slot) {
             $booked = $slot->bookings->groupBy('local_church')->map(function ($lc) {
                 return $lc->count();
@@ -257,6 +261,7 @@ class HomeController extends Controller
         if ($request->type === 'received_hg') $tab = 6;
 
         return view('home', [
+            'event' => $event,
             'search' => $request->search,
             'type' => $request->type,
             'slots' => [

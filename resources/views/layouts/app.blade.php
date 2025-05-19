@@ -53,11 +53,11 @@
             
             <el-menu :default-openeds="['4']">
                 <el-menu-item class="{{ request()->is('dashboard') ? 'el-menu-item__active' : '' }}">
-                    <template slot="title"><el-link href="/dashboard/3847934834/view" :underline="false"><img class="mb-1" height="17" width="20" src="/images/portfolio.png" style="margin-right: 10px"/>Dashboard</el-link></template>
+                    <template slot="title"><el-link href="/9876545674/dashboard" :underline="false"><img class="mb-1" height="17" width="20" src="/images/portfolio.png" style="margin-right: 10px"/>Dashboard</el-link></template>
                 </el-menu-item>
 
                 <el-menu-item class="{{ request()->is('home') || request()->is('/') ? 'el-menu-item__active' : '' }}">
-                    <template slot="title"><el-link href="/home" :underline="false"><img class="mb-1" height="17" width="20" src="/images/database.png" style="margin-right: 10px"/>AWTA Data</el-link></template>
+                    <template slot="title"><el-link href="/home" :underline="false"><img class="mb-1" height="17" width="20" src="/images/database.png" style="margin-right: 10px"/>Event Data</el-link></template>
                 </el-menu-item>
                 
                 {{-- <el-submenu index="4">

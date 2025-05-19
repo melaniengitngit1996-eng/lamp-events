@@ -219,6 +219,11 @@
 
 <script>
   export default {
+    props: {
+        event: {
+            required: true
+        },
+    },
     data() {
       return {
         search: {
@@ -253,7 +258,7 @@
           this.tableData.current_page = 1;
           
         axios
-            .get(`/registration/all`, {
+            .get(`/${this.event.slug}/registration/all`, {
                 params: {
                     search: this.search,
                     page: this.tableData.current_page,
@@ -283,7 +288,7 @@
           });
 
           setTimeout(async () => {
-            await axios.delete(`/registration/${uuid}/delete`)
+            await axios.delete(`/${this.event.slug}/registration/${uuid}/delete`)
             .then(async (response) => {
               loading.close()
               
@@ -332,7 +337,7 @@
         });
 
         axios
-            .get(`/registration/${id}/resend-mail`)
+            .get(`/${this.event.slug}/registration/${id}/resend-mail`)
             .then(async response => {
               loading.close()
 
@@ -343,7 +348,7 @@
       },
       fetchHistory() {
         axios
-          .get(`/export/history`, {
+          .get(`/${this.event.slug}/export/history`, {
             params: {
               type: 'registrations'
             }})

@@ -19,6 +19,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/{event:slug}/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/{event:slug}/home', [App\Http\Controllers\HomeController::class, 'show'])->name('home.index');
+
 
 // wip new routes
 Route::get('/lookup/{event:slug}/{id}/find', [App\Http\Controllers\LookUpController::class, 'show'])->name('lookup.show');
@@ -26,11 +29,11 @@ Route::get('/lookup/{event:slug}/{id}/find', [App\Http\Controllers\LookUpControl
 Route::get('/register/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'create'])->name('register');
 Route::get('/registration/{event:slug}/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
 Route::post('/registration/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'store'])->name('registration.store');
-Route::get('/registration/all', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('registration.index');
+Route::get('/{event:slug}/registration/all', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('registration.index');
 Route::get('/registration/{id}/edit', [App\Http\Controllers\Registration2Controller::class, 'edit'])->name('registration.edit');
-Route::delete('/registration/{registration}/delete', [App\Http\Controllers\Registration2Controller::class, 'destroy'])->name('registration.delete');
+Route::delete('/{event:slug}/registration/{registration}/delete', [App\Http\Controllers\Registration2Controller::class, 'destroy'])->name('registration.delete');
 Route::post('/registration/{registration}/update', [App\Http\Controllers\Registration2Controller::class, 'update'])->name('registration.update');
-Route::get('/registration/{id}/resend-mail', [App\Http\Controllers\Registration2Controller::class, 'resend_mail'])->name('registration.resend_mail');
+Route::get('/{event:slug}/registration/{id}/resend-mail', [App\Http\Controllers\Registration2Controller::class, 'resend_mail'])->name('registration.resend_mail');
 Route::get('/registration/validate', [App\Http\Controllers\Registration2Controller::class, 'validation'])->name('registration.validation');
 
 if (env('CLOSE_REGISTRATION') === true) {
@@ -84,7 +87,6 @@ Route::get('/booking/validate', [App\Http\Controllers\BookingController::class, 
 Route::get('/config', [App\Http\Controllers\ConfigurationController::class, 'show'])->name('configurations');
 
 // dashboard
-Route::get('/dashboard/{event:slug}/view', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/{event:slug}/attendance', [App\Http\Controllers\DashboardController::class, 'view_attendance_per_church'])->name('dashboard.attendance');
 Route::get('/dashboard/{event:slug}/received-hg', [App\Http\Controllers\DashboardController::class, 'view_received_hg_per_church'])->name('dashboard.hg');
 
@@ -101,7 +103,7 @@ Route::get('/check-in/{event:slug}/passes', [App\Http\Controllers\CheckInControl
 
 Route::post('/slots', [App\Http\Controllers\SlotsController::class, 'store'])->name('slots.store');
 
-Route::get('/export/history', [App\Http\Controllers\ExportHistoryController::class, 'index'])->name('history.index');
+Route::get('/{event:slug}/export/history', [App\Http\Controllers\ExportHistoryController::class, 'index'])->name('history.index');
 
 Route::get('users/mobile/create', [App\Http\Controllers\MobileUserController::class, 'create'])->name('user.create');
 Route::post('users/mobile', [App\Http\Controllers\MobileUserController::class, 'store'])->name('user.store');

@@ -9,7 +9,7 @@
     <el-tabs type="border-card" value="{{ $tab }}">
         {{-- Registration --}}
         <el-tab-pane label="Registrations">
-            <registration-table />                        
+            <registration-table :event="{{ $event }}"/>                        
         </el-tab-pane>
 
         {{-- Look Up --}}

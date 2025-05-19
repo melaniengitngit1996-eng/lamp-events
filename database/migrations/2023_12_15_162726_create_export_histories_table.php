@@ -15,9 +15,11 @@ class CreateExportHistoriesTable extends Migration
     {
         Schema::create('export_histories', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('event_id');
             $table->string('type');
             $table->integer('user_id');
             $table->timestamps();
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
         });
     }
 

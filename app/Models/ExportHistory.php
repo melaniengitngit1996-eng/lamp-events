@@ -11,7 +11,8 @@ class ExportHistory extends Model
 
     protected $fillable = [
         'type',
-        'user_id'
+        'user_id',
+        'event_id'
     ];
 
     protected $casts = [

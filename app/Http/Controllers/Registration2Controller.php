@@ -35,11 +35,11 @@ class Registration2Controller extends Controller
      *
      * @param  String $slug
      */
-    public function index(Request $request)
+    public function index(Event $event, Request $request)
     {
         $search = json_decode($request->search);
 
-        $registration = Registration::withSum('payments', 'amount')->with('event');
+        $registration = Registration::withSum('payments', 'amount')->with('event')->where('event_id', $event->id);
 
         if ($search->payment_status) {
             $registration = $registration->where('payment_status', '=', $search->payment_status);
@@ -407,7 +407,7 @@ class Registration2Controller extends Controller
      *
      * @param  Registration $registration
      */
-    public function destroy(Registration $registration)
+    public function destroy(Event $event, Registration $registration)
     {
         $registration->bookings()->delete();
 
@@ -500,7 +500,7 @@ class Registration2Controller extends Controller
      *
      * @param $id
      */
-    public function resend_mail($id)
+    public function resend_mail(Event $event, $id)
     {
         $registration = Registration::find($id);
 
