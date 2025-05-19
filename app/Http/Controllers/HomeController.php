@@ -29,7 +29,7 @@ class HomeController extends Controller
     }
 
     public function show(Event $event, Request $request) {
-        $slots_members = Slots::where('registration_type', 'Member')->with('bookings')->get()->map(function ($slot) {
+        $slots_members = Slots::where('registration_type', 'Member')->where('event_id', $event->id)->with('bookings')->get()->map(function ($slot) {
             $booked = $slot->bookings->groupBy('local_church')->map(function ($lc) {
                 return $lc->count();
             });
@@ -39,7 +39,7 @@ class HomeController extends Controller
             return $slot;
         });
 
-        $slots_guests = Slots::where('registration_type', 'Guest')->with('bookings')->get()->map(function ($slot) {
+        $slots_guests = Slots::where('registration_type', 'Guest')->where('event_id', $event->id)->with('bookings')->get()->map(function ($slot) {
             $booked = $slot->bookings->groupBy('local_church')->map(function ($lc) {
                 return $lc->count();
             });
@@ -51,7 +51,7 @@ class HomeController extends Controller
 
         $local_churches = explode(',', env('LOCAL_CHURCHES'));
 
-        $slots = Slots::where('registration_type', 'Member')->get();
+        $slots = Slots::where('registration_type', 'Member')->where('event_id', $event->id)->get();
         $attendance_count = [];
 
         foreach ($slots as $slot) {
