@@ -12,6 +12,7 @@ class Booking extends Model
     protected $fillable = [
         'registration_id',
         'slot_id',
+        'event_id',
         'local_church',
         'status'
     ];

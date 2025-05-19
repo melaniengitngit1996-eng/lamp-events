@@ -18,7 +18,7 @@
         </el-tab-pane>
 
         <el-tab-pane label="Attendance">
-            <attendances-table />
+            <attendances-table :event="{{ $event }}"/>
         </el-tab-pane>
 
         {{-- Bookings --}}

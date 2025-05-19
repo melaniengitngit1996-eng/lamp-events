@@ -57,6 +57,7 @@ class Controller extends BaseController
 
         foreach ($bookings as $booking) {
             Booking::create([
+                'event_id' => $registration->event_id,
                 'registration_id' => $registration->id,
                 'slot_id' => $booking,
                 'local_church' => $registration['local_church'],

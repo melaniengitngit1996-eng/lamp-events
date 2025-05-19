@@ -13,6 +13,7 @@ class Attendance extends Model
         'registration_id',
         'slot_id',
         'local_church',
+        'event_id',
         'registration_type',
         'notes'
     ];

@@ -24,10 +24,10 @@ class AttendanceController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show', 'store']]);
     }
 
-    public function all(Request $request) {
+    public function all(Event $event, Request $request) {
         $search = json_decode($request->search);
 
-        $attendances = Attendance::with('registration', 'slot');
+        $attendances = Attendance::with('registration', 'slot')->where('event_id', $event->id);
 
         if ($search->registration_type) {
             $attendances = $attendances->whereRelation('registration', 'registration_type', '=', $search->registration_type);
@@ -156,6 +156,7 @@ class AttendanceController extends Controller
 
         if (!$attendance) {
             return $registration->attendances()->create([
+                'event_id' => $event->id,
                 'slot_id' => $slot_id,
                 'registration_type' => $registration->registration_type,
                 'local_church' => $request->details['local_church'],

@@ -136,6 +136,11 @@
   
   <script>
     export default {
+        props: {
+            event: {
+                required: true
+            }
+        },
         data() {
             return {
                 tableData: {
@@ -165,7 +170,7 @@
                 this.tableData.current_page = 1;
                 
                 axios
-                    .get(`/attendances`, {
+                    .get(`/${this.event.slug}/attendances`, {
                         params: {
                             search: this.search,
                             page: this.tableData.current_page,
@@ -183,10 +188,10 @@
             },
             fetchHistory() {
                 axios
-                .get(`/export/history`, {
+                .get(`/${this.event.slug}/export/history`, {
                     params: {
-                    type: 'attendances'
-                    }})
+                        type: 'attendances'
+                }})
                 .then(response => {
                     this.history = response.data
                 })
