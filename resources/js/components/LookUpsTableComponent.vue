@@ -107,7 +107,7 @@
           align="center"
           sortable>
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.is_registered">Registered</el-tag>
+            <el-tag v-if="scope.row.registrations.length > 0">Registered</el-tag>
             <el-tag v-else type="danger">Not yet registered</el-tag>
           </template>
         </el-table-column>
@@ -155,6 +155,11 @@
 
 <script>
   export default {
+    props: {
+        event: {
+            required: true
+        }
+    },
     data() {
       return {
         search: '',
@@ -185,7 +190,7 @@
             this.tableData.current_page = 1;
             
           axios
-              .get(`/lookup`, {
+              .get(`/${this.event.slug}/lookup`, {
                   params: {
                       search: this.search,
                       page: this.tableData.current_page,

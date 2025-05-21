@@ -29,15 +29,17 @@ class LookUpController extends Controller
      * @param  String $awtaNumber
      * @return \App\Models\LookUp
      */
-    public function index(Request $request)
+    public function index(Event $event, Request $request)
     {
         $search = json_decode($request->search);
 
-        $lookUp = LookUp::query();
+        $lookUp = LookUp::with(['registrations' => function ($query) use ($event) {
+            $query->where('event_id', $event->id);
+        }]);
 
-        if ($search->registration_status != '') {
-            $lookUp = $lookUp->where('is_registered', (int) $search->registration_status);
-        }
+        // if ($search->registration_status != '') {
+        //     $lookUp = $lookUp->where('is_registered', (int) $search->registration_status);
+        // }
 
         if ($search->local_church) {
             $lookUp = $lookUp->where('local_church', $search->local_church);

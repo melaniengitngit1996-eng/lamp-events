@@ -57,7 +57,7 @@ class EventsTableSeeder extends Seeder
                 'id' => 2,
                 'name' => 'LAMP Church 38th Anniversary 2025',
                 'description' => null,
-                'slug' => '9876545674',
+                'slug' => '9876545673',
                 'local_church' => 'General',
                 'template_id' => 1,
                 'theme' => null,

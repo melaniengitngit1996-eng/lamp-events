@@ -27,10 +27,17 @@ class LookUp extends Model
         'local_church',
         'category',
         'country',
-        'is_registered',
         'local_church',
         'can_book_days',
         'avail_new_lamp_id',
         'cluster_group'
     ];
+
+    /**
+     * Get the registrations for the delegate.
+     */
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class, 'uuid', 'lamp_id');
+    }
 }

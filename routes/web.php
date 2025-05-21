@@ -21,12 +21,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/{event:slug}/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/{event:slug}/home', [App\Http\Controllers\HomeController::class, 'show'])->name('home.index');
+Route::get('/{event:slug}/registration', [App\Http\Controllers\Registration2Controller::class, 'create'])->name('register');
+Route::get('/{event:slug}/attendance', [App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('/{event:slug}/check-in', [App\Http\Controllers\CheckInController::class, 'index'])->name('check-in');
 
 
 // wip new routes
 Route::get('/lookup/{event:slug}/{id}/find', [App\Http\Controllers\LookUpController::class, 'show'])->name('lookup.show');
 
-Route::get('/register/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'create'])->name('register');
 Route::get('/registration/{event:slug}/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
 Route::post('/registration/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'store'])->name('registration.store');
 Route::get('/{event:slug}/registration/all', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('registration.index');
@@ -60,7 +62,7 @@ Route::get('/registrations/export', [App\Http\Controllers\RegistrationController
 Route::get('/registrations/test_mail', [App\Http\Controllers\RegistrationController::class, 'test_mail'])->name('registration.test');
 
 // lookup
-Route::get('/lookup', [App\Http\Controllers\LookUpController::class, 'index'])->name('lookup.index');
+Route::get('/{event:slug}/lookup', [App\Http\Controllers\LookUpController::class, 'index'])->name('lookup.index');
 Route::get('/lookup/create', [App\Http\Controllers\LookUpController::class, 'create'])->name('lookup.create');
 Route::post('/lookup', [App\Http\Controllers\LookUpController::class, 'store'])->name('lookup.store');
 Route::get('/lookup/validate', [App\Http\Controllers\LookUpController::class, 'validation'])->name('lookup.validation');
@@ -73,7 +75,6 @@ Route::get('/upload', [App\Http\Controllers\LookUpController::class, 'upload_vie
 Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
 
 // attendance
-Route::get('/attendance/{event:slug}/check', [App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance.index');
 Route::get('/attendance/{event}/{id}', [App\Http\Controllers\AttendanceController::class, 'show'])->name('attendance.show');
 Route::post('/attendance/{event}', [App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store');
 Route::get('/{event:slug}/attendances', [App\Http\Controllers\AttendanceController::class, 'all'])->name('attendance.all');
@@ -96,7 +97,6 @@ Route::delete('received-hg/{id}/delete', [App\Http\Controllers\Api\ReceivedHGCon
 
 
 // online check in
-Route::get('/check-in/{event:slug}', [App\Http\Controllers\CheckInController::class, 'index'])->name('check-in');
 Route::get('/check-in/{event}/validate', [App\Http\Controllers\CheckInController::class, 'validation'])->name('check-in.validation');
 Route::post('/check-in/{event}/{id}/edit', [App\Http\Controllers\CheckInController::class, 'update'])->name('check-in.update');
 Route::get('/check-in/{event:slug}/passes', [App\Http\Controllers\CheckInController::class, 'show'])->name('check-in.attendance');
@@ -107,3 +107,5 @@ Route::get('/{event:slug}/export/history', [App\Http\Controllers\ExportHistoryCo
 
 Route::get('users/mobile/create', [App\Http\Controllers\MobileUserController::class, 'create'])->name('user.create');
 Route::post('users/mobile', [App\Http\Controllers\MobileUserController::class, 'store'])->name('user.store');
+
+Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');

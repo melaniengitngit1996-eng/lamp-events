@@ -15037,7 +15037,7 @@ CREATE TABLE `look_ups` (
 -- Dumping data for table `look_ups`
 --
 
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LAMP00001', 'LPBI00022', 'crisannj7@gmail.com', 'Cris Ann', 'Jose', 'Cris Ann Jose', 'Ann Jose', 'Member', 'Binan', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-08-31 18:50:25'),
 ('LAMP00002', 'LPMU00199', 'melanie.ngitngit@yahoo.com', 'Melanie', 'De Vera', 'Melanie De Vera', 'Melanie Ngitngit', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-08-31 19:09:29'),
 ('LAMP00003', 'LPBI00040', 'aldencarlogarcia@gmail.com', 'Alden Carlo', 'Garcia', 'Alden Carlo Garcia', 'Al Garcia', 'Member', 'Binan', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-08-31 23:37:17'),
@@ -15278,7 +15278,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LAMP00238', 'LPDA00041', 'fernandezangel.0119@gmail.com', 'Amy', 'Fernandez', 'Amy Fernandez', 'AMY FERNANDEZ', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-09-18 15:11:36'),
 ('LAMP00239', 'LPDA00046', 'fernandezangel.0119@gmail.com', 'Arthur', 'Fernandez', 'Arthur Fernandez', 'ARTHUR FERNANDEZ', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-09-18 15:14:12'),
 ('LAMP00240', '--', 'lu.johrobertt.3098@gmail.com', 'Rodel', 'Quiambao', 'Rodel Quiambao', 'Rodel Quiambao', 'Member', 'Tarlac', 'Philippines', 'Adult', 1, 2, '2023-09-18 16:19:37', '2023-09-18 16:19:37');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LAMP00241', '--', 'lu.johrobertt.3098@gmail.com', 'Micaela', 'Castañares', 'Micaela Castañares', 'Micaela Castañares', 'Member', 'Tarlac', 'Philippines', 'Adult', 1, 2, '2023-09-18 16:21:45', '2023-09-18 16:21:45'),
 ('LAMP00242', 'LPBI00132', '', 'Joselito', 'Birot', 'Joselito Birot', 'Armageddon Seafarer', 'Member', 'Binan', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-09-18 17:30:01'),
 ('LAMP00243', 'LPMU00421', '', 'Melvie', 'Manacof', 'Melvie Manacof', '', 'Member', 'Binan', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:12', '2023-09-18 20:18:42'),
@@ -15518,7 +15518,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LAMP00477', 'LPBI00145', 'riveracharisse97@gmail.com', 'Regina', 'Alitagtag', 'Regina Alitagtag', 'Manuel Redolosa', 'Member', 'Binan', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-10-21 10:16:16'),
 ('LAMP00478', 'LPCA00081', 'josephinecabreros123@gmail.com', 'Teresita', 'Baronia', 'Teresita Baronia', 'Teresita Baronia', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-10-21 11:23:49'),
 ('LAMP00479', 'LPCA00077', 'amolarrosemarie@gmail.com', 'Rosemarie', 'Amolar', 'Rosemarie Amolar', 'Rosemarie Parco Lopez-Amolar', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-10-21 15:15:04');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LAMP00480', 'LPCA00078', 'amolarroberto78@gmail.com', 'Roberto', 'Amolar', 'Roberto Amolar', 'Roberto Amolar', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-10-21 15:18:43'),
 ('LAMP00481', 'LPCA00398', 'amolarrosemarie@gmail.com', 'SheikanaMariel', 'Lopez', 'SheikanaMariel Lopez', 'Sheikha Mariel Lopez', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-10-21 15:20:48'),
 ('LAMP00482', 'LPCA00166', 'she_amlog@hotmail.com', 'Amelia', 'Amlog', 'Amelia Amlog', 'Amie Mella Amlog', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-10-21 15:26:40'),
@@ -15757,7 +15757,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LAMP00715', 'LPMU00086', 'yuannnn07@gmail.com', 'Aji', 'Realuyo', 'Aji Realuyo', 'Aji Realuyo', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-07 21:09:03'),
 ('LAMP00716', 'LPBI00061', 'rockymarcianofrianeza@gmail.com', 'Mary Ann', 'Frianeza', 'Mary Ann Frianeza', 'Mary Ann Frianeza', 'Member', 'Binan', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-07 22:19:26'),
 ('LAMP00717', 'LPBI00031', 'rockymarcianofrianeza@gmail.com', 'Elijah', 'Frianeza', 'Elijah Frianeza', 'elijah frianeza', 'Member', 'Binan', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-07 22:20:37');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LAMP00718', 'LPBI00168', 'rockymarcianofrianeza@gmail.com', 'Melrod', 'Hilario', 'Melrod Hilario', 'Melrod Hilario', 'Member', 'Binan', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-07 22:22:10'),
 ('LAMP00719', 'LPMU00169', 'laurenceagathap@gmail.com', 'Froilan', 'Andales', 'Froilan Andales', 'Rose Andales', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-08 11:53:10'),
 ('LAMP00720', 'LPMU00170', 'laurenceagathap@gmail.com', 'Rose', 'Andales', 'Rose Andales', 'Olan Andales', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-08 11:54:19'),
@@ -15997,7 +15997,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LAMP00954', 'LPMU00072', 'kleyrmalayao@gmail.com', 'Claire Ann Joyce', 'Malayao', 'Claire Ann Joyce Malayao', 'Ana Ligaya', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-11-19 17:41:59'),
 ('LAMP00955', 'LPMU00159', 'kleyrmalayao@gmail.com', 'Zenaida', 'Malayao', 'Zenaida Malayao', 'Zeny Malayao', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-19 17:44:26'),
 ('LAMP00956', 'LPDA00013', 'teennavarro@gmail.com', 'Edith', 'Navarro', 'Edith Navarro', 'Edith Navarro', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-19 17:48:44');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LAMP00957', 'LPDA00012', 'teennavarro@gmail.com', 'Elmer', 'Navarro', 'Elmer Navarro', 'Meng Navarro', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-19 17:55:00'),
 ('LAMP00958', 'LPMU00292', 'kleyrmalayao@gmail.com', 'Cristina Alaiza', 'Malayao', 'Cristina Alaiza Malayao', 'Clarise Ann Malayao', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 1, 3, '2023-08-31 18:41:11', '2023-11-19 17:57:47'),
 ('LAMP00959', 'LPDA00015', 'teennavarro@gmail.com', 'Shuck', 'Navarro', 'Shuck Navarro', 'Christian Shucks', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 1, 4, '2023-08-31 18:41:11', '2023-11-19 17:57:50'),
@@ -16243,7 +16243,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LAMP01200', 'LPCA00430', 'amolarrosemarie@gmail.com', 'Bryan', 'Amolar', 'Bryan Amolar', 'Bryan Amolar', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-27 19:23:29'),
 ('LAMP01201', 'LPCA00431', 'amolarrosemarie@gmail.com', 'Catherine', 'Amolar', 'Catherine Amolar', 'Catherine Ramos-Amolar', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-27 19:24:03'),
 ('LAMP01202', '--', NULL, 'Tristan Ross', 'Amolar', 'Tristan Ross Amolar', 'rosemarie parco lopez-amolar', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 2, '2023-11-27 19:24:49', '2023-11-27 19:24:49');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LAMP01203', '--', 'maryannellis99@gmail.com', 'Just Ann', 'Ellis', 'Just Ann Ellis', 'Mary ann ellis', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 0, 2, '2023-11-28 00:12:15', '2023-11-28 01:46:47'),
 ('LAMP01204', 'LPCA00380', 'jha.alcala00@yahoo.com', 'Catheryn', 'Bunyi', 'Catheryn Bunyi', 'Ctz de leon', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-28 07:22:15'),
 ('LAMP01205', 'LPCA00321', 'region5supervisor@gmail.com', 'Michael', 'Sagot', 'Michael Sagot', 'Princess Sagot', 'Member', 'Canlubang', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-11-28 09:13:26'),
@@ -16494,7 +16494,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LAMP01452', 'LPVA00019', 'sherylbansalevillar14@gmail.com', 'Sheryl', 'Villar', 'Sheryl Villar', 'Sheryl Bansale Villar', 'Member', 'Valenzuela', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:12', '2023-12-17 20:13:36'),
 ('LAMP01453', 'LPVA00046', 'sherylbansalevillar14@gmail.com', 'Khayla', 'Villar', 'Khayla Villar', 'Sheryl Bansale Villar', 'Member', 'Valenzuela', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:12', '2023-12-17 20:15:19'),
 ('LAMP01454', 'LPVA00045', 'sherylbansalevillar14@gmail.com', 'Michaella Yessa', 'Villar', 'Michaella Yessa Villar', 'Sheryl Bansale Villar', 'Member', 'Valenzuela', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:12', '2023-12-17 20:16:14');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LAMP01455', 'LPVA00026', 'maprincessaquino@gmail.com', 'Ma. Princess', 'Aquino', 'Ma. Princess Aquino', 'Princess Aquino', 'Member', 'Valenzuela', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:12', '2023-12-17 20:19:45'),
 ('LAMP01456', '--', 'eddiepiolotuliao@gmail.com', 'Richard', 'Ferol', 'Richard Ferol', 'Richard Ferol', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 1, 2, '2023-12-17 20:25:33', '2023-12-17 20:25:33'),
 ('LAMP01457', 'LPDA00097', 'eddiepiolotuliao@gmail.com', 'Jaya', 'De una', 'Jaya De una', 'Aya Reynera', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 1, 2, '2023-08-31 18:41:11', '2023-12-17 20:43:03'),
@@ -16749,7 +16749,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LPDA00087', NULL, '', 'Marian', 'Jayme', 'Marian Jayme', '', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:11', '2023-08-31 18:41:11'),
 ('LPDA00088', NULL, '', 'Andrei', 'Bayungan', 'Andrei Bayungan', '', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:11', '2023-08-31 18:41:11'),
 ('LPDA00091', NULL, '', 'Jefferson', 'Lianza', 'Jefferson Lianza', '', 'Member', 'Dasmarinas', 'Malaysia', 'Adult', 0, 2, '2023-08-31 18:41:11', '2023-08-31 18:41:11');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LPDA00092', NULL, '', 'Jenilyn', 'Garcia', 'Jenilyn Garcia', '', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:11', '2023-08-31 18:41:11'),
 ('LPDA00093', NULL, '', 'Francheska', 'Garcia', 'Francheska Garcia', '', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:11', '2023-08-31 18:41:11'),
 ('LPDA00106', NULL, 'eddiepiolotuliao@gmail.com', 'Login', 'Nebrida', 'Login Nebrida', 'Login Nebrida', 'Member', 'Dasmarinas', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:11', '2023-08-31 18:41:11'),
@@ -17019,7 +17019,7 @@ INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `fi
 ('LPMU00470', NULL, '', 'Jan Chloe', 'Guerrero', 'Jan Chloe Guerrero', '', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:12', '2023-08-31 18:41:12'),
 ('LPMU00471', NULL, '', 'Joel', 'Bulgan', 'Joel Bulgan', '', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:12', '2023-08-31 18:41:12'),
 ('LPMU00474', NULL, 'segredcumeda@gmail.com', 'Segred', 'Cumeda', 'Segred Cumeda', 'MsRed Cumeda', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:12', '2023-08-31 18:41:12');
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `is_registered`, `can_book_days`, `created_at`, `updated_at`) VALUES
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `country`, `category`, `can_book_days`, `created_at`, `updated_at`) VALUES
 ('LPMU00477', NULL, 'jakeimperial28@gmail.com', 'Frank Lloyd', 'Bautista', 'Frank Lloyd Bautista', 'Maleen Bautista', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:12', '2023-08-31 18:41:12'),
 ('LPMU00478', NULL, '', 'Kenneth Mico Joe Café', 'Panganiban', 'Kenneth Mico Joe Café Panganiban', '', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:12', '2023-08-31 18:41:12'),
 ('LPMU00480', NULL, '', 'Robert Ryan', 'Fronda', 'Robert Ryan Fronda', '', 'Member', 'Muntinlupa', 'Philippines', 'Adult', 0, 2, '2023-08-31 18:41:12', '2023-08-31 18:41:12'),

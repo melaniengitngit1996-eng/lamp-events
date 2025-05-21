@@ -13,7 +13,7 @@
     <meta property="og:title" content="Annual Worship and Thanksgiving {{ config('settings.year') }}" />
     <meta property="og:description" content="{{ config('settings.theme') }}"/>
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} - Attendance</title>
 
     @if (auth()->check())
     <script>
@@ -47,7 +47,7 @@
         <el-container>
             @if (Auth::user())
             <el-header style="height: auto; text-align: right; font-size: 12px; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04); border-bottom: 1px solid #DCDFE6;">
-                <span class="brand-text font-weight-light"><span style="font-weight: 800;text-shadow: 0 0 black;letter-spacing: 0.05em;" class="float-start p-3 text-primary text-uppercase">{{ $event->name }}</span>
+                <span class="brand-text font-weight-light"><span style="font-weight: 800; text-shadow: black 0px 0px; letter-spacing: 0.05em; color: dimgray;" class="float-start p-3 text-uppercase">{{ $event->name }}</span>
                 <li class="nav-item dropdown" style="list-style: none; padding: 15px;">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }}

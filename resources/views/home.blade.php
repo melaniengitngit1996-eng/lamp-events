@@ -6,6 +6,11 @@
 
 @section('content')
 <div class="mx-4">
+    <el-breadcrumb class="mb-3 mx-2" separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/events' }"><a href="/events">Events</a></el-breadcrumb-item>
+        <el-breadcrumb-item><i class="el-icon-date"></i>&nbsp;&nbsp;{{ $event->name }}</el-breadcrumb-item>
+    </el-breadcrumb>
+
     <el-tabs type="border-card" value="{{ $tab }}">
         {{-- Registration --}}
         <el-tab-pane label="Registrations">
@@ -14,7 +19,7 @@
 
         {{-- Look Up --}}
         <el-tab-pane label="Look Up">
-            <lookups-table />
+            <lookups-table :event="{{ $event }}"/>
         </el-tab-pane>
 
         <el-tab-pane label="Attendance">

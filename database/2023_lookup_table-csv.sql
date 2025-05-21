@@ -47,7 +47,7 @@ CREATE TABLE `look_ups` (
 LOCK TABLES `look_ups` WRITE;
 /*!40000 ALTER TABLE `look_ups` DISABLE KEYS */;
 
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `cluster_group`, `country`, `category`, `is_registered`, `can_book_days`, `avail_new_lamp_id`, `created_at`, `updated_at`)
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `cluster_group`, `country`, `category`, `can_book_days`, `avail_new_lamp_id`, `created_at`, `updated_at`)
 VALUES
 	('LAMP00001','LPBI00022','crisannj7@gmail.com','Cris Ann','Jose','Cris Ann Jose','Ann Jose','Member','Binan','Carmona Cluster','Philippines','Adult',1,2,'yes','2023-09-01 02:41:11','2024-08-23 18:25:26'),
 	('LAMP00002','LPMU00199','melanie.ngitngit@yahoo.com','Melanie','De Vera','Melanie De Vera','Melanie Ngitngit','Member','Muntinlupa','CB (Carmona/Binan)','Philippines','Adult',1,2,'yes','2023-09-01 02:41:11','2024-08-25 10:04:11'),
@@ -1230,7 +1230,7 @@ VALUES
 	('LAMP01180','--','suazojudyannbaltazar@gmail.com','Dannah','Doncansil','Dannah Doncansil',NULL,'Member','Canlubang','San Juan 2','Philippines','Adult',1,2,'yes','2023-11-27 23:23:04','2024-08-23 18:25:28'),
 	('LAMP01181','--','suazojudyannbaltazar@gmail.com','Felicisimo','Doncansil','Felicisimo Doncansil',NULL,'Member','Canlubang','San Juan 2','Philippines','Adult',1,2,'yes','2023-11-27 23:24:09','2024-08-23 18:25:28');
 
-INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `cluster_group`, `country`, `category`, `is_registered`, `can_book_days`, `avail_new_lamp_id`, `created_at`, `updated_at`)
+INSERT INTO `look_ups` (`lamp_card_number`, `old_lamp_card_number`, `email`, `firstname`, `lastname`, `fullname`, `facebook_name`, `registration_type`, `local_church`, `cluster_group`, `country`, `category`, `can_book_days`, `avail_new_lamp_id`, `created_at`, `updated_at`)
 VALUES
 	('LAMP01182','LPCA00352','suazojudyannbaltazar@gmail.com','Gemma','Villanueva','Gemma Villanueva','Gemma Doncansil Villanueva','Member','Canlubang','San Juan 2','Philippines','Adult',1,2,'no','2023-09-01 02:41:11','2024-08-23 18:25:28'),
 	('LAMP01183','LPCA00354','suazojudyannbaltazar@gmail.com','Daniela','Villanueva','Daniela Villanueva','Daniela Doncansil Villanueva','Member','Canlubang','San Juan 2','Philippines','Adult',1,2,'no','2023-09-01 02:41:11','2024-08-23 18:25:28'),
