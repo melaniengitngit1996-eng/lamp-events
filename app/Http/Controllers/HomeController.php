@@ -24,8 +24,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index() {
-        return redirect()->route('home.index', ['event' => 9876545674]);
+    public function index($event = null) {
+        if (empty($event)) {
+            return redirect()->route('events.index');
+        }
+
+        return redirect()->route('home.index', ['event' => $event]);
     }
 
     public function show(Event $event, Request $request) {
