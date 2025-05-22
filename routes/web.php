@@ -32,7 +32,7 @@ Route::get('/lookup/{event:slug}/{id}/find', [App\Http\Controllers\LookUpControl
 Route::get('/{event:slug}/registration/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
 Route::post('/registration/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'store'])->name('registration.store');
 Route::get('/{event:slug}/registration/all', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('registration.index');
-Route::get('/registration/{id}/edit', [App\Http\Controllers\Registration2Controller::class, 'edit'])->name('registration.edit');
+Route::get('/{event:slug}/registration/{id}/edit', [App\Http\Controllers\Registration2Controller::class, 'edit'])->name('registration.edit');
 Route::delete('/{event:slug}/registration/{registration}/delete', [App\Http\Controllers\Registration2Controller::class, 'destroy'])->name('registration.delete');
 Route::post('/registration/{registration}/update', [App\Http\Controllers\Registration2Controller::class, 'update'])->name('registration.update');
 Route::get('/{event:slug}/registration/{id}/resend-mail', [App\Http\Controllers\Registration2Controller::class, 'resend_mail'])->name('registration.resend_mail');
@@ -43,19 +43,19 @@ Route::get('/registration/validate', [App\Http\Controllers\Registration2Controll
 // }
 
 // payments
-Route::get('/payments/{registration}/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payments.create');
+Route::get('/{event:slug}/payments/{registration}/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payments.create');
 Route::delete('/payments/{payment}/delete', [App\Http\Controllers\PaymentController::class, 'destroy'])->name('payments.delete');
 Route::post('/payments/{registration}', [App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');
 
 // booking
-Route::get('/booking/{registration}/edit', [App\Http\Controllers\BookingController::class, 'edit'])->name('booking.edit');
+Route::get('/{event:slug}/booking/{registration}/edit', [App\Http\Controllers\BookingController::class, 'edit'])->name('booking.edit');
 Route::post('/booking/{id}/update', [App\Http\Controllers\BookingController::class, 'update'])->name('booking.update');
 Route::get('/booking/{id}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking.show');
 // --------
 
 // ticket
 Route::get('/{event:slug}/ticket/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('ticket.show');
-Route::get('/ticket/{id}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('ticket.edit');
+Route::get('/{event:slug}/ticket/{id}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('ticket.edit');
 
 // export
 Route::get('/registrations/export', [App\Http\Controllers\RegistrationController::class, 'export'])->name('registration.export');

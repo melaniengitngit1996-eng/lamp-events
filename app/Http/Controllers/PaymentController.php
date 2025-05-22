@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
+use App\Models\Event;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,14 +16,15 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Registration $registration) {
+    public function create(Event $event, Registration $registration) {
         $balance = floatval($registration->rate);
         $balance-= floatval(array_sum(array_column($registration->payments->toArray(), 'amount')));
         
         return view('payments.create', [
             'registration' => $registration,
             'balance' => $balance,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'event' => $event
         ]);
     }
 

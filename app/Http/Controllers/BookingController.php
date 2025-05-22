@@ -8,6 +8,7 @@ use App\Enums\PaymentStatus;
 use App\Models\Booking;
 use App\Models\Registration;
 use App\Models\Slots;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -22,12 +23,13 @@ class BookingController extends Controller
         return view('booking.create');
     }
 
-    public function edit(Registration $registration)
+    public function edit(Event $event, Registration $registration)
     {
         return view('booking.edit', [
             'booked_dates' => $registration->bookings()->with(['slot'])->where('status', '!=', BookingStatus::Cancelled)->get(),
             'slots' => Slots::where('event_id', $registration->event_id)->where('registration_type', $registration->registration_type)->get(),
-            'registration' => $registration
+            'registration' => $registration,
+            'event' => $event
         ]);
     }
 

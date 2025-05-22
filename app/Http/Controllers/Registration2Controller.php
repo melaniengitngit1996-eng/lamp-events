@@ -393,10 +393,11 @@ class Registration2Controller extends Controller
      *
      * @param $registration_id
      */
-    public function edit($registration_id)
+    public function edit(Event $event, $registration_id)
     {
         return view('registration.edit', [
-            'registration' => Registration::with('lookup')->where('id', $registration_id)->first()
+            'registration' => Registration::with('lookup')->where('id', $registration_id)->first(),
+            'event' => $event
         ]);
     }
 

@@ -67,6 +67,9 @@ export default {
         balance: {
             required: true,
             type: Number
+        },
+        event: {
+            required: true,
         }
     },
     data() {
@@ -168,7 +171,7 @@ export default {
             })
         },
         viewDetails() {
-          window.location.href = `/registration/${this.data.id}/edit`;
+          window.location.href = `/${this.event.slug}/registration/${this.data.id}/edit`;
         },
     }
 }
