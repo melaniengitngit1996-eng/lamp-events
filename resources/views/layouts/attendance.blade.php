@@ -25,7 +25,6 @@
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
             year:'{{ config('settings.year') }}',
             theme:'{{ config('settings.theme') }}',
-            fb_group_url: '{{ config('settings.fb_group_url') }}',
             zoom: {!! json_encode(config('settings.zoom_details')) !!},
         };
     </script>

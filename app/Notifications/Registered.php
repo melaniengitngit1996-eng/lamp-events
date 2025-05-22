@@ -7,6 +7,7 @@ use App\Enums\BookingStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\RegistrationType;
 use App\Models\Registration;
+use App\Models\Event;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -47,18 +48,20 @@ class Registered extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = url('/ticket/' . $this->registration->uuid);
+        $event = Event::find($this->registration->event_id);
+
+        $url = url('/'. $event->slug .'/ticket/' . $this->registration->uuid);
 
         if ($this->registration->booking_status === BookingStatus::Pending) {
             $markup = 'mail.registration.pending';
-            $subject = 'Booking on-hold for Annual Worship and Thanksgiving ' . env('YEAR');
+            $subject = 'Booking on-hold for ' . $event->name;
         } else if ($this->registration->booking_status === BookingStatus::Cancelled) {
             $markup = 'mail.registration.cancelled';
-            $subject = 'Booking cancelled for Annual Worship and Thanksgiving ' . env('YEAR');
+            $subject = 'Booking cancelled for ' . $event->name;
             $url = url('/booking/');
         } else if ($this->registration->booking_status === BookingStatus::Confirmed) {
             $markup = 'mail.registration.confirmed';
-            $subject = 'Booking confirmed for Annual Worship and Thanksgiving ' . env('YEAR');
+            $subject = 'Booking confirmed for ' . $event->name;
         }
 
         // $this->registration->booking_status === BookingStatus::Confirmed && 
@@ -68,13 +71,13 @@ class Registered extends Notification
             // member paid = confirmation
             if ($this->registration->payment_status === PaymentStatus::Paid || $this->registration->registration_type === RegistrationType::Guest) {
                 $markup = 'mail.registration.online.confirmed';
-                $subject = 'Registration completed for Annual Worship and Thanksgiving ' . env('YEAR');
-                $url = config('settings.fb_group_url');
+                $subject = 'Registration completed for ' . $event->name;
+                $url = $event->fb_group_url;
             }
 
             if ($this->registration->registration_type === RegistrationType::Member && ($this->registration->payment_status === PaymentStatus::Unsettled || $this->registration->payment_status === PaymentStatus::Partial)) {
                 $markup = 'mail.registration.online.pending';
-                $subject = 'Registration pending payment for Annual Worship and Thanksgiving ' . env('YEAR');
+                $subject = 'Registration pending payment for ' . $event->name;
             }
         }
 
@@ -98,7 +101,7 @@ class Registered extends Notification
                 'event_date' => config('settings.event_date'),
                 'rebooking_deadline' => config('settings.rebooking_deadline'),
                 'theme' => config('settings.theme'),
-                'fb_group_url' => config('settings.fb_group_url'),
+                'fb_group_url' => $event->fb_group_url,
                 'zoom' => [
                     'link' => config('settings.zoom_details.link'),
                     'id' => config('settings.zoom_details.id'),

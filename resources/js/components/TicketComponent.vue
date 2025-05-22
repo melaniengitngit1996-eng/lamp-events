@@ -137,7 +137,7 @@ export default {
                 msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
             
             if (this.registrations[0].attending_option === 'Online') {
-                msg += `<br /><br /><small style="line-height: 0px;">To watch the live broadcast, join our FB Group <br/><a href="${window.env.fb_group_url}">${window.env.fb_group_url}</a></small>`
+                msg += `<br /><br /><small style="line-height: 0px;">To watch the live broadcast, join our FB Group <br/><a href="${this.event.fb_group_url}">${this.event.fb_group_url}</a></small>`
 
                 msg += `<br /><br /><small style="line-height: 0px;">You may also join us via <b>Zoom</b>:<br />
                         <a href="${this.zoom.link}">${this.zoom.link}</a><br /><br />

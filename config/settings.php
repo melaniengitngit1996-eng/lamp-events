@@ -12,7 +12,6 @@ return [
     'event_date' => env('EVENT_DATE'),
     'rebooking_deadline' => env('REBOOKING_DEADLINE'),
     'hybrid_registration_deadline' => env('HYBRID_REGISTRATION_DEADLINE'),
-    'fb_group_url' => env('FB_GROUP_URL'),
     'zoom_details' => [
         'link' => env('ZOOM_LINK'),
         'id' => env('ZOOM_ID'),

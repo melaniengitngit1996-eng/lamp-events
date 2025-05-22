@@ -25,7 +25,6 @@
             theme:'{{ config('settings.theme') }}',
             event_date:'{{ config('settings.event_date') }}',
             hybrid_registration_deadline: '{{ config('settings.hybrid_registration_deadline') }}',
-            fb_group_url: '{{ config('settings.fb_group_url') }}',
             zoom: {!! json_encode(config('settings.zoom_details')) !!},
         };
     </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Registration;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -12,7 +13,7 @@ class TicketController extends Controller
         $this->middleware('auth', ['except' => ['show']]);
     }
 
-    public function show($uuid)
+    public function show(Event $event, $uuid)
     {
         $registration = Registration::with('bookings', 'bookings.slot')->where('uuid', $uuid)->first();
 
@@ -21,7 +22,8 @@ class TicketController extends Controller
         }, $registration->bookings->toArray());
 
         return view('ticket.show', [
-            'registration' => $registration
+            'registration' => $registration,
+            'event' => $event
         ]);
     }
 

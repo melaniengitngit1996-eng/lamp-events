@@ -44,18 +44,20 @@ class Reminder extends Notification
      */
     public function toMail($notifiable)
     {
+        $event = Event::find($this->registration->event_id);
+
         if ($this->registration->attending_option === AttendingOption::Hybrid) {
             $url = url('/ticket/' . $this->registration->uuid);
             $markdown = 'mail.registration.reminder';
             $file = storage_path(). "/images/event_details.pdf";
         } else {
-            $url = env('FB_GROUP_URL');
+            $url = $event->fb_group_url;
             $markdown = 'mail.registration.online.reminder';
             $file = storage_path(). "/images/programme.pdf";
         }
 
         if (env('TEST_MAIL') == true) {
-            $url = env('FB_GROUP_URL');
+            $url = $event->fb_group_url;
             $markdown = 'mail.registration.online.reminder';
             $file = storage_path(). "/images/programme.pdf";
         }

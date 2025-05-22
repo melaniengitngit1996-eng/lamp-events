@@ -54,7 +54,7 @@ Route::get('/booking/{id}', [App\Http\Controllers\BookingController::class, 'sho
 // --------
 
 // ticket
-Route::get('/ticket/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('ticket.show');
+Route::get('/{event:slug}/ticket/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('ticket.show');
 Route::get('/ticket/{id}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('ticket.edit');
 
 // export
