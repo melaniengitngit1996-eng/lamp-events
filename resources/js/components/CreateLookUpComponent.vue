@@ -76,6 +76,11 @@
 
 <script>
 export default {
+    props: {
+        event: {
+            required: true
+        }
+    },
     data() {
         return {
             ruleForm: {
@@ -88,7 +93,7 @@ export default {
                 country: 'Philippines',
                 lampIDNumber: '',
                 category: 'Adult',
-                canBookDays: parseInt(window.env.member_booking_limit || 0),
+                canBookDays: parseInt(this.event.member_booking_limit || 0),
             },
             rules: {
                 firstName: [

@@ -111,9 +111,9 @@ export default {
     },
     mounted() {
         this.year = window.env.year;
-        this.zoom.link = window.env.zoom.link;
-        this.zoom.id = window.env.zoom.id;
-        this.zoom.passcode = window.env.zoom.passcode;
+        this.zoom.link = this.event.zoom_url;
+        this.zoom.id = this.event.zoom_id;
+        this.zoom.passcode = this.event.zoom_password;
 
         if (this.congratulate && this.registrations[0].has_viewed_ticket == null)
             this.open()

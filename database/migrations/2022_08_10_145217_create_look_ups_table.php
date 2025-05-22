@@ -13,9 +13,7 @@ class CreateLookUpsTable extends Migration
      */
     public function up()
     {
-        $member_booking_limit = env('MEMBER_BOOKING_LIMIT');
-
-        Schema::create('look_ups', function (Blueprint $table) use ($member_booking_limit) {
+        Schema::create('look_ups', function (Blueprint $table) {
             $table->string('lamp_id')->primary();
             $table->string('old_lamp_card_number')->nullable();
             $table->string('email')->nullable();
@@ -28,7 +26,7 @@ class CreateLookUpsTable extends Migration
             $table->string('cluster_group')->nullable();
             $table->string('country');
             $table->string('category');
-            $table->integer('can_book_days')->default($member_booking_limit);
+            $table->integer('can_book_days')->default(1);
             $table->char('avail_new_lamp_id')->nullable();
             $table->timestamps();
         });

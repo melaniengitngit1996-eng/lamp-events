@@ -316,7 +316,7 @@ export default {
                 bookingCode: "",
                 email: "",
                 specificMedicalAssistance: "",
-                canBookDays: parseInt(window.env.member_booking_limit || 0),
+                canBookDays: parseInt(this.event.member_booking_limit || 0),
                 found: {},
             },
             rules: {
@@ -380,7 +380,7 @@ export default {
                     },
                 ],
             },
-            guest_booking_code: window.env.guest_booking_code,
+            guest_booking_code: this.event.booking_code,
             assignments: window.env.cluster_groups,
             options: [],
             hybrid_registration_deadline: window.env.hybrid_registration_deadline

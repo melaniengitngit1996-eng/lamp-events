@@ -100,12 +100,12 @@ class Registered extends Notification
                 'payment_due_date' => config('settings.payment_due_date'),
                 'event_date' => config('settings.event_date'),
                 'rebooking_deadline' => config('settings.rebooking_deadline'),
-                'theme' => config('settings.theme'),
+                'theme' => $event->description,
                 'fb_group_url' => $event->fb_group_url,
                 'zoom' => [
-                    'link' => config('settings.zoom_details.link'),
-                    'id' => config('settings.zoom_details.id'),
-                    'passcode' => config('settings.zoom_details.passcode'),
+                    'link' => $event->zoom_url,
+                    'id' => $event->zoom_id,
+                    'passcode' => $event->zoom_password,
                 ]
             ]);
     }

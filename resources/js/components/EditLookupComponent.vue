@@ -96,6 +96,9 @@ export default {
             required: true,
             type: Object
         },
+        event: {
+            required: true
+        }
     },
     data() {
         return {
@@ -109,7 +112,7 @@ export default {
                 country: 'Philippines',
                 lampIDNumber: '',
                 category: 'Adult',
-                canBookDays: parseInt(window.env.member_booking_limit || 0),
+                canBookDays: parseInt(this.event.member_booking_limit || 0),
                 clusterGroup: ''
             },
             rules: {

@@ -1,22 +1,14 @@
 <?php
 
 return [
-    'guest_booking_code' => env('GUEST_BOOKING_CODE'),
     'year' => env('YEAR'),
     'theme' => env('THEME'),
-    'guest_booking_limit' => env('GUEST_BOOKING_LIMIT'),
-    'member_booking_limit' => env('MEMBER_BOOKING_LIMIT'),
     'payment_due_date' => env('PAYMENT_DUE_DATE'),
     'api_key' => env('API_KEY'),
     'awta_day' => env('AWTA_DAY'),
     'event_date' => env('EVENT_DATE'),
     'rebooking_deadline' => env('REBOOKING_DEADLINE'),
     'hybrid_registration_deadline' => env('HYBRID_REGISTRATION_DEADLINE'),
-    'zoom_details' => [
-        'link' => env('ZOOM_LINK'),
-        'id' => env('ZOOM_ID'),
-        'passcode' => env('ZOOM_PASSCODE'),
-    ],
     'chart_color' => [
         'Day 1' => [
             'all' => '#fd7f6f',

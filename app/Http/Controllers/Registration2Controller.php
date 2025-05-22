@@ -174,7 +174,7 @@ class Registration2Controller extends Controller
                     $with_awta_card = $details['withAwtaCard'];
                     $cluster_group = $details['clusterGroup'];
                     $assistance = $details['specificMedicalAssistance'];
-                    $can_book_days = config('settings.member_booking_limit');
+                    $can_book_days = $event->member_booking_limit;
                     $awta_card_number = '--';
                     break;
 
@@ -302,7 +302,7 @@ class Registration2Controller extends Controller
                     'category' => $category,
                     'local_church' => $local_church,
                     'country' => $country,
-                    'can_book_days' => config('settings.member_booking_limit'),
+                    'can_book_days' => $event->member_booking_limit,
                     'cluster_group' => $cluster_group
                 ]);
             }

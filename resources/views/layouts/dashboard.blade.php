@@ -30,8 +30,7 @@
         window.env = {
             awta_day: '{{ config('settings.awta_day') }}',
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
-            year:'{{ config('settings.year') }}',
-            zoom: {!! json_encode(config('settings.zoom_details')) !!},
+            year:'{{ config('settings.year') }}'
         };
     </script>
 </head>

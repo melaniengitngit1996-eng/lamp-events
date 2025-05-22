@@ -38,9 +38,9 @@ Route::post('/registration/{registration}/update', [App\Http\Controllers\Registr
 Route::get('/{event:slug}/registration/{id}/resend-mail', [App\Http\Controllers\Registration2Controller::class, 'resend_mail'])->name('registration.resend_mail');
 Route::get('/registration/validate', [App\Http\Controllers\Registration2Controller::class, 'validation'])->name('registration.validation');
 
-if (env('CLOSE_REGISTRATION') === true) {
-    Route::get('/registration/new', [App\Http\Controllers\Registration2Controller::class, 'new'])->name('registration');
-}
+// if (env('CLOSE_REGISTRATION') === true) {
+//     Route::get('/registration/new', [App\Http\Controllers\Registration2Controller::class, 'new'])->name('registration');
+// }
 
 // payments
 Route::get('/payments/{registration}/create', [App\Http\Controllers\PaymentController::class, 'create'])->name('payments.create');

@@ -69,9 +69,9 @@ class Reminder extends Notification
                 'name' => $this->registration->fullname,
                 'event_date' => config('settings.event_date'),
                 'zoom' => [
-                    'link' => config('settings.zoom_details.link'),
-                    'id' => config('settings.zoom_details.id'),
-                    'passcode' => config('settings.zoom_details.passcode'),
+                    'link' => $event->zoom_url,
+                    'id' => $event->zoom_id,
+                    'passcode' => $event->zoom_password,
                 ]
             ])
             ->attach($file, [

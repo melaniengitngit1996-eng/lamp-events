@@ -371,7 +371,7 @@
                     lookUp: [],
                     selected: '',
                     clusterGroup: '',
-                    canBookDays: parseInt(window.env.member_booking_limit || 0),
+                    canBookDays: parseInt(this.event.member_booking_limit || 0),
                     specificMedicalAssistance: '',
                     guests: [{
                         email: '',
@@ -421,7 +421,7 @@
                 errors: [],
                 dates: [],
                 assignments: window.env.cluster_groups,
-                guest_booking_limit: parseInt(window.env.guest_booking_limit || 0)
+                guest_booking_limit: parseInt(this.event.guest_booking_limit || 0)
             }
         },
         watch: {
