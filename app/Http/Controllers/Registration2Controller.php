@@ -615,4 +615,9 @@ class Registration2Controller extends Controller
             ]
         ]);
     }
+
+    public function export(Event $event)
+    {
+        return Excel::download(new ExportRegistration($event), 'registrations_' . TIME() . '.csv');
+    }
 }

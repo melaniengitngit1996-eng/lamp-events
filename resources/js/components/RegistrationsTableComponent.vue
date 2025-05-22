@@ -95,7 +95,7 @@
                       </p>
                       <p v-if="history.length > 10">...</p>
                     </template>
-                    <a href="/registrations/export" slot="reference" @click="refreshHistory()" class="float-end">
+                    <a :href="`/${event.slug}/registrations/export`" slot="reference" @click="refreshHistory()" class="float-end">
                     <el-button type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
                     </a>
                   </el-popover>

@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Registration;
 use App\Models\ExportHistory;
+use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ExportRegistrationResource;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -11,12 +12,20 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class ExportRegistration implements FromCollection, WithHeadings
 {
+    protected $event;
+
+    public function __construct(Event $event)
+    {
+        $this->event = $event;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
         ExportHistory::create([
+            'event_id' => $this->event->id,
             'type' => 'registrations',
             'user_id' => Auth::user()->id
         ]);
@@ -42,8 +51,9 @@ class ExportRegistration implements FromCollection, WithHeadings
                 'medical_assistance_needed',
                 'visitor_to_member'
             ))
-                ->withSum('payments', 'amount', 'old_uuid')
-                ->get()
+            ->where('event_id', $this->event->id)
+            ->withSum('payments', 'amount', 'old_uuid')
+            ->get()
         );
     }
 

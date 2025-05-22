@@ -58,8 +58,7 @@ Route::get('/{event:slug}/ticket/{id}', [App\Http\Controllers\TicketController::
 Route::get('/{event:slug}/ticket/{id}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('ticket.edit');
 
 // export
-Route::get('/registrations/export', [App\Http\Controllers\RegistrationController::class, 'export'])->name('registration.export');
-Route::get('/registrations/test_mail', [App\Http\Controllers\RegistrationController::class, 'test_mail'])->name('registration.test');
+Route::get('/{event:slug}/registrations/export', [App\Http\Controllers\Registration2Controller::class, 'export'])->name('registration.export');
 
 // lookup
 Route::get('/{event:slug}/lookup', [App\Http\Controllers\LookUpController::class, 'index'])->name('lookup.index');
