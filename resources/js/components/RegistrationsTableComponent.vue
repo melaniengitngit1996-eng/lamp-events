@@ -274,7 +274,7 @@
                 });
             });
       },
-      deleteRegistration(uuid) {
+      deleteRegistration(id) {
         this.$confirm(`Are you sure you want to delete this registration?`, 'Warning', {
             customClass: 'prompt-message',
             confirmButtonText: 'Yes',
@@ -288,7 +288,7 @@
           });
 
           setTimeout(async () => {
-            await axios.delete(`/${this.event.slug}/registration/${uuid}/delete`)
+            await axios.delete(`/${this.event.slug}/registration/${id}/delete`)
             .then(async (response) => {
               loading.close()
               

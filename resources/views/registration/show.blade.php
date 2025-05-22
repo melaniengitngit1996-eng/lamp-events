@@ -4,7 +4,7 @@
 <div class="px-4">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <el-link type="primary" class="float-end" href="/register/{{ $event->slug }}">Register Another Delegate</el-link>
+            <el-link type="primary" class="float-end" href="/{{ $event->slug }}/registration">Register Another Delegate</el-link>
         </div>
     </div>
     

@@ -164,16 +164,16 @@ export default {
                 dangerouslyUseHTMLString: true
             }).then(async () => {
                 if (this.registrations[0].registration_type === 'Member'&& (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost')) {
-                    await axios.post(`/registration/${this.registrations[0].uuid}/update`, {
+                    await axios.post(`/registration/${this.registrations[0].id}/update`, {
                         avail_new_lamp_id: 'yes'
                     })
                 } else {
-                    await axios.post(`/registration/${this.registrations[0].uuid}/update`, {
+                    await axios.post(`/registration/${this.registrations[0].id}/update`, {
                         mark_as_viewed: true
                     })
                 }
             }).catch(async () => {
-                await axios.post(`/registration/${this.registrations[0].uuid}/update`, {
+                await axios.post(`/registration/${this.registrations[0].id}/update`, {
                     avail_new_lamp_id: 'no'
                 })
             })

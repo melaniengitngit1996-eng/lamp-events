@@ -29,7 +29,7 @@ Route::get('/{event:slug}/check-in', [App\Http\Controllers\CheckInController::cl
 // wip new routes
 Route::get('/lookup/{event:slug}/{id}/find', [App\Http\Controllers\LookUpController::class, 'show'])->name('lookup.show');
 
-Route::get('/registration/{event:slug}/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
+Route::get('/{event:slug}/registration/ticket', [App\Http\Controllers\Registration2Controller::class, 'show'])->name('registration.show');
 Route::post('/registration/{event:slug}', [App\Http\Controllers\Registration2Controller::class, 'store'])->name('registration.store');
 Route::get('/{event:slug}/registration/all', [App\Http\Controllers\Registration2Controller::class, 'index'])->name('registration.index');
 Route::get('/registration/{id}/edit', [App\Http\Controllers\Registration2Controller::class, 'edit'])->name('registration.edit');

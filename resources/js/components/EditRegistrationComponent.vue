@@ -435,7 +435,7 @@ export default {
                     setTimeout(async () => {
                         await axios
                             .post(
-                                `/registration/${this.registration.uuid}/update`,
+                                `/registration/${this.registration.id}/update`,
                                 this.ruleForm
                             )
                             .then(async (response) => {

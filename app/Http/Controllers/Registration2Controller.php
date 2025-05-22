@@ -480,7 +480,7 @@ class Registration2Controller extends Controller
 
             if ($registration->registration_type === 'Member') {
                 $registration->lookup()->update([
-                    'lamp_id' => $uuid,
+                    'lamp_id' => $registration->uuid,
                     'avail_new_lamp_id' => $request->availNewLAMPID,
                 ]);
             }
@@ -490,7 +490,7 @@ class Registration2Controller extends Controller
             $registration->updateStaffNotes($registration, $registration->notes, array($request->notes));
         }
 
-        return $this->updatePaymentStatus($registration->uuid, false);
+        return $this->updatePaymentStatus($registration->id, false);
     }
 
     /**
