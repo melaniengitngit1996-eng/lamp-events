@@ -40,8 +40,8 @@
 <el-container style="border: 1px solid #eee" id="app">
     @if (Auth::user())
     <el-header style="height: auto; text-align: right; font-size: 12px; box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04); border-bottom: 1px solid #DCDFE6;">
-        <span class="brand-text font-weight-light"><span style="text-shadow: black 0px 0px;letter-spacing: 0.05em;font-weight: 600;color: cornflowerblue;" class="float-start p-3 text-uppercase">LAMP CHURCH EVENTS</span>
-        <li class="nav-item dropdown" style="list-style: none; padding: 15px;">
+        <a href="/events"><span class="brand-text font-weight-light"><span style="text-shadow: black 0px 0px;letter-spacing: 0.05em;font-weight: 600;color: cornflowerblue;" class="float-start p-3 text-uppercase">LAMP CHURCH EVENTS</span></a>
+        <li class="nav-item dropdown" style="list-style: none;padding: 15px;width: 200px;float: right;">
             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                 {{ Auth::user()->name }}
             </a>
