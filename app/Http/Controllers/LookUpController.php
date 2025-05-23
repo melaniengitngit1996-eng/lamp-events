@@ -137,10 +137,11 @@ class LookUpController extends Controller
      *
      * @return View
      */
-    public function edit($awtaNumber)
+    public function edit(Event $event, $awtaNumber)
     {
         return view('lookup.edit', [
-            'lookup' => LookUp::where('lamp_id', $awtaNumber)->first()
+            'lookup' => LookUp::where('lamp_id', $awtaNumber)->first(),
+            'event' => $event
         ]);
     }
 
@@ -151,7 +152,7 @@ class LookUpController extends Controller
      * @param  Request $request
      * @return View
      */
-    public function update($awtaNumber, Request $request)
+    public function update(Event $event, $awtaNumber, Request $request)
     {
         $lookup = LookUp::where('lamp_id', $awtaNumber)->first();
 
@@ -200,9 +201,11 @@ class LookUpController extends Controller
      *
      * @return View
      */
-    public function create()
+    public function create(Event $event)
     {
-        return view('lookup.create');
+        return view('lookup.create', [
+            'event' => $event
+        ]);
     }
 
     /**

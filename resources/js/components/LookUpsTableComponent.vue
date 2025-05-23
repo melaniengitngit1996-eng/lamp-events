@@ -44,7 +44,7 @@
                 </td>
                 <td>
                   <br />
-                  <a class="float-end" v-if="permissions.can_add_lookup_data" href="/lookup/create"><el-button size="mini" type="info" class="mx-1">Create New</el-button></a>
+                  <a class="float-end" v-if="permissions.can_add_lookup_data" :href="`/${event.slug}/lookup/create`"><el-button size="mini" type="info" class="mx-1">Create New</el-button></a>
                   <el-button v-if="permissions.can_add_lookup_data" size="mini" type="success" class="float-end" @click="dialogVisible = true">Upload Excel&nbsp;<i class="el-icon-upload el-icon-right"></i></el-button>
                 </td>
               </tr>
@@ -126,7 +126,7 @@
           align="center"
           width="120">
           <template slot-scope="scope">
-            <a :href="`/lookup/${scope.row.lamp_id}/edit`"><el-button type="text" size="small">View Details</el-button></a>
+            <a :href="`/${event.slug}/lookup/${scope.row.lamp_id}/edit`"><el-button type="text" size="small">View Details</el-button></a>
           </template>
         </el-table-column>
       </el-table-column>
