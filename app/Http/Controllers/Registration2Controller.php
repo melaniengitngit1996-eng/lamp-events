@@ -65,9 +65,10 @@ class Registration2Controller extends Controller
             $registration = $registration->where('local_church', '=', $search->local_church);
         }
 
-        if ($search->keyword) {
-            $registration = $registration->where('fullname', 'LIKE', "%$search->keyword%")
-                ->orWhere('uuid', 'LIKE', "%$search->keyword%");
+        if ($search->keyword && stripos($search->keyword, "LAMP") !== false) {
+            $registration = $registration->Where('uuid', 'LIKE', "%$search->keyword%");
+        } else {
+            $registration = $registration->where('fullname', 'LIKE', "%$search->keyword%");
         }
 
         $registration = $registration->paginate(10);
