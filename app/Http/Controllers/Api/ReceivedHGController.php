@@ -120,7 +120,7 @@ class ReceivedHGController
     }
 
     public function export(Event $event) {
-        return Excel::download(new ExportReceivedHG, 'received_hg_' . TIME() . '.csv');
+        return Excel::download(new ExportReceivedHG($event), 'received_hg_' . TIME() . '.csv');
     }
 
     public function destroy($id) {

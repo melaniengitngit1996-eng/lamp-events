@@ -77,7 +77,7 @@ Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'inde
 Route::get('/attendance/{event}/{id}', [App\Http\Controllers\AttendanceController::class, 'show'])->name('attendance.show');
 Route::post('/attendance/{event}', [App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store');
 Route::get('/{event:slug}/attendances', [App\Http\Controllers\AttendanceController::class, 'all'])->name('attendance.all');
-Route::get('/attendances/export', [App\Http\Controllers\AttendanceController::class, 'export'])->name('attendance.export');
+Route::get('/{event:slug}/attendances/export', [App\Http\Controllers\AttendanceController::class, 'export'])->name('attendance.export');
 
 // booking
 Route::get('/booking', [App\Http\Controllers\BookingController::class, 'create'])->name('booking.create');

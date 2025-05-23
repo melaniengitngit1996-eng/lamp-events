@@ -167,7 +167,7 @@ class AttendanceController extends Controller
         return $attendance;
     }
 
-    public function export() {
-        return Excel::download(new ExportAttendance, 'attendance_' . TIME() . '.csv');
+    public function export(Event $event) {
+        return Excel::download(new ExportAttendance($event), 'attendance_' . TIME() . '.csv');
     }
 }
