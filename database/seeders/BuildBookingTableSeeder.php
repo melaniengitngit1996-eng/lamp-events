@@ -16,7 +16,7 @@ class BuildBookingTableSeeder extends Seeder
      */
     public function run()
     {
-        $members = Registration::where('registration_type', 'Member');
+        $members = Registration::where('registration_type', 'Member')->get();
 
         foreach ($members as $registration) {
             Booking::create([
@@ -36,7 +36,7 @@ class BuildBookingTableSeeder extends Seeder
             ]);
         }
 
-        $guests = Registration::where('registration_type', 'Guest');
+        $guests = Registration::where('registration_type', 'Guest')->get();
 
         foreach ($guests as $registration) {
             Booking::create([
