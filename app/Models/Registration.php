@@ -37,7 +37,8 @@ class Registration extends MyModel
         'medical_assistance_needed',
         'booked_date',
         'is_received_hg',
-        'event_id'
+        'event_id',
+        'custom_fields'
     ];
 
     protected $casts = [
@@ -45,7 +46,8 @@ class Registration extends MyModel
         'activities' => 'array',
         'booking_activities' => 'array',
         'is_received_hg' => 'date:M d, Y',
-        'event' => 'object'
+        'event' => 'object',
+        'custom_fields' => 'array',
     ];
 
     protected $appends = [

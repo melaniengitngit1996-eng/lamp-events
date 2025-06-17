@@ -27,7 +27,7 @@ class ExportRegistrationResource extends JsonResource
             return $date['slot']['event_date'];
         }, $attendances);
 
-        return [
+        $data = [
             'created_at' => $this->created_at,
             'uuid' => $this->uuid,
             'email' => $this->email,
@@ -52,5 +52,13 @@ class ExportRegistrationResource extends JsonResource
             'visitor_to_member' => $this->visitor_to_member,
             'old_uuid' => $this->old_uuid
         ];
+
+        if (!empty($this->custom_fields)) {
+            foreach ($this->custom_fields as $field => $value) {
+                $data[$field] = $value;
+            }
+        }
+
+        return $data;
     }
 }

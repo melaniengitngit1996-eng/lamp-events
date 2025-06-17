@@ -131,6 +131,33 @@
                 </el-card>
 
                 <el-card
+                    v-if="event.custom_fields.length > 0"
+                    shadow="always"
+                    class="mb-3"
+                >
+                    <div class="row">
+                        <div v-for="field in event.custom_fields" class="col-md-6">
+                            <el-form-item
+                                :label="field.label"
+                                :prop="field.name"
+                                required
+                            >
+                                <el-select
+                                    v-model="ruleForm[field.name]"
+                                    placeholder="Choose"
+                                >
+                                    <el-option
+                                        v-for="field in field.options.split(',')"
+                                        :value="field"
+                                        :label="field"
+                                    ></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                    </div>
+                </el-card>
+
+                <el-card
                     v-if="
                         ruleForm.registrationType === 'Member' &&
                         (ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')
@@ -383,7 +410,7 @@ export default {
             guest_booking_code: this.event.booking_code,
             assignments: window.env.cluster_groups,
             options: [],
-            hybrid_registration_deadline: window.env.hybrid_registration_deadline
+            hybrid_registration_deadline: window.env.hybrid_registration_deadline,
         };
     },
     watch: {
@@ -451,8 +478,30 @@ export default {
         if (Object.keys(this.data.step_1).length != 0) {
             this.ruleForm = this.data.step_1;
         }
+
+        
+    },
+    created() {
+        this.event.custom_fields.forEach(element => {
+            const name = element.name;
+
+            // Make ruleForm reactive
+            this.$set(this.ruleForm, name, element.default);
+
+            // Make rules reactive
+            this.$set(this.rules, name, [
+                {
+                    required: true,
+                    message: element.rule_message,
+                    trigger: ["blur", "change"],
+                },
+            ]);
+        });
     },
     methods: {
+        snakeToCamel(str) {
+            return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+        },
         submitForm(action) {
             this.$refs["ruleForm"].validate((valid) => {
                 if (valid) {

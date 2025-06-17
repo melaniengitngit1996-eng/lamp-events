@@ -105,7 +105,7 @@ class Registration2Controller extends Controller
         }
 
         $directory = "registration.{$event->template_id}.create";
-        
+        $event = Event::with('custom_fields')->find($event->id);
         return view($directory, [
             'event' => $event,
             'slots' => [
@@ -153,14 +153,18 @@ class Registration2Controller extends Controller
      */
     public function store(Event $event, Request $request)
     {
+        $event = Event::with('custom_fields')->find($event->id);
+
         // member registration
         if ($request->step_1['registrationType'] === 'Member') {
             $uuid = null;
 
+            $details = array_merge($request->step_1, $request->step_2, $request->step_3);
+
+            $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $details);
+
             switch ($request->step_1['withAwtaCard']) {
                 case 'none': // None
-                    $details = array_merge($request->step_1, $request->step_2, $request->step_3);
-
                     $uuid = UUID::issue();
                     $email = $details['email'];
                     $firstname = $details['firstName'];
@@ -180,8 +184,6 @@ class Registration2Controller extends Controller
                     break;
 
                 case 'lost': // Yes, but I don’t have it.
-                    $details = array_merge($request->step_1, $request->step_2, $request->step_3);
-
                     $lookup = LookUp::where('lamp_id', $details['selected'])->first();
 
                     $uuid = is_null($lookup['old_lamp_card_number']) ? UUID::issue() : $lookup['lamp_id'];
@@ -202,32 +204,28 @@ class Registration2Controller extends Controller
                     $can_book_days = $lookup['can_book_days'];
                     break;
 
-                    case 'mislaid': // Yes, but I don’t have it.
-                        $details = array_merge($request->step_1, $request->step_2, $request->step_3);
-    
-                        $lookup = LookUp::where('lamp_id', $details['selected'])->first();
-    
-                        $uuid = is_null($lookup['old_lamp_card_number']) ? UUID::issue() : $lookup['lamp_id'];
-                        $email = $details['email'];
-                        $firstname = $lookup['firstname'];
-                        $lastname = $lookup['lastname'];
-                        $fullname = $lookup['firstname'] . ' ' . $lookup['lastname'];
-                        $facebook = $lookup['facebook_name'];
-                        $registration_type = $details['registrationType'];
-                        $local_church = $details['localChurch'];
-                        $country = $details['country'];
-                        $category = $details['category'];
-                        $attending_option = $details['attendingOption'];
-                        $with_awta_card = $details['withAwtaCard'];
-                        $cluster_group = $details['clusterGroup'];
-                        $awta_card_number = $details['selected'];
-                        $assistance = $details['specificMedicalAssistance'];
-                        $can_book_days = $lookup['can_book_days'];
-                        break;
+                case 'mislaid': // Yes, but I don’t have it.    
+                    $lookup = LookUp::where('lamp_id', $details['selected'])->first();
+
+                    $uuid = is_null($lookup['old_lamp_card_number']) ? UUID::issue() : $lookup['lamp_id'];
+                    $email = $details['email'];
+                    $firstname = $lookup['firstname'];
+                    $lastname = $lookup['lastname'];
+                    $fullname = $lookup['firstname'] . ' ' . $lookup['lastname'];
+                    $facebook = $lookup['facebook_name'];
+                    $registration_type = $details['registrationType'];
+                    $local_church = $details['localChurch'];
+                    $country = $details['country'];
+                    $category = $details['category'];
+                    $attending_option = $details['attendingOption'];
+                    $with_awta_card = $details['withAwtaCard'];
+                    $cluster_group = $details['clusterGroup'];
+                    $awta_card_number = $details['selected'];
+                    $assistance = $details['specificMedicalAssistance'];
+                    $can_book_days = $lookup['can_book_days'];
+                    break;
 
                 case 'yes': // Yes, I still have it.
-                    $details = array_merge($request->step_1, $request->step_3);
-
                     $uuid = is_null($details['found']['oldlampIDNumber']) ? UUID::issue() : $details['lampIDNumber'];
                     $email = $details['email'];
                     $firstname = $details['found']['firstName'];
@@ -266,7 +264,8 @@ class Registration2Controller extends Controller
                 'can_book_days' => $can_book_days,
                 'notes' => [],
                 'activities' => [],
-                'booking_activities' => []
+                'booking_activities' => [],
+                'custom_fields' => $custom_fields_value
             ]);
 
             $registration->additional_data()->create([
@@ -320,6 +319,10 @@ class Registration2Controller extends Controller
 
             return $registration->uuid;
         } else { // guest registration
+            $details = $request->step_1;
+
+            $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $details);
+
             if (true === env('ONLINE_GUESTS_GROUP_REGISTRATION', true)) {
                 $registered = [];
 
@@ -346,7 +349,8 @@ class Registration2Controller extends Controller
                         'with_awta_card' => 'none',
                         'notes' => [],
                         'activities' => [],
-                        'booking_activities' => []
+                        'booking_activities' => [],
+                        'custom_fields' => $custom_fields_value
                     ]);
 
                     $this->book($registration, $details->booked);
@@ -379,13 +383,28 @@ class Registration2Controller extends Controller
                     'with_awta_card' => 'none',
                     'notes' => [],
                     'activities' => [],
-                    'booking_activities' => []
+                    'booking_activities' => [],
+                    'custom_fields' => $custom_fields_value
                 ]);
 
                 $registration = $this->updatePaymentStatus($registration->id, true);
 
                 return $registration->uuid;
             }
+        }
+    }
+
+    private function getCustomFieldsValue($custom_fields, $values) {
+        if (!empty($custom_fields)) {
+            $custom_fields_value = [];
+
+            foreach ($custom_fields as $field) {
+                $custom_fields_value[$field->name] = $values[$field->name] ?? $field->default; // or null if default is not set
+            }
+
+            return $custom_fields_value;
+        } else {
+            return null;
         }
     }
 

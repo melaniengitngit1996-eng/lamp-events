@@ -49,7 +49,8 @@ class ExportRegistration implements FromCollection, WithHeadings
                 'payment_status',
                 'booking_status',
                 'medical_assistance_needed',
-                'visitor_to_member'
+                'visitor_to_member',
+                'custom_fields'
             ))
             ->where('event_id', $this->event->id)
             ->withSum('payments', 'amount', 'old_uuid')
@@ -59,7 +60,9 @@ class ExportRegistration implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return array(
+        $event = Event::with('custom_fields')->find($this->event->id);
+
+        $headers = array(
             'Date Registered',
             'ID',
             'Email',
@@ -84,5 +87,11 @@ class ExportRegistration implements FromCollection, WithHeadings
             'Visitor to Member',
             'Old AWTA Card Number'
         );
+
+        foreach ($event->custom_fields as $field) {
+            $headers[] = $field->export_header;
+        }
+
+        return $headers;
     }
 }
