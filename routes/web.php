@@ -18,6 +18,13 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/registration', function() {
+    if (env('ACTIVE_REGISTRATION', false)) {
+        return redirect('/' . env('ACTIVE_REGISTRATION') . '/registration');
+    }
+
+    abort(404);
+})->name('registration');
 
 Route::get('/{event:slug}/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/{event:slug}/home', [App\Http\Controllers\HomeController::class, 'show'])->name('home.index');
