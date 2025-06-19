@@ -415,6 +415,8 @@ class Registration2Controller extends Controller
      */
     public function edit(Event $event, $registration_id)
     {
+        $event = Event::with('custom_fields')->find($event->id);
+
         return view('registration.edit', [
             'registration' => Registration::with('lookup')->where('id', $registration_id)->first(),
             'event' => $event
@@ -443,7 +445,7 @@ class Registration2Controller extends Controller
      * @param Registration $registration
      * @param Request $request
      */
-    public function update(Registration $registration, Request $request)
+    public function update(Event $event, Registration $registration, Request $request)
     {
         if (isset($request->avail_new_lamp_id)) { // save answer for newly registered members
             $registration->lookup()->update([
@@ -459,6 +461,10 @@ class Registration2Controller extends Controller
                 'has_viewed_ticket' => NOW(),
             ]);
         } else {
+            $event = Event::with('custom_fields')->find($event->id);
+            
+            $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $request->all());
+
             $registration->update([
                 'email' => $request->email,
                 'firstname' => $request->firstName,
@@ -476,6 +482,7 @@ class Registration2Controller extends Controller
                 'rate' => $request->rate,
                 'rebooking_limit' => $request->rebookingLimit,
                 'visitor_to_member' => $request->visitorToMember ? date('Y-m-d', strtotime($request->visitorToMember)) : NULL,
+                'custom_fields' => $custom_fields_value
             ]);
 
             $lookup = LookUp::where('lamp_id',  $registration->uuid)->first();

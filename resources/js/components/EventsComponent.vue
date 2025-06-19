@@ -15,7 +15,7 @@
                   color: lightslategray;
               ">{{ scope.row.description }}</small><br v-if="scope.row.description"/>
               <el-tag v-if="!scope.row.close_registration" size="mini" type="success">Active</el-tag>
-              <el-tag v-else size="mini" type="danger">Closed</el-tag>
+              <el-tag v-else size="mini" type="danger">Inactive</el-tag>
               <el-tag v-if="scope.row.local_church === 'General'" size="mini" effect="plain">General</el-tag>
               <el-tag v-else size="mini" effect="plain" type="warning">{{ scope.row.local_church }}</el-tag>
           </template>

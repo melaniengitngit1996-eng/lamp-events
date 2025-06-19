@@ -148,6 +148,7 @@
                                 >
                                     <el-option
                                         v-for="field in field.options.split(',')"
+                                        :key="field"
                                         :value="field"
                                         :label="field"
                                     ></el-option>

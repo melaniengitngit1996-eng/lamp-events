@@ -259,6 +259,30 @@
             </div>
         </el-card>
 
+        <el-card class="mb-3" v-if="event.custom_fields.length > 0">
+            <div class="row">
+                <div class="col-md-3" v-for="field in event.custom_fields">
+                    <el-form-item
+                        :label="field.label"
+                        :prop="field.name"
+                        required
+                    >
+                        <el-select
+                            v-model="ruleForm[field.name]"
+                            placeholder="Choose"
+                        >
+                            <el-option
+                                v-for="field in field.options.split(',')"
+                                :key="field"
+                                :value="field"
+                                :label="field"
+                            ></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </div>
+        </el-card>
+
         <el-row>
             <div class="col-md-12">
                 <el-button
@@ -278,6 +302,9 @@ export default {
         registration: {
             required: true,
             type: Object,
+        },
+        event: {
+            required: false
         },
     },
     data() {
@@ -421,6 +448,22 @@ export default {
             availNewLAMPID: this.registration.lookup ? this.registration.lookup.avail_new_lamp_id : '',
             clusterGroup: this.registration.cluster_group
         };
+
+        this.event.custom_fields.forEach(element => {
+            const name = element.name;
+
+            // Make ruleForm reactive
+            this.$set(this.ruleForm, name, this.registration.custom_fields[name]);
+
+            // Make rules reactive
+            this.$set(this.rules, name, [
+                {
+                    required: true,
+                    message: element.rule_message,
+                    trigger: ["blur", "change"],
+                },
+            ]);
+        });
     },
     methods: {
         submitForm(formName) {
@@ -435,7 +478,7 @@ export default {
                     setTimeout(async () => {
                         await axios
                             .post(
-                                `/registration/${this.registration.id}/update`,
+                                `/${this.event.slug}/registration/${this.registration.id}/update`,
                                 this.ruleForm
                             )
                             .then(async (response) => {
