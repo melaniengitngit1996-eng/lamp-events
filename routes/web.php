@@ -43,7 +43,7 @@ Route::get('/{event:slug}/registration/{id}/edit', [App\Http\Controllers\Registr
 Route::delete('/{event:slug}/registration/{registration}/delete', [App\Http\Controllers\Registration2Controller::class, 'destroy'])->name('registration.delete');
 Route::post('/{event:slug}/registration/{registration}/update', [App\Http\Controllers\Registration2Controller::class, 'update'])->name('registration.update');
 Route::get('/{event:slug}/registration/{id}/resend-mail', [App\Http\Controllers\Registration2Controller::class, 'resend_mail'])->name('registration.resend_mail');
-Route::get('/registration/validate', [App\Http\Controllers\Registration2Controller::class, 'validation'])->name('registration.validation');
+Route::get('/{event:slug}/registration/validate', [App\Http\Controllers\Registration2Controller::class, 'validation'])->name('registration.validation');
 
 // if (env('CLOSE_REGISTRATION') === true) {
 //     Route::get('/registration/new', [App\Http\Controllers\Registration2Controller::class, 'new'])->name('registration');

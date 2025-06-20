@@ -542,7 +542,7 @@ class Registration2Controller extends Controller
      *
      * @param Request $request
      */
-    public function validation(Request $request)
+    public function validation(Event $event, Request $request)
     {
         $isBulk = $request->isBulk === 'true';
         $booked = [];
@@ -576,7 +576,7 @@ class Registration2Controller extends Controller
                     $errors[$key]['country'] = 'Country is required.';
                 }
 
-                if (count($value->booked) === 0 && 'Hybrid' === $value->attendingOption) {
+                if (count($value->booked) === 0 && 'Hybrid' === $value->attendingOption && $event->with_booking) {
                     $errors[$key]['booked'] = 'Select preferred dates.';
                 }
 

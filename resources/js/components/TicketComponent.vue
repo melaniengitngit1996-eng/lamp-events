@@ -130,7 +130,7 @@ export default {
         open() {
             var msg = '<strong>Congratulations!</strong> Your registration has been accepted. ';
 
-            if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '')
+            if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '' && this.registrations[0].email != null)
                 msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
 
             if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].rate > 0)

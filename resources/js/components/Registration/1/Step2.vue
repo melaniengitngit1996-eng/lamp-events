@@ -313,7 +313,7 @@
                             background: 'rgba(0, 0, 0, 0.7)'
                         });
 
-                await axios.get(`/registration/validate`, {
+                await axios.get(`/${this.event.slug}/registration/validate`, {
                     params: {
                         firstName: this.ruleForm.firstName,
                         lastName: this.ruleForm.lastName,
@@ -344,7 +344,7 @@
                             background: 'rgba(0, 0, 0, 0.7)'
                         });
 
-                    await axios.get(`/registration/validate`, {
+                    await axios.get(`/${this.event.slug}/registration/validate`, {
                         params: {
                             data: this.ruleForm.guests,
                             isBulk: true
