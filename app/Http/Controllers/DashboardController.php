@@ -182,8 +182,7 @@ class DashboardController extends Controller
             $expected_attendance = Booking::where('local_church', $local_church)->whereIn('slot_id', [$event->active_guest_slot_id, $event->active_member_slot_id])->where('status', BookingStatus::Confirmed)->count();
 
             $percentage = $expected_attendance === 0 ? 0 : ((3 / 500) * 100);
-            // $percentage = fmod($percentage, 1) !== 0.0 ? number_format($percentage, 2) : $percentage;
-            $percentage = round($percentage);
+            $percentage = fmod($percentage, 1) !== 0.0 ? number_format($percentage, 2) : $percentage;
             $data[] = [
                 'local_church' => $local_church,
                 'percentage' => $percentage,
