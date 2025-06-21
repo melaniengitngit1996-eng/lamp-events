@@ -20,7 +20,8 @@
         window.auth_user = {!! json_encode(auth()->user()->load(['permissions'])); !!};
         window.env = {
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
-            year:'{{ config('settings.year') }}'
+            year:'{{ config('settings.year') }}',
+            awta_day: '{{ config('settings.awta_day') }}',
         };
     </script>
     @endif
