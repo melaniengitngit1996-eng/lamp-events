@@ -26,6 +26,14 @@ Route::get('/registration', function() {
     abort(404);
 })->name('registration');
 
+Route::get('/ticket/{id}', function($id) {
+    if (env('ACTIVE_REGISTRATION', false)) {
+        return redirect('/' . env('ACTIVE_REGISTRATION') . '/ticket' . '/' . $id);
+    }
+
+    abort(404);
+})->name('view.ticket');
+
 Route::get('/{event:slug}/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/{event:slug}/home', [App\Http\Controllers\HomeController::class, 'show'])->name('home.index');
 Route::get('/{event:slug}/registration', [App\Http\Controllers\Registration2Controller::class, 'create'])->name('register');
