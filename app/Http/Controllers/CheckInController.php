@@ -18,6 +18,10 @@ use Carbon\Carbon;
 class CheckInController extends Controller
 {
     public function index(Event $event, Request $request) {
+        if (!$event->enable_online_checkin) {
+            abort(404);
+        }
+        
         // Get the current time in Philippine Time (PHT, UTC+8)
         $currentTime = Carbon::now('Asia/Manila');
 
@@ -26,7 +30,7 @@ class CheckInController extends Controller
         $endTime = Carbon::createFromTime(21, 0, 0, 'Asia/Manila');   // 9:00 PM
 
         // Check if the current time is between 2 PM and 9 PM
-        $isWithinRange = $currentTime->between($startTime, $endTime) && $event->enable_online_checkin;
+        $isWithinRange = $currentTime->between($startTime, $endTime);
 
         if ($isWithinRange) {
             return view('checkin.index', [
