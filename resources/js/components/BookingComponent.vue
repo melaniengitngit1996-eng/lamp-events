@@ -61,6 +61,9 @@ export default {
         },
         registration: {
             required: true,
+        },
+        event: {
+            required: false
         }
     },
     data () {
@@ -99,7 +102,7 @@ export default {
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
 
-                    await axios.post(`/booking/${this.registration.id}/update`, {
+                    await axios.post(`${this.event.slug}/booking/${this.registration.id}/update`, {
                         dates: this.ruleForm.booked,
                         is_admin: this.is_admin
                     })

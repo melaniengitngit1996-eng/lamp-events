@@ -64,7 +64,7 @@ Route::post('/payments/{registration}', [App\Http\Controllers\PaymentController:
 
 // booking
 Route::get('/{event:slug}/booking/{registration}/edit', [App\Http\Controllers\BookingController::class, 'edit'])->name('booking.edit');
-Route::post('/booking/{id}/update', [App\Http\Controllers\BookingController::class, 'update'])->name('booking.update');
+Route::post('/{event:slug}/booking/{id}/update', [App\Http\Controllers\BookingController::class, 'update'])->name('booking.update');
 Route::get('/booking/{id}', [App\Http\Controllers\BookingController::class, 'show'])->name('booking.show');
 // --------
 

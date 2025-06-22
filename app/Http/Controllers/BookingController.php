@@ -52,7 +52,7 @@ class BookingController extends Controller
         ]);
     }
 
-    public function update($registration_id, Request $request)
+    public function update(Event $event, $registration_id, Request $request)
     {
         $registration = Registration::withSum('payments', 'amount')->where('id', $registration_id)->first();
 
@@ -118,6 +118,7 @@ class BookingController extends Controller
                 // store bookings
                 $registration->bookings()->create([
                     'slot_id' => $date,
+                    'event_id' => $event->id,
                     'local_church' => $registration->local_church,
                     'status' => $booking_status
                 ]);

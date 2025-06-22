@@ -40,7 +40,7 @@
                     <p>Booking Status: <el-tag type="{{$registration->booking_status === 'Confirmed' ? 'success' : ($registration->booking_status === 'Cancelled' ? 'danger' : 'warning')}}">{{ $registration->booking_status }}</el-tag></p>
                     <p>Date Booked: {{ date("M d, Y h:i A", strtotime($registration->booked_date)) }}</p>
                     
-                    <booking :booked_dates="{{ $booked_dates }}" :slots="{{ $slots }}" :registration="{{ $registration }}" :self_redirect="{{ true }}" :is_admin="{{ true }}"/>
+                    <booking :booked_dates="{{ $booked_dates }}" :slots="{{ $slots }}" :registration="{{ $registration }}" :self_redirect="{{ true }}" :is_admin="{{ true }}" :event="{{ $event }}"/>
                 </div>
             </div>
         </div>
