@@ -105,7 +105,7 @@ export default {
                     await axios.post(`/${this.event.slug}/booking/${this.registration.id}/update`, {
                         dates: this.ruleForm.booked,
                         is_admin: this.is_admin
-                    })
+                    }) 
                     .then(async (response) => {
                         loading.close()
 
