@@ -136,7 +136,7 @@
                     class="mb-3"
                 >
                     <div class="row">
-                        <div v-for="field in event.custom_fields" class="col-md-6" v-if="evaluateRule(field.visibility_rule)">
+                        <div v-for="field in event.custom_fields" class="col-md-12" v-if="evaluateRule(field.visibility_rule)">
                             <el-form-item
                                 :label="field.label"
                                 :prop="field.name"
