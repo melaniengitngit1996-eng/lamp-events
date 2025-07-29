@@ -68,7 +68,7 @@
                 </el-card>
 
                 <el-card
-                    v-if="ruleForm.registrationType != '' && event.with_booking"
+                    v-if="ruleForm.registrationType != '' && event.show_attending_option"
                     shadow="always"
                     class="mb-3"
                 >
@@ -81,7 +81,7 @@
                         </el-alert>
                     </div>
                     <div class="row">
-                        <div v-if="event.with_booking" class="col-md-6">
+                        <div v-if="event.show_attending_option" class="col-md-6">
                             <el-form-item
                                 label="How will you attend the AWTA?"
                                 prop="attendingOption"

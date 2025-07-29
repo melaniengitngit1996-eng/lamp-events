@@ -11,6 +11,7 @@ class Event extends Model
 
     protected $casts = [
         'with_booking' => 'boolean',
+        'show_attending_option' => 'boolean',
         'with_guest_booking_code' => 'boolean',
         'close_registration' => 'boolean',
         'display_disclosure_prompt' => 'boolean',
