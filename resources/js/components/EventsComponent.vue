@@ -36,7 +36,7 @@
           width="150">
           <template slot-scope="scope">
           <el-row class="text-center">
-              <a :href="`/${scope.row.slug}/home`"><el-button type="primary" plain size="small"><i class="el-icon-s-tools mr-2"></i>&nbsp;&nbsp;Manage</el-button></a>
+              <a :href="`/${scope.row.slug}/home`"><el-button type="primary" plain size="small"><i class="el-icon-s-tools mr-2"></i>&nbsp;&nbsp;Administration</el-button></a>
           </el-row>
           </template>
       </el-table-column>
