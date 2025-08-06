@@ -1,10 +1,15 @@
 <template>
     <div class="row justify-content-center">
        <div class="col-md-12">
-           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="right" class="demo-ruleForm">
                 <el-card shadow="always" class="mb-3">
                     <div class="row justify-content-center">
-                        <el-form-item class="check-dates" :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" prop="booked" required>
+                        <el-form-item v-if="event.has_multiple_venues" v-for="(date, index) in dates" :key="index" :label="date.event_date">
+                            <el-select v-model="ruleForm.booked[date.id]" placeholder="please select your venue" >
+                                <el-option v-for="(venue, e) in date.venues" :key="e" :label="venue.venue" :value="venue.venue"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item v-else class="check-dates" :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" prop="booked" required>
                             <el-checkbox-group v-model="ruleForm.booked" size="small">
                                 <div class="row">
                                     <div v-for="(date, index) in dates" :key="index" class="col-md-3 text-center">
@@ -37,8 +42,7 @@
                 type: Object
             },
             slots: {
-                required: false,
-                type: Array
+                required: false
             },
             event: {
                 required: true
@@ -65,15 +69,27 @@
 
             var booked_dates = this.ruleForm.booked;
 
-            this.dates = this.slots.member.map(function(date) {
+            if (this.event.has_multiple_venues) {
+                this.ruleForm.booked = {};
+            }
+
+            this.dates = this.slots.member.map((date) => {
 
                 var available = booked_dates.includes(date.id) ? date.available-1 : date.available;
-                return {
+                var detail = {
                     "event_date": date.event_date,
                     "id": date.id,
                     "available": available,
                     "seat_count": date.seat_count
                 };
+
+                if (this.event.has_multiple_venues) {
+                    detail['venues'] = this.event.venues
+
+                    this.$set(this.ruleForm.booked, date.id, '');
+                }
+
+                return detail;
             });
 
             if (this.data.step_1.withAwtaCard === 'none') 
@@ -82,8 +98,6 @@
                 this.max = this.data.step_2.canBookDays
             if (this.data.step_1.withAwtaCard === 'yes')
                 this.max = this.data.step_1.found.canBookDays
-
-            console.log(this.data.step_1.withAwtaCard)
         },
         methods: {
             submitForm(action) {

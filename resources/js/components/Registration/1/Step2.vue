@@ -118,7 +118,7 @@
                                         </small>
                                     </td>
                                 </tr>
-                                <tr v-if="data.step_1.attendingOption === 'Hybrid' && event.with_booking">
+                                <tr v-if="data.step_1.attendingOption != 'Online' && event.with_booking">
                                     <td colspan="3" class="p-1">
                                         <label class="text-sm">Select Preferred Dates</label>
                                         <el-checkbox-group v-model="guest.booked" size="mini">
@@ -249,7 +249,7 @@
                     </div>   
                 </el-card>
 
-                <el-card v-if="((data.step_1.registrationType === 'Member' && ['lost', 'mislaid'].includes(data.step_1.withAwtaCard) && ruleForm.lookUp.length > 0) || data.step_1.withAwtaCard === 'none') && data.step_1.attendingOption === 'Hybrid'" shadow="always" class="mb-3"> 
+                <el-card v-if="((data.step_1.registrationType === 'Member' && ['lost', 'mislaid'].includes(data.step_1.withAwtaCard) && ruleForm.lookUp.length > 0) || data.step_1.withAwtaCard === 'none') && data.step_1.attendingOption != 'Online'" shadow="always" class="mb-3"> 
                     <el-form-item label="Do you need any medical assistance during the event?" class="rm-margin">
                         <small class="text-sm">If YES, kindly specify below. If NO, leave it empty.</small>
                         <el-input v-model="ruleForm.specificMedicalAssistance" placeholder="Please specify..." :clearable="true"></el-input>

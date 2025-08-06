@@ -1,5 +1,6 @@
 <template>
 <div>
+    <!-- revisit code -->
     <div class="row justify-content-center mb-4">
         <div class="col-md-6">
             <div v-if="! validated" class="row justify-content-center">

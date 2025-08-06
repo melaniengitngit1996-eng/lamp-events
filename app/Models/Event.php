@@ -15,7 +15,8 @@ class Event extends Model
         'with_guest_booking_code' => 'boolean',
         'close_registration' => 'boolean',
         'display_disclosure_prompt' => 'boolean',
-        'enable_online_checkin' => 'boolean'
+        'enable_online_checkin' => 'boolean',
+        'has_multiple_venues' => 'boolean'
     ];
 
     public function slots()
@@ -31,5 +32,10 @@ class Event extends Model
     public function custom_fields()
     {
         return $this->hasMany(EventRegistrationCustomField::class);
+    }
+
+    public function venues()
+    {
+        return $this->hasMany(EventVenue::class);
     }
 }

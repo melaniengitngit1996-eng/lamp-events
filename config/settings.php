@@ -3,11 +3,9 @@
 return [
     'year' => env('YEAR'),
     'theme' => env('THEME'),
-    'payment_due_date' => env('PAYMENT_DUE_DATE'),
     'api_key' => env('API_KEY'),
     'awta_day' => env('AWTA_DAY'),
     'event_date' => env('EVENT_DATE'),
-    'rebooking_deadline' => env('REBOOKING_DEADLINE'),
     'hybrid_registration_deadline' => env('HYBRID_REGISTRATION_DEADLINE'),
     'chart_color' => [
         'Day 1' => [

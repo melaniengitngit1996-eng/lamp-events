@@ -137,8 +137,8 @@ class AWTA2025EventSeeder extends Seeder
             [
                 'event_id' => $event->id,
                 'category' => 'Adult',
-                'attending_option' => AttendingOption::Hybrid,
-                'description' => 'Member (Hybrid)',
+                'attending_option' => AttendingOption::Physical,
+                'description' => 'Member (Physical)',
                 'rate' => 950,
                 'can_book_rate' => 475
             ], [
@@ -151,8 +151,8 @@ class AWTA2025EventSeeder extends Seeder
             ], [
                 'event_id' => $event->id,
                 'category' => 'Kids',
-                'attending_option' => AttendingOption::Hybrid,
-                'description' => 'Member age 5 - 8 yrs old (Hybrid)',
+                'attending_option' => AttendingOption::Physical,
+                'description' => 'Member age 5 - 8 yrs old (Physical)',
                 'rate' => 475,
                 'can_book_rate' => 237.5
             ], [
@@ -165,8 +165,8 @@ class AWTA2025EventSeeder extends Seeder
             ], [
                 'event_id' => $event->id,
                 'category' => PaymentStatus::Free,
-                'attending_option' => AttendingOption::Hybrid,
-                'description' => 'Visitor & Member 0 - 4 yrs old (Hybrid)',
+                'attending_option' => AttendingOption::Physical,
+                'description' => 'Visitor & Member 0 - 4 yrs old (Physical)',
                 'rate' => 0,
                 'can_book_rate' => 0
             ], [

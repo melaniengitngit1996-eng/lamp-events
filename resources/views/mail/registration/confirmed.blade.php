@@ -10,9 +10,10 @@
 Congratulations, your booking is already confirmed!
 
 @component('mail::panel')
+<b>Event:</b> {{ $event_name }} <br />
 <b>Booked Dates:</b> {{ $booked_dates }}<br />
-<b>Location:</b> Calamba Tent, CMC Avenue, Crossing, Calamba City, Laguna  <a href="https://goo.gl/maps/avYUt5rPss9HDtDo7">View Location</a> <br />
-<b>Event Time:</b> 4PM<br />
+<b>Location:</b> {{ $venue }}  <a href="{{ $map }}">View Location</a> <br />
+<b>Event Time:</b> {{ $event_timing }} <br />
 <b>Theme:</b> {{ $theme }}<br />
 @endcomponent
 
@@ -25,9 +26,12 @@ You may also join us via Zoom: <br />
 Meeting ID: {{ $zoom['id'] }} <br />
 Passcode: {{ $zoom['passcode'] }} <br />
 <br /><br />
+
 We will be sending a reminder before the event starts too!
 
+@if ($fb_group_url)
 For more updates, please join our facebook group: <a href="{{ $fb_group_url }}">{{ $fb_group_url }}</a>
+@endif
 
 See you there! 
 @component('mail::subcopy')

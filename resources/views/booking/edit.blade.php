@@ -24,7 +24,7 @@
                                 <div id="tab-1" aria-controls="pane-1" role="tab" tabindex="-1" class="el-tabs__item is-top">
                                     <el-link :underline="false" href="/{{ $event->slug }}/payments/{{ $registration->id }}/create">Payments</el-link>
                                 </div>
-                                @if (auth()->user()->permissions->can_edit_delegate === 1 && $registration->attending_option === 'Hybrid')
+                                @if (auth()->user()->permissions->can_edit_delegate === 1 && $registration->attending_option != 'Online')
                                 <div id="tab-2" aria-controls="pane-2" role="tab" tabindex="-1" class="el-tabs__item is-top is-active">
                                     <el-link :underline="false" href="/{{ $event->slug }}/booking/{{ $registration->id }}/edit">Booking</el-link>
                                 </div>

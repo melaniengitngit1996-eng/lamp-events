@@ -5,7 +5,8 @@
 We're so glad you are joining us to offer worship & thanksgiving to the Lord of lords!
 
 Here are the details:<br /><br />
-<b>Event Date:</b> {{ $event_date }} <br />
+<b>Event:</b> {{ $event_name }} <br />
+<b>Event Timing:</b> {{ $event_timing }} {{ $event_date }} <br />
 <b>Theme:</b> {{ $theme }} <br />
 <b>Live Broadcast:</b> via Zoom & Facebook Live
 <br /><br />

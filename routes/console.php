@@ -19,9 +19,16 @@ use Illuminate\Support\Facades\Notification;
 | simple approach to interacting with each command's IO methods.
 |
 */
-Artisan::command('send-out-event-reminder', function () {
+
+/* run `php artisan send-out-event-reminder 7` */
+Artisan::command('send-out-event-reminder {event_id?}', function () {
     $this->comment('---------------------------------- ' . \Carbon\Carbon::today() . ' ---------------------------------');
-    $registrations = Registration::where('attending_option', AttendingOption::Hybrid)->get();
+    $eventId = $this->argument('event_id');
+
+    $registrations = Registration::where('event_id', $eventId)->whereIn('attending_option', [
+        AttendingOption::Hybrid,
+        AttendingOption::Physical
+    ])->get();
     
     foreach ($registrations as $registration) {
         if ($registration->email != '') {

@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Registration;
+use App\Models\Event;
 use App\Enums\AttendingOption;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -46,8 +47,8 @@ class Reminder extends Notification
     {
         $event = Event::find($this->registration->event_id);
 
-        if ($this->registration->attending_option === AttendingOption::Hybrid) {
-            $url = url('/ticket/' . $this->registration->uuid);
+        if (in_array($this->registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
+            $url = url('/'. $event->slug . '/ticket/' . $this->registration->uuid);
             $markdown = 'mail.registration.reminder';
             $file = storage_path(). "/images/event_details.pdf";
         } else {
@@ -63,11 +64,16 @@ class Reminder extends Notification
         }
 
         return (new MailMessage)
-            ->subject('Reminder: Upcoming Annual Worship and Thanksgiving Assembly TOMORROW!')
+            ->subject("Reminder: Upcoming {$event->name} TOMORROW!")
             ->markdown($markdown, [
                 'url' => $url,
                 'name' => $this->registration->fullname,
-                'event_date' => config('settings.event_date'),
+                'event_name' => $event->name,
+                'theme' => $event->description,
+                'fb_group_url' => $event->fb_group_url,
+                'venue' => $event->venue_complete_address,
+                'event_timing' => $event->event_timing,
+                'event_date' => $event->event_date,
                 'zoom' => [
                     'link' => $event->zoom_url,
                     'id' => $event->zoom_id,
@@ -77,7 +83,7 @@ class Reminder extends Notification
             ->attach($file, [
                 'as' => 'event_details.pdf',
                 'mime' => 'application/pdf',
-            ]);;
+            ]);
 
     }
 }

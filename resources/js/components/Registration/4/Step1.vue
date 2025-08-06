@@ -105,7 +105,7 @@
                         <div
                             class="col-md-6"
                             v-if="
-                                ruleForm.attendingOption === 'Physical' &&
+                                ruleForm.attendingOption != 'Online' &&
                                 ruleForm.registrationType === 'Guest' &&
                                 event.with_guest_booking_code &&
                                 event.with_booking
@@ -116,7 +116,7 @@
                                 label="Booking Code"
                                 prop="bookingCode"
                                 :required="
-                                    ruleForm.attendingOption === 'Physical' &&
+                                    ruleForm.attendingOption != 'Online' &&
                                     ruleForm.registrationType === 'Guest' &&
                                     event.with_booking
                                 "
@@ -278,7 +278,7 @@
                     v-if="
                         ruleForm.registrationType === 'Member' &&
                         ruleForm.withAwtaCard === 'yes' &&
-                        ruleForm.attendingOption === 'Physical'
+                        ruleForm.attendingOption != 'Online'
                     "
                     shadow="always"
                     class="mb-3"

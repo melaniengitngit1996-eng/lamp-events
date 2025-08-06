@@ -92,7 +92,7 @@
                                     placeholder="Choose"
                                 >
                                     <el-option
-                                        value="Hybrid"
+                                        value="Physical"
                                         label="Physical"
                                     ></el-option>
                                     <el-option
@@ -105,7 +105,7 @@
                         <div
                             class="col-md-6"
                             v-if="
-                                ruleForm.attendingOption === 'Hybrid' &&
+                                ruleForm.attendingOption != 'Online' &&
                                 ruleForm.registrationType === 'Guest' &&
                                 event.with_guest_booking_code &&
                                 event.with_booking
@@ -116,7 +116,7 @@
                                 label="Booking Code"
                                 prop="bookingCode"
                                 :required="
-                                    ruleForm.attendingOption === 'Hybrid' &&
+                                    ruleForm.attendingOption != 'Online' &&
                                     ruleForm.registrationType === 'Guest' &&
                                     event.with_booking
                                 "
@@ -338,7 +338,7 @@ export default {
             ruleForm: {
                 registrationType: "",
                 withAwtaCard: "",
-                attendingOption: this.event.with_booking ? "" : "Hybrid", // set default as hybrid if booking id disabled
+                attendingOption: this.event.with_booking ? "" : "Physical", // set default as hybrid if booking id disabled
                 lampIDNumber: "",
                 clusterGroup: "",
                 bookingCode: "",
@@ -546,7 +546,7 @@ export default {
                 this.ruleForm.found = {};
             } else if (scope === "reg-type") {
                 this.ruleForm.withAwtaCard = "";
-                this.ruleForm.attendingOption = this.event.with_booking ? "" : "Hybrid";
+                this.ruleForm.attendingOption = this.event.with_booking ? "" : "Physical";
                 this.ruleForm.lampIDNumber = "";
                 this.ruleForm.bookingCode = "";
                 this.ruleForm.found = {};

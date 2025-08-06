@@ -49,20 +49,28 @@ class Controller extends BaseController
         return $prefix . $new;
     }
 
-    function book($registration, $bookings)
+    function book($event, $registration, $bookings)
     {
         $registration->update([
             'booked_date' => now()
         ]);
 
-        foreach ($bookings as $booking) {
-            Booking::create([
+        foreach ($bookings as $key => $booking) {
+            $book = [
                 'event_id' => $registration->event_id,
                 'registration_id' => $registration->id,
                 'slot_id' => $booking,
                 'local_church' => $registration['local_church'],
-                'status' => $registration->payment_status === PaymentStatus::Paid || $registration->payment_status === PaymentStatus::Free ? BookingStatus::Confirmed : BookingStatus::Pending
-            ]);
+                'status' => $registration->payment_status === PaymentStatus::Paid || $registration->payment_status === PaymentStatus::Free ? BookingStatus::Confirmed : BookingStatus::Pending,
+                'venue' => $event->main_venue
+            ];
+
+            if ($event->has_multiple_venues) {
+                $book['slot_id'] = $key;
+                $book['venue'] = $booking;
+            }
+
+            Booking::create($book);
         }
     }
 
@@ -112,7 +120,7 @@ class Controller extends BaseController
             $parameters['booking_status'] = BookingStatus::Pending;
         }
 
-        if ($auto_enable_booking && $registration->attending_option === AttendingOption::Hybrid) {
+        if ($auto_enable_booking && in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
             if ($totalAmountPaid >= $canBookRate) {
                 if ($registration->booking_status === BookingStatus::Pending) {
                     Booking::where('registration_id', $registration->id)->update([

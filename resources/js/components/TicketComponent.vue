@@ -55,7 +55,7 @@
                         </div>
                     </div>
 
-                    <div v-if="registration.attending_option === 'Hybrid'" class="row mb-3">
+                    <div v-if="registration.attending_option != 'Online'" class="row mb-3">
                         <div class="col-md-12">
                             <small class="d-block">Booked Dates</small>
                             <span class="text-md font-bold" v-if="registration.booked_dates.length > 0" v-html="registration.booked_dates.join([separator = ',  '])"></span>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                    <div v-if="registration.attending_option === 'Hybrid'" class="row">
+                    <div v-if="registration.attending_option != 'Online'" class="row">
                         <div class="col-md-12">
                             <small>***Please screenshot this ticket. This will be your virtual LAMP ID number, in case you opted not to avail the physical card. This will be used in the future LAMP church events and activities.</small>
                         </div>
@@ -130,10 +130,10 @@ export default {
         open() {
             var msg = '<strong>Congratulations!</strong> Your registration has been accepted. ';
 
-            if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].email != '' && this.registrations[0].email != null)
+            if (this.registrations[0].registration_type === 'Guest' && this.registrations[0].attending_option != 'Online' && this.registrations[0].email != '' && this.registrations[0].email != null)
                 msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
 
-            if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option === 'Hybrid' && this.registrations[0].rate > 0)
+            if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option != 'Online' && this.registrations[0].rate > 0)
                 msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
             
             if (this.registrations[0].attending_option === 'Online') {

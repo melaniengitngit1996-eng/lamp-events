@@ -105,7 +105,7 @@ class Registration2Controller extends Controller
         }
 
         $directory = "registration.{$event->template_id}.create";
-        $event = Event::with('custom_fields')->find($event->id);
+        $event = Event::with(['custom_fields', 'venues'])->find($event->id);
         return view($directory, [
             'event' => $event,
             'slots' => [
@@ -307,13 +307,13 @@ class Registration2Controller extends Controller
                 ]);
             }
 
-            if ($attending_option === AttendingOption::Hybrid) {
-                $this->book($registration, $request->step_3['booked']);
+            if (in_array($attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
+                $this->book($event, $registration, $request->step_3['booked']);
             }
 
             $registration = $this->updatePaymentStatus($registration->id, true);
 
-            // if ($registration->attending_option === AttendingOption::Hybrid) {
+            // if (in_array($attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
             $this->notify($registration->id);
             // }
 
@@ -330,6 +330,17 @@ class Registration2Controller extends Controller
                     $uuid = $this->generateGuestId();
 
                     $details = (object) $value;
+
+                    $book = $details->booked;
+
+                    // Auto-book even if event booking is disabled
+                    // Ensures a booking record exists for proper attendance tracking
+                    if (
+                        !$event->with_booking && 
+                        AttendingOption::Online != $request->step_1['attendingOption']
+                    ) {
+                        $book = $request->step_3['booked'];
+                    }
 
                     $registration = Registration::create([
                         'uuid' => $uuid,
@@ -353,7 +364,7 @@ class Registration2Controller extends Controller
                         'custom_fields' => $custom_fields_value
                     ]);
 
-                    $this->book($registration, $details->booked);
+                    $this->book($event, $registration, $book);
 
                     $registration = $this->updatePaymentStatus($registration->id, true);
 
@@ -576,7 +587,7 @@ class Registration2Controller extends Controller
                     $errors[$key]['country'] = 'Country is required.';
                 }
 
-                if (count($value->booked) === 0 && 'Hybrid' === $value->attendingOption && $event->with_booking) {
+                if (count($value->booked) === 0 && 'Online' != $value->attendingOption && $event->with_booking) {
                     $errors[$key]['booked'] = 'Select preferred dates.';
                 }
 

@@ -14,7 +14,8 @@ class Booking extends Model
         'slot_id',
         'event_id',
         'local_church',
-        'status'
+        'status',
+        'venue'
     ];
 
     protected $appends = [

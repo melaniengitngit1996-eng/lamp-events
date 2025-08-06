@@ -30,8 +30,7 @@
         window.env = {
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
             year:'{{ config('settings.year') }}',
-            event_date:'{{ config('settings.event_date') }}',
-            rebooking_deadline: '{{ config('settings.rebooking_deadline') }}'
+            event_date:'{{ config('settings.event_date') }}'
         };
     </script>
 </head>
