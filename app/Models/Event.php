@@ -45,7 +45,7 @@ class Event extends Model
 
     public function getHasAccessAttribute()
     {
-        $has_access = EventPermission::where('user_id', auth()->user()->id)->where('id', $this->id)->first();
+        $has_access = EventPermission::where('user_id', auth()->user()->id)->where('event_id', $this->id)->first();
         
         return !empty($has_access);
     }
