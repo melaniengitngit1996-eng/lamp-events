@@ -126,7 +126,7 @@ class AttendanceController extends Controller
             return response()->json(['error' => 'This delegate is not booked for today.'], 500);
         }
 
-        if (in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
+        if (!in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
             return response()->json(['error' => 'This delegate is not registered for physical/hybrid.'], 500);
         }
 
