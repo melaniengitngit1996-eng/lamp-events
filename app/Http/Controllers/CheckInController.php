@@ -61,7 +61,7 @@ class CheckInController extends Controller
         }
 
         if (in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
-            return response()->json(['error' => 'Delegate is not registered for physical/hybrid.'], 500);
+            return response()->json(['error' => 'Delegate is registered for physical/hybrid.'], 500);
         }
 
         return [
@@ -86,6 +86,7 @@ class CheckInController extends Controller
         if ($booking->attendance_status === AttendanceType::Pending) {
             $registration->attendances()->create([
                 'slot_id' => $booking->slot_id,
+                'event_id' => $event->id,
                 'local_church' => $registration->local_church,
                 'registration_type' => $registration->registration_type,
                 'notes' => $request->loc == 'Online' ? AttendanceType::OnlineCheckIn : AttendanceType::OnsiteCheckIn

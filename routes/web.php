@@ -111,9 +111,9 @@ Route::delete('received-hg/{id}/delete', [App\Http\Controllers\Api\ReceivedHGCon
 
 
 // online check in
-Route::get('/check-in/{event}/validate', [App\Http\Controllers\CheckInController::class, 'validation'])->name('check-in.validation');
-Route::post('/check-in/{event}/{id}/edit', [App\Http\Controllers\CheckInController::class, 'update'])->name('check-in.update');
-Route::get('/check-in/{event:slug}/passes', [App\Http\Controllers\CheckInController::class, 'show'])->name('check-in.attendance');
+Route::get('/{event:slug}/check-in/validate', [App\Http\Controllers\CheckInController::class, 'validation'])->name('check-in.validation');
+Route::post('/{event:slug}/check-in/{id}/edit', [App\Http\Controllers\CheckInController::class, 'update'])->name('check-in.update');
+Route::get('/{event:slug}/check-in/passes', [App\Http\Controllers\CheckInController::class, 'show'])->name('check-in.attendance');
 
 Route::post('/{event:slug}/slots', [App\Http\Controllers\SlotsController::class, 'store'])->name('slots.store');
 
