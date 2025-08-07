@@ -19,6 +19,10 @@ class Event extends Model
         'has_multiple_venues' => 'boolean'
     ];
 
+    protected $appends = [
+        "has_access"
+    ];
+
     public function slots()
     {
         return $this->hasMany(Slots::class, 'event_id', 'id');
@@ -37,5 +41,12 @@ class Event extends Model
     public function venues()
     {
         return $this->hasMany(EventVenue::class);
+    }
+
+    public function getHasAccessAttribute()
+    {
+        $has_access = EventPermission::where('user_id', auth()->user()->id)->where('id', $this->id)->first();
+        
+        return !empty($has_access);
     }
 }
