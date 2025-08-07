@@ -24,7 +24,7 @@
           label="Buttons">
           <template slot-scope="scope">
           <el-row>
-              <a :href="`/${scope.row.slug}/dashboard`" target="_blank"><el-button type="primary" plain size="small"><i class="el-icon-s-data mr-2"></i>&nbsp;&nbsp;Dashboard</el-button></a>
+              <a :href="`/${scope.row.slug}/dashboard`" target="_blank"><el-button :disabled="!scope.row.has_access" type="primary" plain size="small"><i class="el-icon-s-data mr-2"></i>&nbsp;&nbsp;Dashboard</el-button></a>
               <a :href="`/${scope.row.slug}/registration`" target="_blank"><el-button type="success" plain size="small"><i class="el-icon-edit-outline mr-2"></i>&nbsp;&nbsp;Registration</i></el-button></a>
               <a :href="`/${scope.row.slug}/attendance`" target="_blank"><el-button type="warning" plain size="small"><i class="el-icon-full-screen mr-2"></i>&nbsp;&nbsp;Attendance</i></el-button></a>
               <a v-if="scope.row.enable_online_checkin" :href="`/${scope.row.slug}/check-in`" target="_blank"><el-button type="info" plain size="small"><i class="el-icon-thumb mr-2"></i>&nbsp;&nbsp;Self Check-In</i></el-button></a>
