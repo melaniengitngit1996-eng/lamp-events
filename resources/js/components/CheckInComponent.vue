@@ -30,14 +30,14 @@
                 <h3>Online Check In</h3>
                 <p class="mt-2 c-booking-subheader">Type in your details to check in.</p>
 
-                <div class="px-2 row">
+                <!-- <div class="px-2 row">
                     <el-alert
                         title="We recently allowed visitors to check in, but due to unforeseen circumstances, it's now limited to members only. We apologize for any inconvenience."
                         type="warning"
                         :closable="false"
                         show-icon>
                     </el-alert>
-                </div>
+                </div> -->
 
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="160px">
                     <div class="row mb-1">
