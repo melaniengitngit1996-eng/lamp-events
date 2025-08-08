@@ -6,7 +6,6 @@ return [
     'api_key' => env('API_KEY'),
     'awta_day' => env('AWTA_DAY'),
     'event_date' => env('EVENT_DATE'),
-    'hybrid_registration_deadline' => env('HYBRID_REGISTRATION_DEADLINE'),
     'chart_color' => [
         'Day 1' => [
             'all' => '#fd7f6f',

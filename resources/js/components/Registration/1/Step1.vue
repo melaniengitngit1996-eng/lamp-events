@@ -74,7 +74,7 @@
                 >
                     <div class="px-2 row">
                         <el-alert
-                            :title="`All registration after ${hybrid_registration_deadline} is considered online. For further inquiries, please reach out to your local Registrars.`"
+                            :title="`All registration after ${event.hybrid_registration_deadline} is considered online. For further inquiries, please reach out to your local Registrars.`"
                             type="warning"
                             show-icon
                         >

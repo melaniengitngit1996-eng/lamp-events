@@ -22,7 +22,6 @@
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
             year:'{{ config('settings.year') }}',
             event_date:'{{ config('settings.event_date') }}',
-            hybrid_registration_deadline: '{{ config('settings.hybrid_registration_deadline') }}'
         };
     </script>
     <!-- Scripts -->
