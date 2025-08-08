@@ -101,7 +101,9 @@ class Registration2Controller extends Controller
         }
 
         if ($event->close_registration) {
-            return view('registration.closed');
+            return view('registration.closed', [
+                'event' => $event
+            ]);
         }
 
         $directory = "registration.{$event->template_id}.create";
