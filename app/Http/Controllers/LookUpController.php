@@ -62,9 +62,11 @@ class LookUpController extends Controller
      * @param  Request $request
      * @return \App\Models\LookUp
      */
-    public function validation(Request $request)
+    public function validation(Event $event, Request $request)
     {
-        $lookUp = LookUp::select();
+        $lookUp = LookUp::with(['registrations' => function ($query) use ($event) {
+            $query->where('event_id', $event->id);
+        }]);
 
         if ($request->lastname) {
             $lookUp = $lookUp->where('lastname', 'LIKE', "%$request->lastname%");

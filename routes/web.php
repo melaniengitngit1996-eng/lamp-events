@@ -79,7 +79,7 @@ Route::get('/{event:slug}/registrations/export', [App\Http\Controllers\Registrat
 Route::get('/{event:slug}/lookup', [App\Http\Controllers\LookUpController::class, 'index'])->name('lookup.index');
 Route::get('/{event:slug}/lookup/create', [App\Http\Controllers\LookUpController::class, 'create'])->name('lookup.create');
 Route::post('/lookup', [App\Http\Controllers\LookUpController::class, 'store'])->name('lookup.store');
-Route::get('/lookup/validate', [App\Http\Controllers\LookUpController::class, 'validation'])->name('lookup.validation');
+Route::get('/{event:slug}/lookup/validate', [App\Http\Controllers\LookUpController::class, 'validation'])->name('lookup.validation');
 Route::get('/{event:slug}/lookup/{id}/edit', [App\Http\Controllers\LookUpController::class, 'edit'])->name('lookup.edit');
 Route::post('/{event:slug}/lookup/{id}/update', [App\Http\Controllers\LookUpController::class, 'update'])->name('lookup.update');
 Route::post('/lookup-upload', [App\Http\Controllers\LookUpController::class, 'upload'])->name('lookup.upload.func');
