@@ -107,6 +107,7 @@ class Registered extends Notification
                 'map' => $event->venue_map,
                 'with_booking' => $event->with_booking,
                 'with_zoom' => !empty($event->zoom_url),
+                'enable_id_issuance' => $event->enable_id_issuance,
                 'zoom' => [
                     'link' => $event->zoom_url,
                     'id' => $event->zoom_id,

@@ -17,7 +17,7 @@ Please settle your balance to confirm your registration.<br />
 To settle it, please reach out to your local Registrars.
 
 We hope to see you there!
-@if ($registration->registration_type === 'Member')
+@if ($registration->registration_type === 'Member' && $enable_id_issuance)
 @component('mail::subcopy')
 <table>
     <tr>

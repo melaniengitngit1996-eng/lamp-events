@@ -34,6 +34,7 @@ For more updates, please join our facebook group: <a href="{{ $fb_group_url }}">
 @endif
 
 See you there! 
+@if ($enable_id_issuance)
 @component('mail::subcopy')
 <table>
     <tr>
@@ -48,7 +49,8 @@ See you there!
 <br />
 <br />
 @endcomponent
+@endif
 
-Thanks,<br>
+Thanks,<br />
 {{ config('app.name') }}
 @endcomponent

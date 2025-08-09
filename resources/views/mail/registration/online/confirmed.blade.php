@@ -25,7 +25,7 @@ Passcode: {{ $zoom['passcode'] }} <br />
 We will be sending a reminder before the event starts too!
 
 See you there! 
-@if ($registration->registration_type === 'Member')
+@if ($registration->registration_type === 'Member' && $enable_id_issuance)
 @component('mail::subcopy')
 <table>
     <tr>
