@@ -470,9 +470,10 @@ class Registration2Controller extends Controller
                 'has_viewed_ticket' => NOW(),
             ]);
         } elseif (isset($request->mark_as_viewed)) { // mark as viewed for guests
-            $registration->additional_data()->updateOrCreate([
-                'has_viewed_ticket' => NOW(),
-            ]);
+            $registration->additional_data()->updateOrCreate(
+                [ 'registration_id' => $registration->id ],
+                [ 'has_viewed_ticket' => now() ]  
+            );
         } else {
             $event = Event::with('custom_fields')->find($event->id);
             

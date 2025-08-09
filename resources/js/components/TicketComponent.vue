@@ -145,16 +145,16 @@ export default {
                         Passcode:${this.zoom.passcode}</small> <br /><br />`
             }
             
-            if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none')
+            if (this.event.enable_id_issuance && this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none')
                 msg += '<br /><br /><small style="line-height: 0px;">Note: <i>A new LAMP ID Number is issued for you.</i> If you want to avail the physical card, an additional Php 35.00 will be required. Kindly reach out to your local Registrars for payment and issuance.</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to avail the new LAMP ID?</small>';
-            else if (this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost')
-            msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
+            else if (this.event.enable_id_issuance && this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'lost')
+                msg += '<br /><br/><small style="line-height: 0px;">Note: For payment and issuance, kindly reach out to you local Registrars</small><br/><img width="130" height="80" class="mx-2 mt-3 rounded shadow" src="/images/new_id.jpg"><br/><small style="font-size: 8px;font-style: italic;color: gray;">sample ID only</small><br /><small>Would you like to report your card lost and get <br/>a replacement for PHP 35.00?</small>';
 
             
             this.$confirm(msg, 'You did it!', {
-                confirmButtonText: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost') ? 'Yes' : 'Continue',
+                confirmButtonText: this.event.enable_id_issuance && this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost') ? 'Yes' : 'Continue',
                 cancelButtonText: 'No',
-                showCancelButton: this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost'),
+                showCancelButton: this.event.enable_id_issuance && this.registrations[0].registration_type === 'Member' && (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost'),
                 type: 'success',
                 showClose: false,
                 closeOnPressEscape: false,
@@ -163,17 +163,17 @@ export default {
                 center: true,
                 dangerouslyUseHTMLString: true
             }).then(async () => {
-                if (this.registrations[0].registration_type === 'Member'&& (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost')) {
-                    await axios.post(`/registration/${this.registrations[0].id}/update`, {
+                if (this.event.enable_id_issuance && this.registrations[0].registration_type === 'Member'&& (this.registrations[0].with_awta_card == 'none' || this.registrations[0].with_awta_card == 'lost')) {
+                    await axios.post(`/${this.event.slug}/registration/${this.registrations[0].id}/update`, {
                         avail_new_lamp_id: 'yes'
                     })
                 } else {
-                    await axios.post(`/registration/${this.registrations[0].id}/update`, {
+                    await axios.post(`/${this.event.slug}/registration/${this.registrations[0].id}/update`, {
                         mark_as_viewed: true
                     })
                 }
             }).catch(async () => {
-                await axios.post(`/registration/${this.registrations[0].id}/update`, {
+                await axios.post(`/${this.event.slug}/registration/${this.registrations[0].id}/update`, {
                     avail_new_lamp_id: 'no'
                 })
             })
