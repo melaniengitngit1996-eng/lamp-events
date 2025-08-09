@@ -107,13 +107,12 @@
                             v-if="
                                 ruleForm.attendingOption != 'Online' &&
                                 ruleForm.registrationType === 'Guest' &&
-                                event.with_guest_booking_code &&
-                                event.with_booking
+                                event.with_guest_booking_code
                             "
                         >
                             <el-form-item
                                 class="transform-uppercase"
-                                label="Booking Code"
+                                label="Registration Code"
                                 prop="bookingCode"
                                 :required="
                                     ruleForm.attendingOption != 'Online' &&
@@ -331,7 +330,7 @@ export default {
         };
         var checkBookingCode = async (rule, value, callback) => {
             if (this.ruleForm.bookingCode != this.event.booking_code) {
-                callback(new Error("Incorrect booking code"));
+                callback(new Error("Incorrect registration code"));
             }
         };
         return {
@@ -395,7 +394,7 @@ export default {
                 bookingCode: [
                     {
                         required: true,
-                        message: "Please input booking code",
+                        message: "Please input registration code",
                         trigger: ["blur", "change"],
                     },
                     { validator: checkBookingCode, trigger: ["submit"] },
