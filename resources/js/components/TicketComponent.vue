@@ -134,7 +134,7 @@ export default {
                 msg += '<br /><br /><small style="line-height: 0px;">We have sent an email to <i>' + this.registrations[0].email + '</i>. <br />Please check to see the details.</small>';
 
             if (this.registrations[0].registration_type === 'Member' && this.registrations[0].attending_option != 'Online' && this.registrations[0].rate > 0)
-                msg += '<br /><br /><small style="line-height: 0px;">Please settle your balance or at least half of the registration fee to confirm your booking. It will automatically expire after 7 days.<br />For cancellations, please contact your local Registrars for help.</small>';
+                msg += '<br /><br /><small style="line-height: 0px;">To confirm your booking, please settle at least 50% of the registration fee within 7 days. Unconfirmed bookings will automatically expire after this period.<br /><br />Deadline for full payment: ' + this.event.payment_due_date + '<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
             
             if (this.registrations[0].attending_option === 'Online') {
                 msg += `<br /><br /><small style="line-height: 0px;">To watch the live broadcast, join our FB Group <br/><a href="${this.event.fb_group_url}">${this.event.fb_group_url}</a></small>`
