@@ -15,7 +15,7 @@ class TicketController extends Controller
 
     public function show(Event $event, $uuid)
     {
-        $registration = Registration::with('bookings', 'bookings.slot')->where('uuid', $uuid)->first();
+        $registration = Registration::with('bookings', 'bookings.slot')->where('event_id', $event->id)->where('uuid', $uuid)->first();
 
         $registration->booked_dates = array_map(function ($dates) {
             return $dates['slot']['event_date'];
