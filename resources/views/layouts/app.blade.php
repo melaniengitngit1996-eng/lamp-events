@@ -42,15 +42,17 @@
             </a>
 
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ route('home') }}">
-                    {{ __('Registrations') }}
-                </a>
-                <a class="dropdown-item" href="{{ route('activities') }}">
-                    {{ __('Activities') }}
-                </a>
-                <a class="dropdown-item" href="{{ route('configurations') }}">
-                    {{ __('Configurations') }}
-                </a>
+                @if (!empty($event))
+                    <a class="dropdown-item" href="{{ route('home.index', $event) }}">
+                        {{ __('Registrations') }}
+                    </a>
+                    <a class="dropdown-item" href="{{ route('activities', $event) }}">
+                        {{ __('Activities') }}
+                    </a>
+                    <a class="dropdown-item" href="{{ route('configurations', $event) }}">
+                        {{ __('Configurations') }}
+                    </a>
+                @endif
                 <a class="dropdown-item" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">

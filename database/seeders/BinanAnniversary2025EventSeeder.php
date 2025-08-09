@@ -92,8 +92,8 @@ class BinanAnniversary2025EventSeeder extends Seeder
                 'category' => 'Adult',
                 'attending_option' => AttendingOption::Online,
                 'description' => 'Member (Online)',
-                'rate' => 500,
-                'can_book_rate' => 250
+                'rate' => 0,
+                'can_book_rate' => 0
             ], [
                 'event_id' => $event->id,
                 'category' => 'Kids',
@@ -106,18 +106,18 @@ class BinanAnniversary2025EventSeeder extends Seeder
                 'category' => 'Kids',
                 'attending_option' => AttendingOption::Online,
                 'description' => 'Member age 5 - 8 yrs old (Online)',
-                'rate' => 250,
-                'can_book_rate' => 125
-            ], [
-                'event_id' => $event->id,
-                'category' => PaymentStatus::Free,
-                'attending_option' => AttendingOption::Physical,
-                'description' => 'Visitor & Member 0 - 4 yrs old (Physical)',
                 'rate' => 0,
                 'can_book_rate' => 0
             ], [
                 'event_id' => $event->id,
-                'category' => PaymentStatus::Free,
+                'category' => 'Adult',
+                'attending_option' => AttendingOption::Physical,
+                'description' => 'Visitor & Member 0 - 4 yrs old (Physical)',
+                'rate' => 350,
+                'can_book_rate' => 175
+            ], [
+                'event_id' => $event->id,
+                'category' => 'Adult',
                 'attending_option' => AttendingOption::Online,
                 'description' => 'Visitor & Member 0 - 4 yrs old (Online)',
                 'rate' => 0,

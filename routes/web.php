@@ -86,7 +86,7 @@ Route::post('/lookup-upload', [App\Http\Controllers\LookUpController::class, 'up
 Route::get('/upload', [App\Http\Controllers\LookUpController::class, 'upload_view'])->name('lookup.upload.view');
 
 // activities
-Route::get('/activities', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
+Route::get('/{event:slug}/activities', [App\Http\Controllers\ActivityController::class, 'index'])->name('activities');
 
 // attendance
 Route::get('/attendance/{event}/{id}', [App\Http\Controllers\AttendanceController::class, 'show'])->name('attendance.show');
@@ -99,7 +99,7 @@ Route::get('/booking', [App\Http\Controllers\BookingController::class, 'create']
 Route::get('/booking/validate', [App\Http\Controllers\BookingController::class, 'validation'])->name('booking.validation');
 
 // config
-Route::get('/config', [App\Http\Controllers\ConfigurationController::class, 'show'])->name('configurations');
+Route::get('{event:slug}/config', [App\Http\Controllers\ConfigurationController::class, 'show'])->name('configurations');
 
 // dashboard
 Route::get('/dashboard/{event:slug}/attendance', [App\Http\Controllers\DashboardController::class, 'view_attendance_per_church'])->name('dashboard.attendance');

@@ -83,7 +83,7 @@
                     <div class="row">
                         <div v-if="event.show_attending_option" class="col-md-6">
                             <el-form-item
-                                label="How will you attend the AWTA?"
+                                label="How will you attend the event?"
                                 prop="attendingOption"
                                 required
                             >

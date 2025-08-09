@@ -381,7 +381,7 @@
                         clusterGroup: '',
                         localChurch: '',
                         country: 'Philippines',
-                        category: 'Free',
+                        category: 'Adult',
                         booked: [],
                         specificMedicalAssistance: '',
                         attendingOption: this.data.step_1.attendingOption
@@ -512,7 +512,7 @@
                     clusterGroup: '',
                     localChurch: '',
                     country: 'Philippines',
-                    category: 'Free',
+                    category: 'Adult',
                     booked: this.event.with_booking ? [] : this.slots.guest.map(item => item.id),
                     specificMedicalAssistance: '',
                     attendingOption: this.data.step_1.attendingOption

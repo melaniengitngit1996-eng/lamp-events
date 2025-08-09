@@ -18,6 +18,7 @@ class CreateRatesTable extends Migration
             $table->unsignedBigInteger('event_id');
             $table->string('category');
             $table->string('attending_option');
+            $table->string('registration_type')->default('Member');
             $table->string('description');
             $table->decimal('rate', 9, 3);
             $table->decimal('can_book_rate', 9, 3);

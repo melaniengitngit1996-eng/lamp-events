@@ -17,11 +17,12 @@
                     <div class="el-table__header-wrapper">
                         <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 819px;">
                             <colgroup>
-                                <col name="el-table_26_column_102" width="250">
-                                <col name="el-table_26_column_103" width="250">
-                                <col name="el-table_26_column_104" width="300">
+                                <col name="el-table_26_column_102" width="166.6">
+                                <col name="el-table_26_column_103" width="166.6">
+                                <col name="el-table_26_column_104" width="166.6">
                                 <col name="el-table_26_column_105" width="300">
                                 <col name="el-table_26_column_106" width="300">
+                                <col name="el-table_26_column_107" width="300">
                             </colgroup>
                             <thead class="">
                                 <tr class="">
@@ -32,12 +33,15 @@
                                         <div class="cell text-center">Attending Option</div>
                                     </th>
                                     <th colspan="1" rowspan="1" class="el-table_26_column_104 is-leaf el-table__cell">
-                                        <div class="cell">Description</div>
+                                        <div class="cell text-center">Registration Type</div>
                                     </th>
                                     <th colspan="1" rowspan="1" class="el-table_26_column_105 is-leaf el-table__cell">
-                                        <div class="cell text-center">Rate</div>
+                                        <div class="cell">Description</div>
                                     </th>
                                     <th colspan="1" rowspan="1" class="el-table_26_column_106 is-leaf el-table__cell">
+                                        <div class="cell text-center">Rate</div>
+                                    </th>
+                                    <th colspan="1" rowspan="1" class="el-table_26_column_107 is-leaf el-table__cell">
                                         <div class="cell text-center">Can Book Rate</div>
                                     </th>
                                 </tr>
@@ -47,11 +51,12 @@
                     <div class="el-table__body-wrapper is-scrolling-none">
                         <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 819px;">
                             <colgroup>
-                                <col name="el-table_26_column_102" width="250">
-                                <col name="el-table_26_column_103" width="250">
-                                <col name="el-table_26_column_104" width="300">
+                                <col name="el-table_26_column_102" width="166.6">
+                                <col name="el-table_26_column_103" width="166.6">
+                                <col name="el-table_26_column_104" width="166.6">
                                 <col name="el-table_26_column_105" width="300">
                                 <col name="el-table_26_column_106" width="300">
+                                <col name="el-table_26_column_107" width="300">
                             </colgroup>
                             <tbody>
                                 @foreach($rates as $rate)
@@ -63,12 +68,15 @@
                                         <div class="cell text-center">{{ $rate->attending_option }}</div>
                                     </td>
                                     <td rowspan="1" colspan="1" class="el-table_26_column_104 el-table__cell">
-                                        <div class="cell">{{ $rate->description }}</div>
+                                        <div class="cell text-center">{{ $rate->registration_type }}</div>
                                     </td>
                                     <td rowspan="1" colspan="1" class="el-table_26_column_105 el-table__cell">
-                                        <div class="cell text-center">{{ $rate->rate }}</div>
+                                        <div class="cell">{{ $rate->description }}</div>
                                     </td>
                                     <td rowspan="1" colspan="1" class="el-table_26_column_106 el-table__cell">
+                                        <div class="cell text-center">{{ $rate->rate }}</div>
+                                    </td>
+                                    <td rowspan="1" colspan="1" class="el-table_26_column_107 el-table__cell">
                                         <div class="cell text-center">{{ $rate->can_book_rate }}</div>
                                     </td>
                                 </tr>
