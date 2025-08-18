@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div v-if="!validated" class="row justify-content-center">
+    <div v-if="!validated && event.banner_file_name" class="row justify-content-center">
         <div class="col-md-3">
             <img width="100%" class="mb-3 rounded shadow" :src="`/images/banners/${event.banner_file_name}`">
         </div>
