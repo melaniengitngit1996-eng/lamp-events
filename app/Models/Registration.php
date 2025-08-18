@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\RegistrationType;
 use App\Models\LookUp;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Registration extends MyModel
 {
@@ -85,10 +86,16 @@ class Registration extends MyModel
         });
 
         self::updated(function ($model) {
-            if (count($model->getFillableChanges()) > 0) {
-                $model->updateActivities($model, $model->activities, array(
-                    'updated ' . implode(', ', $model->getFillableChanges())
-                ));
+            $changes = $model->getFillableChanges();
+
+            if (!empty($changes)) {
+                Model::withoutEvents(function () use ($model, $changes) {
+                    $model->updateActivities(
+                        $model, 
+                        $model->activities, 
+                        ['updated ' . implode(', ', $changes)]
+                    );
+                });
             }
         });
     }
@@ -155,7 +162,7 @@ class Registration extends MyModel
     public function getFillableChanges(): array
     {
         $array = array_intersect_key($this->getChanges(), array_flip($this->getTrackable()));
-
+        
         $array = array_keys($array);
 
         $array = array_map(function ($x) {

@@ -174,7 +174,7 @@ export default {
                     });
 
                     setTimeout(async () => {
-                        await axios.post(`/${this.event.id}/lookup/${this.lookup.lamp_id}/update`, this.ruleForm)
+                        await axios.post(`/${this.event.slug}/lookup/${this.lookup.lamp_id}/update`, this.ruleForm)
                         .then(async (response) => {
                             loading.close()
 

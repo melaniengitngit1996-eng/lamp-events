@@ -194,7 +194,8 @@ class LookUpController extends Controller
         }
 
         return view('lookup.edit', [
-            'lookup' => $lookup
+            'lookup' => $lookup,
+            'event' => $event
         ]);
     }
 
