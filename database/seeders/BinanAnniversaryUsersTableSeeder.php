@@ -22,7 +22,7 @@ class BinanAnniversaryUsersTableSeeder extends Seeder
             ['name' => 'Shekinah Garcia', 'email' => 'kinahgarcia03@gmail.com', 'password' => Hash::make('test123')],
             ['name' => 'JK Fria', 'email' => 'jkfria@gmail.com', 'password' => Hash::make('test123')],
             ['name' => 'Katheryn Parayno', 'email' => 'ktrn.parayno@gmail.com', 'password' => Hash::make('test123')],
-            ['name' => 'Some User', 'email' => 'Christ.lhyn.27@gmail.com', 'password' => Hash::make('test123')],
+            ['name' => 'Christine Beverly Dela Cruz', 'email' => 'Christ.lhyn.27@gmail.com', 'password' => Hash::make('test123')],
             ['name' => 'Pearl Evon', 'email' => 'cevonpearl@gmail.com ', 'password' => Hash::make('test123')],
             ['name' => 'Beverly Birot', 'email' => 'beverly_castano@yahoo.com', 'password' => Hash::make('test123')],
             ['name' => 'Michaella Rodel', 'email' => 'micaellarodel2000@gmail.com', 'password' => Hash::make('test123')],
