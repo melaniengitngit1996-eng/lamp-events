@@ -6,6 +6,7 @@
         class="mb-3"
         size="mini"
         :data="tableData.data"
+        :loading="tableData.loading"
         border
         style="width: 100%">
         <el-table-column>
@@ -236,6 +237,7 @@
           local_church: ''
         },
         tableData: {
+          loading: false,
           total: 0,
           per_page: 2,
           from: 1,
@@ -257,6 +259,7 @@
         if ((this.search.keyword != '' || this.search.payment_status != '' || this.search.booking_status != '' || this.search.registration_type != '' || this.search.attending_option != '' || this.search.category != '' || this.search.local_church != '') && ignore_page)
           this.tableData.current_page = 1;
           
+        this.tableData.loading = true;
         axios
             .get(`/${this.event.slug}/registration/all`, {
                 params: {
@@ -265,10 +268,11 @@
                 }
             })
             .then(async response => {
-                this.tableData = response.data;
+              this.tableData.loading = false;
+              this.tableData = response.data;
             })
             .catch(error => {
-                console.log(this.tableData)
+                this.tableData.loading = false;
                 this.$notify.error({
                     title: error
                 });
