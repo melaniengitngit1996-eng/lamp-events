@@ -21,6 +21,7 @@ Vue.component('booking', require('./components/BookingComponent.vue').default);
 Vue.component('pagination', require('./components/Common/Pagination.vue').default);
 Vue.component('create-user-component', require('./components/CreateUserComponent.vue').default);
 Vue.component('events-component', require('./components/EventsComponent.vue').default);
+Vue.component('users-component', require('./components/UsersComponent.vue').default);
 
 import Vue from 'vue';
 import ElementUI from 'element-ui';

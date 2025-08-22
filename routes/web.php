@@ -119,7 +119,8 @@ Route::post('/{event:slug}/slots', [App\Http\Controllers\SlotsController::class,
 
 Route::get('/{event:slug}/export/history', [App\Http\Controllers\ExportHistoryController::class, 'index'])->name('history.index');
 
-Route::get('users/mobile/create', [App\Http\Controllers\MobileUserController::class, 'create'])->name('user.create');
-Route::post('users/mobile', [App\Http\Controllers\MobileUserController::class, 'store'])->name('user.store');
+Route::get('users/mobile/create', [App\Http\Controllers\MobileUserController::class, 'create'])->name('user.mobile.create');
+Route::post('users/mobile', [App\Http\Controllers\MobileUserController::class, 'store'])->name('user.mobile.store');
+Route::get('users/all', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
 
 Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');

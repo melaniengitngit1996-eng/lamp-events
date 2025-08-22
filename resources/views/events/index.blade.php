@@ -10,7 +10,9 @@
         <el-tab-pane label="Events">
             <events-component :events="{{ $events }}" />
         </el-tab-pane>
-        <el-tab-pane label="Users">Users</el-tab-pane>
+        <el-tab-pane label="Users">
+            <users-component :events="{{ $events }}" />
+        </el-tab-pane>
     </el-tabs>
 </div>
 @endsection
