@@ -4,6 +4,7 @@
             <el-table
                 :data="tableData.data"
                 class="mb-3"
+                size="mini"
                 border
                 style="width: 100%">
                 <el-table-column
@@ -22,7 +23,8 @@
                         v-for="item in scope.row.event_permission"
                         :key="item.id"
                         type=""
-                        effect="plain">
+                        effect="plain"
+                        size="mini">
                         {{ item.event.name }}
                     </el-tag>
                 </template>
