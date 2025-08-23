@@ -1,15 +1,37 @@
 <template>
     <div class="row justify-content-center">
        <div class="col-md-12">
-           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-position="right" class="demo-ruleForm">
+           <el-form :model="ruleForm" ref="ruleForm" label-position="right" class="demo-ruleForm">
                 <el-card shadow="always" class="mb-3">
                     <div class="row justify-content-center">
-                        <el-form-item v-if="event.has_multiple_venues" v-for="(date, index) in dates" :key="index" :label="date.event_date">
+                        <el-form-item 
+                            v-if="event.has_multiple_venues" v-for="(date, index) in dates" :key="index" 
+                            :label="date.event_date"
+                            :prop="'booked.' + date.id"
+                            :rules="[
+                                { required: true, message: `Please select a venue`, trigger: 'change' }
+                            ]"
+                            required
+                        >
                             <el-select v-model="ruleForm.booked[date.id]" placeholder="please select your venue" >
-                                <el-option v-for="(venue, e) in date.venues" :key="e" :label="venue.venue" :value="venue.venue"></el-option>
+                                <el-option 
+                                    v-for="(venue, e) in date.venues" 
+                                    :key="e" 
+                                    :label="venue.venue" 
+                                    :value="venue.venue"
+                                    :disabled="isMainVenueDisabled(venue.venue)">
+                                </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item v-else class="check-dates" :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" prop="booked" required>
+                        <el-form-item 
+                            v-else 
+                            class="check-dates" 
+                            :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" 
+                            :prop="'booked'"
+                            :rules="[
+                                { required: true, message: `Please select atleast one day`, trigger: ['blur', 'change'] }
+                            ]"
+                            required>
                             <el-checkbox-group v-model="ruleForm.booked" size="small">
                                 <div class="row">
                                     <div v-for="(date, index) in dates" :key="index" class="col-md-3 text-center">
@@ -54,11 +76,6 @@
                 max: 0,
                 ruleForm: {
                     booked: []
-                },
-                rules: {
-                    booked: [
-                        { required: true, message: 'Please select atleast one day', trigger: ['blur', 'change']}
-                    ]
                 }
            }
         },
@@ -113,6 +130,7 @@
                 this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
                         this.$emit('submit', this.ruleForm);
+                        console.log('submiting...');
                     } else {
                        console.log('error submit!!');
                        return false;
@@ -130,6 +148,15 @@
                     }
                 }
             },
+            isMainVenueDisabled(venueName) {
+                if (venueName !== this.event.main_venue) return false;
+
+                // Count how many times this.event.main_venue is already selected
+                const count = Object.values(this.ruleForm.booked)
+                    .filter(v => v === this.event.main_venue).length;
+
+                return count >= this.max;
+            }
         }
    }
    </script>

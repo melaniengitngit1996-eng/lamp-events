@@ -259,7 +259,40 @@
             </div>
         </el-card>
 
-        <el-card class="mb-3" v-if="event.custom_fields.length > 0">
+        <el-card class="mb-3" v-if="event.custom_fields.length > 0 && hasVisibleCustomFields">
+            <div class="row">
+                <div class="col-md-3" v-for="field in event.custom_fields" v-if="evaluateRule(field.visibility_rule)">
+                    <el-form-item
+                        :prop="field.name"
+                        :required="evaluateRule(field.mandatory_rule)"
+                    >
+                        <template slot="label">
+                            {{field.label}}
+                        </template>
+                        <el-select
+                            v-if="field.type === 'select'"
+                            v-model="ruleForm[field.name]"
+                            placeholder="Choose"
+                        >
+                            <el-option
+                                v-for="field in field.options.split(',')"
+                                :key="field"
+                                :value="field"
+                                :label="field"
+                            ></el-option>
+                        </el-select>
+
+                        <el-input
+                            v-if="field.type === 'text'"
+                            v-model="ruleForm[field.name]"
+                            :clearable="true"
+                        ></el-input>
+                    </el-form-item>
+                </div>
+            </div>
+        </el-card>
+
+        <!-- <el-card class="mb-3" v-if="event.custom_fields.length > 0">
             <div class="row">
                 <div class="col-md-3" v-for="field in event.custom_fields">
                     <el-form-item
@@ -281,7 +314,7 @@
                     </el-form-item>
                 </div>
             </div>
-        </el-card>
+        </el-card> -->
 
         <el-row>
             <div class="col-md-12">
@@ -306,6 +339,13 @@ export default {
         event: {
             required: false
         },
+    },
+    computed: {
+        hasVisibleCustomFields() {
+            return this.event.custom_fields.some(field =>
+                this.evaluateRule(field.visibility_rule)
+            );
+        }
     },
     data() {
         return {
@@ -507,6 +547,18 @@ export default {
                 }
             });
         },
+        evaluateRule(rule) {
+            if (typeof rule === 'boolean') return rule;
+            if (typeof rule === 'function') return rule();
+
+            // If it's a string condition like "ruleForm.attendingOption === 'Online'"
+            try {
+                return new Function('ruleForm', `return ${rule}`)(this.ruleForm);
+            } catch (e) {
+                console.warn('Invalid mandatory_rule condition:', rule);
+                return false;
+            }
+        }
     },
 };
 </script>
