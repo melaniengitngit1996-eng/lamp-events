@@ -7,11 +7,11 @@
 @endsection
 
 @section('footer')
-<footer class="footer shadow">
+{{-- <footer class="footer shadow">
     <div class="container py-2">
         <center>
             <span class="text-muted">Already registered? &nbsp;<el-link type="success" href="/booking">Manage Booking</el-link></span>
         </center>
     </div>
-</footer>
+</footer> --}}
 @endsection
