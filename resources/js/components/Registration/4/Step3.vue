@@ -4,16 +4,20 @@
            <el-form :model="ruleForm" ref="ruleForm" label-position="right" class="demo-ruleForm">
                 <el-card shadow="always" class="mb-3">
                     <div class="row justify-content-center">
+                        <label v-if="event.has_multiple_venues">Choose the dates you would like to attend {{event.main_venue}}. Maximum of {{max}} days.</label>
                         <el-form-item 
-                            v-if="event.has_multiple_venues" v-for="(date, index) in dates" :key="index" 
-                            :label="date.event_date"
+                            v-if="event.has_multiple_venues" 
+                            v-for="(date, index) in dates" :key="index" 
                             :prop="'booked.' + date.id"
                             :rules="[
                                 { required: true, message: `Please select a venue`, trigger: 'change' }
                             ]"
                             required
                         >
-                            <el-select v-model="ruleForm.booked[date.id]" placeholder="please select your venue" >
+                            <template slot="label">
+                                {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
+                            </template>
+                            <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" placeholder="please select your venue" >
                                 <el-option 
                                     v-for="(venue, e) in date.venues" 
                                     :key="e" 
@@ -144,6 +148,14 @@
                 for (var i = 0, len = this.dates.length; i < len; i++) {
                     if (this.dates[i]['id'] === id) {
                         this.dates[i]['available'] += isChecked ? -1 : 1
+                        break;
+                    }
+                }
+            },
+            onChangeProcessedMulti(isChecked, id) {
+                for (var i = 0, len = this.dates.length; i < len; i++) {
+                    if (this.dates[i]['id'] === id) {
+                        this.dates[i]['available'] += this.ruleForm.booked[id] === this.event.main_venue ? -1 : 1
                         break;
                     }
                 }
