@@ -129,7 +129,7 @@
                                                 <label style="margin-bottom: 6px;">
                                                     {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
                                                 </label>
-                                                <el-select v-model="guest.booked[date.id]" size="mini" placeholder="select venue" >
+                                                <el-select v-model="guest.booked[date.id]" size="mini" placeholder="select venue" @change="onChangeProcessedMulti($event, date.id, i)" @visible-change="onSelectOpen($event, date.id, i)">
                                                     <el-option 
                                                         label="--" 
                                                         value="">
@@ -138,7 +138,8 @@
                                                         v-for="(venue, e) in date.venues" 
                                                         :key="e" 
                                                         :label="venue.venue" 
-                                                        :value="venue.venue">
+                                                        :value="venue.venue"
+                                                        :disabled="isMainVenueDisabled(venue.venue, i)">
                                                     </el-option>
                                                 </el-select>
                                             </div>
@@ -443,7 +444,8 @@
                 errors: [],
                 dates: [],
                 assignments: window.env.cluster_groups,
-                guest_booking_limit: parseInt(this.event.guest_booking_limit || 0)
+                guest_booking_limit: parseInt(this.event.guest_booking_limit || 0),
+                previous_values: {}
             }
         },
         watch: {
@@ -576,6 +578,38 @@
                         break;
                     }
                 }
+            },
+            onChangeProcessedMulti(newValue, dateId, guestIndex) {
+                const prev = this.previous_values[`${guestIndex}_${dateId}`] || "";
+
+                for (let i = 0, len = this.dates.length; i < len; i++) {
+                    if (this.dates[i].id === dateId) {
+                        if (newValue === this.event.main_venue) {
+                            // only minus if prev had some value
+                            this.dates[i].available -= 1;
+                        } else {
+                            if (prev) {
+                                this.dates[i].available += 1;
+                            }
+                        }
+                        break;
+                    }
+                }
+            },
+            onSelectOpen(open, dateId, guestIndex) {
+                if (open) {
+                    // store the current value before it changes
+                    this.previous_values[`${guestIndex}_${dateId}`] = this.ruleForm.guests[guestIndex].booked[dateId];
+                }
+            },
+            isMainVenueDisabled(venueName, guestIndex) {
+                if (venueName !== this.event.main_venue) return false;
+
+                // Count how many times this.event.main_venue is already selected
+                const count = Object.values(this.ruleForm.guests[guestIndex].booked)
+                    .filter(v => v === this.event.main_venue).length;
+
+                return count >= this.guest_booking_limit;
             },
             selectName() {
                 var selected = this.ruleForm.lookUp.filter(function (el) {

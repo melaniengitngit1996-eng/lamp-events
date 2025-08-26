@@ -17,7 +17,7 @@
                             <template slot="label">
                                 {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
                             </template>
-                            <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" placeholder="please select your venue" >
+                            <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
                                 <el-option 
                                     v-for="(venue, e) in date.venues" 
                                     :key="e" 
@@ -80,7 +80,8 @@
                 max: 0,
                 ruleForm: {
                     booked: []
-                }
+                },
+                previous_values: {}
            }
         },
         mounted() {
@@ -152,12 +153,27 @@
                     }
                 }
             },
-            onChangeProcessedMulti(isChecked, id) {
-                for (var i = 0, len = this.dates.length; i < len; i++) {
-                    if (this.dates[i]['id'] === id) {
-                        this.dates[i]['available'] += this.ruleForm.booked[id] === this.event.main_venue ? -1 : 1
+            onChangeProcessedMulti(newValue, dateId) {
+                const prev = this.previous_values[`_${dateId}`] || "";
+
+                for (let i = 0, len = this.dates.length; i < len; i++) {
+                    if (this.dates[i].id === dateId) {
+                        if (newValue === this.event.main_venue) {
+                            // only minus if prev had some value
+                            this.dates[i].available -= 1;
+                        } else {
+                            if (prev) {
+                                this.dates[i].available += 1;
+                            }
+                        }
                         break;
                     }
+                }
+            },
+            onSelectOpen(open, dateId) {
+                if (open) {
+                    // store the current value before it changes
+                    this.previous_values[`_${dateId}`] = this.ruleForm.booked[dateId];
                 }
             },
             isMainVenueDisabled(venueName) {
