@@ -6,6 +6,7 @@ We are reaching out to remind you that our highly anticipated {{ $event_name }} 
 
 We're excited to celebrate God's faithfulness and share our gratitude together, get ready to raise your voice and hands for the Lord of lords!
 
+@if (!$enable_zoom_registration)
 Here's how you can join:<br />
 @component('mail::panel')
 <b>Zoom Meeting:</b><br />
@@ -20,6 +21,7 @@ Passcode: {{ $zoom['passcode'] }} <br />
     Tune in LIVE tomorrow at {{ $event_timing }}
 @endif
 @endcomponent
+@endif
 
 We can't wait to see you there! Share the event with your friends and family and spread the joy. 
 

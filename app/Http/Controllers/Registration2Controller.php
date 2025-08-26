@@ -344,6 +344,14 @@ class Registration2Controller extends Controller
                         $book = $request->step_3['booked'];
                     }
 
+                    // Remove bookings without selected venue
+                    // Bookings without venue means not booked
+                    if ($event->has_multiple_venues) {
+                        $book = array_filter($value['booked'], function ($venue) {
+                            return !empty(trim((string)$venue));
+                        });
+                    }
+
                     $registration = Registration::create([
                         'uuid' => $uuid,
                         'event_id' => $event->id,
@@ -590,8 +598,23 @@ class Registration2Controller extends Controller
                     $errors[$key]['country'] = 'Country is required.';
                 }
 
-                if (count($value->booked) === 0 && 'Online' != $value->attendingOption && $event->with_booking) {
-                    $errors[$key]['booked'] = 'Select preferred dates.';
+                if ($event->has_multiple_venues) {
+                    $allEmpty = true;
+
+                    foreach ((array) $value->booked as $k => $venue) {
+                        if (!empty(trim($venue))) {
+                            $allEmpty = false; // at least one value found
+                            break;
+                        }
+                    }                    
+
+                    if ($allEmpty && 'Online' != $value->attendingOption && $event->with_booking) {
+                        $errors[$key]['booked'] = 'Please select a venue for your preferred dates.';
+                    }
+                } else {
+                    if (count($value->booked) === 0 && 'Online' != $value->attendingOption && $event->with_booking) {
+                        $errors[$key]['booked'] = 'Select preferred dates.';
+                    }
                 }
 
                 if (!array_key_exists($key, $errors)) {
@@ -606,7 +629,15 @@ class Registration2Controller extends Controller
                     }
                 }
 
-                $booked = array_unique(array_merge($booked, $value->booked));
+                if ($event->has_multiple_venues) {
+                    $multi_venue_booked = array_keys(array_filter((array) $value->booked, function ($venue) {
+                        return !empty(trim($venue));
+                    }));
+
+                    $booked = array_unique(array_merge($booked, $multi_venue_booked));
+                } else {
+                    $booked = array_unique(array_merge($booked, $value->booked));
+                }
             }
 
             // check all slot if available
@@ -626,7 +657,11 @@ class Registration2Controller extends Controller
             foreach ($request->data as $key => $value) {
                 $value = json_decode($value);
 
-                if (count(array_intersect($value->booked, $booking_error)) > 0) {
+                $multi_venue_booked = array_keys(array_filter((array) $value->booked, function ($venue) {
+                    return !empty(trim($venue));
+                }));
+
+                if (count(array_intersect($multi_venue_booked, $booking_error)) > 0) {
                     $errors[$key]['booked'] = 'Some dates are already taken. Please refresh the page and try again.';
                 }
             }

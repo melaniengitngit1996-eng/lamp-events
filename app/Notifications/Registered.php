@@ -108,6 +108,7 @@ class Registered extends Notification
                 'with_booking' => $event->with_booking,
                 'with_zoom' => !empty($event->zoom_url),
                 'enable_id_issuance' => $event->enable_id_issuance,
+                'enable_zoom_registration' => $event->enable_zoom_registration,
                 'zoom' => [
                     'link' => $event->zoom_url,
                     'id' => $event->zoom_id,

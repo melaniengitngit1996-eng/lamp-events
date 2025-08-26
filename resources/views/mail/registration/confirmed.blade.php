@@ -21,10 +21,12 @@ Congratulations, your booking is already confirmed!
 <center>View Ticket</center>
 @endcomponent
 
+@if (!$enable_zoom_registration)
 You may also join us via Zoom: <br />
 <a href="{{ $zoom['link'] }}">{{ $zoom['link'] }}</a><br /><br />
 Meeting ID: {{ $zoom['id'] }} <br />
 Passcode: {{ $zoom['passcode'] }} <br />
+@endif
 <br /><br />
 
 We will be sending a reminder before the event starts too!

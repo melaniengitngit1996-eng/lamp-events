@@ -17,7 +17,8 @@ class Event extends Model
         'display_disclosure_prompt' => 'boolean',
         'enable_online_checkin' => 'boolean',
         'has_multiple_venues' => 'boolean',
-        'enable_id_issuance' => 'boolean'
+        'enable_id_issuance' => 'boolean',
+        'enable_zoom_registration' => 'boolean'
     ];
 
     protected $appends = [

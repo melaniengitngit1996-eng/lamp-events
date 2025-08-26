@@ -121,7 +121,29 @@
                                 <tr v-if="data.step_1.attendingOption != 'Online' && event.with_booking">
                                     <td colspan="3" class="p-1">
                                         <label class="text-sm">Select Preferred Dates</label>
-                                        <el-checkbox-group v-model="guest.booked" size="mini">
+                                        <div v-if="event.has_multiple_venues" style="display: flex; gap: 8px;">
+                                            <div 
+                                                v-for="(date, index) in dates" :key="index" 
+                                                style="width: 25%"
+                                            >
+                                                <label style="margin-bottom: 6px;">
+                                                    {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
+                                                </label>
+                                                <el-select v-model="guest.booked[date.id]" size="mini" placeholder="select venue" >
+                                                    <el-option 
+                                                        label="--" 
+                                                        value="">
+                                                    </el-option>
+                                                    <el-option 
+                                                        v-for="(venue, e) in date.venues" 
+                                                        :key="e" 
+                                                        :label="venue.venue" 
+                                                        :value="venue.venue">
+                                                    </el-option>
+                                                </el-select>
+                                            </div>
+                                        </div>
+                                        <el-checkbox-group v-else v-model="guest.booked" size="mini">
                                             <el-checkbox-button 
                                                 v-for="(date, index) in dates" 
                                                 :label="date.id" 
@@ -445,39 +467,59 @@
             var booked_dates = [];
 
             if (this.data.step_1.registrationType === 'Member') {
-                this.dates = this.slots.member.map(function(date) {
+                this.dates = this.slots.member.map((date) => {
                     var available = booked_dates.includes(date.id) ? date.available-1 : date.available;
-                    return {
+                    var detail = {
                         "event_date": date.event_date,
                         "id": date.id,
                         "available": available,
                         "seat_count": date.seat_count
                     };
+
+                    if (this.event.has_multiple_venues) {
+                        detail['venues'] = this.event.venues
+                    }
+
+                    return detail;
                 });
             }
 
             if (this.data.step_1.registrationType === 'Guest') {
-                this.dates = this.slots.guest.map(function(date) {
+                if (this.event.has_multiple_venues) {
+                    this.ruleForm.guests[0].booked = {};
+                }
+
+                this.dates = this.slots.guest.map((date) => {
                     var available = booked_dates.includes(date.id) ? date.available-1 : date.available;
-                    return {
+                    var detail = {
                         "event_date": date.event_date,
                         "id": date.id,
                         "available": available,
                         "seat_count": date.seat_count
                     };
+
+                    if (this.event.has_multiple_venues) {
+                        detail['venues'] = this.event.venues
+
+                        this.$set(this.ruleForm.guests[0].booked, date.id, '');
+                    }
+
+                    return detail;
                 });
             }
 
-            this.ruleForm.guests.forEach(element => {
-                this.dates = this.dates.map(function (date) {
-                    date.available = element.booked.includes(date.id) ? date.available-1 : date.available;
+            if (!this.event.has_multiple_venues) {
+                this.ruleForm.guests.forEach(element => {
+                    this.dates = this.dates.map(function (date) {
+                        date.available = element.booked.includes(date.id) ? date.available-1 : date.available;
 
-                    return date;
+                        return date;
+                    });
                 });
-            });
 
-            if (this.event.with_booking) {
-                this.ruleForm.guests[0].booked = this.slots.guest.map(item => item.id);
+                if (this.event.with_booking) {
+                    this.ruleForm.guests[0].booked = this.slots.guest.map(item => item.id);
+                }
             }
         },
         methods: {
@@ -513,10 +555,16 @@
                     localChurch: '',
                     country: 'Philippines',
                     category: 'Adult',
-                    booked: this.event.with_booking ? [] : this.slots.guest.map(item => item.id),
+                    booked: this.event.with_booking ? (this.event.has_multiple_venues ? {} : []) : this.slots.guest.map(item => item.id),
                     specificMedicalAssistance: '',
                     attendingOption: this.data.step_1.attendingOption
                 });
+
+                if (this.event.has_multiple_venues) {
+                    this.slots.guest.map((date) => {
+                        this.$set(this.ruleForm.guests[this.ruleForm.guests.length - 1].booked, date.id, '');
+                    })
+                }
             },
             removeClusterGroup(index) {
                 this.ruleForm.guests[index].clusterGroup = ''

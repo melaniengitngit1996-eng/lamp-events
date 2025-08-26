@@ -8,6 +8,7 @@ Here are the details:<br /><br />
 <b>Event:</b> {{ $event_name }} <br />
 <b>Event Timing:</b> {{ $event_timing }} {{ $event_date }} <br />
 <b>Theme:</b> {{ $theme }} <br />
+@if (!$enable_zoom_registration)
 <b>Live Broadcast:</b> via Zoom & Facebook Live
 <br /><br />
 Join our FB Group to watch the live broadcast
@@ -21,6 +22,7 @@ You may also join us via Zoom:
 Meeting ID: {{ $zoom['id'] }} <br />
 Passcode: {{ $zoom['passcode'] }} <br />
 @endcomponent
+@endif
 
 We will be sending a reminder before the event starts too!
 

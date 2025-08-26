@@ -137,14 +137,18 @@ export default {
                 msg += '<br /><br /><small style="line-height: 0px;">To confirm your booking, please settle at least 50% of the registration fee within 7 days. Unconfirmed bookings will automatically expire after this period.<br /><br />Deadline for full payment: ' + this.event.payment_due_date + '<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
             
             if (this.registrations[0].attending_option === 'Online') {
-                if (this.event.fb_group_url) {
-                    msg += `<br /><br /><small style="line-height: 0px;">To watch the live broadcast, join our FB Group <br/><a href="${this.event.fb_group_url}">${this.event.fb_group_url}</a></small>`
+                if (this.event.enable_zoom_registration) {
+                    msg += '<br /><br /><u>We will send you the Zoom details soon.</u>';
+                } else {
+                    if (this.event.fb_group_url) {
+                        msg += `<br /><br /><small style="line-height: 0px;">To watch the live broadcast, join our FB Group <br/><a href="${this.event.fb_group_url}">${this.event.fb_group_url}</a></small>`
+                    }
+                    
+                    msg += `<br /><br /><small style="line-height: 0px;">You may join us via <b>Zoom</b>:<br />
+                            <a href="${this.zoom.link}">${this.zoom.link}</a><br /><br />
+                            Meeting ID: ${this.zoom.id} <br />
+                            Passcode:${this.zoom.passcode}</small> <br /><br />`
                 }
-                
-                msg += `<br /><br /><small style="line-height: 0px;">You may join us via <b>Zoom</b>:<br />
-                        <a href="${this.zoom.link}">${this.zoom.link}</a><br /><br />
-                        Meeting ID: ${this.zoom.id} <br />
-                        Passcode:${this.zoom.passcode}</small> <br /><br />`
             }
             
             if (this.event.enable_id_issuance && this.registrations[0].registration_type === 'Member' && this.registrations[0].with_awta_card == 'none')
