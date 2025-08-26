@@ -101,6 +101,10 @@
                 if (current === 'step_2') this.data.step_2 = data;
                 if (current === 'step_3') this.data.step_3 = data;
 
+                if (destination === 'step_2' && current === 'step_3') {
+                    this.data.step_3 = {}
+                }
+
                 this.setTabComponents();
             },
             reset() {
