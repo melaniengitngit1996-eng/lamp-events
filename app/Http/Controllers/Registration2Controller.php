@@ -167,7 +167,7 @@ class Registration2Controller extends Controller
 
             switch ($request->step_1['withAwtaCard']) {
                 case 'none': // None
-                    $uuid = UUID::issue();
+                    $uuid = UUID::issue($event);
                     $email = $details['email'];
                     $firstname = $details['firstName'];
                     $lastname = $details['lastName'];
@@ -188,7 +188,7 @@ class Registration2Controller extends Controller
                 case 'lost': // Yes, but I don’t have it.
                     $lookup = LookUp::where('lamp_id', $details['selected'])->first();
 
-                    $uuid = is_null($lookup['old_lamp_card_number']) ? UUID::issue() : $lookup['lamp_id'];
+                    $uuid = is_null($lookup['old_lamp_card_number']) ? UUID::issue($event) : $lookup['lamp_id'];
                     $email = $details['email'];
                     $firstname = $lookup['firstname'];
                     $lastname = $lookup['lastname'];
@@ -209,7 +209,7 @@ class Registration2Controller extends Controller
                 case 'mislaid': // Yes, but I don’t have it.    
                     $lookup = LookUp::where('lamp_id', $details['selected'])->first();
 
-                    $uuid = is_null($lookup['old_lamp_card_number']) ? UUID::issue() : $lookup['lamp_id'];
+                    $uuid = is_null($lookup['old_lamp_card_number']) ? UUID::issue($event) : $lookup['lamp_id'];
                     $email = $details['email'];
                     $firstname = $lookup['firstname'];
                     $lastname = $lookup['lastname'];
@@ -228,7 +228,7 @@ class Registration2Controller extends Controller
                     break;
 
                 case 'yes': // Yes, I still have it.
-                    $uuid = is_null($details['found']['oldlampIDNumber']) ? UUID::issue() : $details['lampIDNumber'];
+                    $uuid = is_null($details['found']['oldlampIDNumber']) ? UUID::issue($event) : $details['lampIDNumber'];
                     $email = $details['email'];
                     $firstname = $details['found']['firstName'];
                     $lastname = $details['found']['lastName'];
