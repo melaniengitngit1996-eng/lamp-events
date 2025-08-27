@@ -3,6 +3,7 @@
         <el-table
         :data="tableData"
         :span-method="objectSpanMethod"
+        size="mini"
         border
         style="width: 100%">
             <el-table-column
@@ -43,8 +44,7 @@
             </el-table-column>
             <el-table-column
                 prop="activities"
-                label="Activity"
-                width="500">
+                label="Activity">
                 <template slot-scope="scope">
                     <p class="m-0" style="font-size: x-small;" v-for="(activity, index) in scope.row.activities" :key="index">
                         {{ activity.timestamp }} - {{activity.user}} - <i>{{activity.message}}</i>
@@ -53,7 +53,7 @@
             </el-table-column>
             <el-table-column align="center" width="120">
                 <template slot-scope="scope">
-                <el-button type="primary" plain @click="openModal(scope.row)">Add Slot</el-button>
+                <el-button type="primary" size="mini" plain @click="openModal(scope.row)">Add Slot</el-button>
                 </template>
             </el-table-column>
         </el-table>
