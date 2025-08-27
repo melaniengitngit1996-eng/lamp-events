@@ -51,10 +51,10 @@
                         <a class="dropdown-item" href="{{ route('home') }}">
                             {{ __('Registrations') }}
                         </a>
-                        <a class="dropdown-item" href="{{ route('activities') }}">
+                        <a class="dropdown-item" href="{{ route('activities', $event) }}">
                             {{ __('Activities') }}
                         </a>
-                        <a class="dropdown-item" href="{{ route('configurations') }}">
+                        <a class="dropdown-item" href="{{ route('configurations', $event) }}">
                             {{ __('Configurations') }}
                         </a>
                         <a class="dropdown-item" href="{{ route('logout') }}"

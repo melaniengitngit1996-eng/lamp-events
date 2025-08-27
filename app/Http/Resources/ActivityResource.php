@@ -17,7 +17,7 @@ class ActivityResource extends JsonResource
         $isDeleted = str_contains($this->description, 'deleted');
 
         return [
-            'content' => $this->user->name . ' ' . $this->description,
+            'content' => ($this->user->name ?? 'Unknown User') . ' ' . $this->description,
             'timestamp' => date('M d, Y h:i A', strtotime($this->created_at)),
             'size' => 'large',
             'type' => 'primary',
