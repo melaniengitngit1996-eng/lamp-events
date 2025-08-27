@@ -256,15 +256,19 @@
                             v-if="ruleForm.withAwtaCard === 'yes'"
                         >
                             <el-form-item
-                                label="Email Address (Optional)"
+                                :label="event.enable_zoom_registration && 'Online' === ruleForm.attendingOption ? 'Email Address' : 'Email Address (Optional)'"
                                 class="rm-margin"
                                 prop="email"
+                                :rules="[
+                                    {
+                                        required: event.enable_zoom_registration && ruleForm.attendingOption === 'Online',
+                                        message: 'Email is required for online attendee.',
+                                        trigger: 'blur'
+                                    }
+                                ]"
                             >
-                                <small class="text-sm"
-                                    >Please provide the email address where you
-                                    would like to receive the confirmation
-                                    email.</small
-                                >
+                                <small class="text-sm" v-if="event.enable_zoom_registration && 'Online' === ruleForm.attendingOption">Please provide the email address where you would like to receive the zoom details and confirmation email.</small>
+                                <small class="text-sm" v-else>Please provide the email address where you would like to receive the confirmation email.</small>
                                 <el-input
                                     v-model="ruleForm.email"
                                     :clearable="true"

@@ -53,7 +53,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="p-1">
-                                        <label class="text-sm">Email Address</label>
+                                        <label class="text-sm">Email Address <span v-if="event.enable_zoom_registration && 'Online' === data.step_1.attendingOption">(For Zoom Details and Confirmation Email)</span></label>
                                         <el-input
                                             size="mini"
                                             placeholder="Email Address"
@@ -185,7 +185,18 @@
                 <el-card v-else shadow="always" class="mb-3">
                     <div class="row">
                         <div v-if="data.step_1.withAwtaCard === 'none'" class="col-md-12">
-                            <el-form-item label="Email Address" prop="email">
+                            <el-form-item 
+                                label="Email Address" 
+                                :class="{'rm-margin' : (event.enable_zoom_registration && 'Online' === data.step_1.attendingOption)}" 
+                                prop="email"
+                                :rules="[
+                                    {
+                                        required: event.enable_zoom_registration && data.step_1.attendingOption === 'Online',
+                                        message: 'Email is required for online attendee.',
+                                        trigger: 'blur'
+                                    }
+                                ]">
+                                <small class="text-sm" v-if="event.enable_zoom_registration && 'Online' === data.step_1.attendingOption">Please provide the email address where you would like to receive the zoom details and confirmation email.</small>
                                 <el-input v-model="ruleForm.email"></el-input>
                             </el-form-item>
                         </div>
@@ -264,8 +275,19 @@
                 <el-card v-if="data.step_1.registrationType === 'Member' && ['lost', 'mislaid'].includes(data.step_1.withAwtaCard) && ruleForm.lookUp.length > 0" shadow="always" class="mb-3"> 
                     <div class="row">
                         <div class="col-md-12">
-                            <el-form-item label="Email Address (Optional)" class="rm-margin" prop="email">
-                                <small class="text-sm">Please provide the email address where you would like to receive the confirmation email.</small>
+                            <el-form-item 
+                                :label="event.enable_zoom_registration && data.step_1.attendingOption === 'Online' ? 'Email Address' : 'Email Address (Optional)'" 
+                                class="rm-margin" 
+                                prop="email"
+                                :rules="[
+                                    {
+                                        required: event.enable_zoom_registration && data.step_1.attendingOption === 'Online',
+                                        message: 'Email is required for online attendee.',
+                                        trigger: 'blur'
+                                    }
+                                ]">
+                                <small class="text-sm" v-if="event.enable_zoom_registration && 'Online' === data.step_1.attendingOption">Please provide the email address where you would like to receive the zoom details and confirmation email.</small>
+                                <small class="text-sm" v-else>Please provide the email address where you would like to receive the confirmation email.</small>
                                 <el-input v-model="ruleForm.email" :clearable="true"></el-input>
                             </el-form-item>
                         </div>
