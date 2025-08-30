@@ -17,4 +17,8 @@ class EventController extends Controller
             'events' => Event::all()
         ]);
     }
+
+    public function all() {
+        return Event::all();
+    }
 }

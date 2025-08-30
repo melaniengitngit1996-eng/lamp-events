@@ -16,6 +16,7 @@
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
             year:'{{ config('settings.year') }}',
             awta_day: '{{ config('settings.awta_day') }}',
+            permissions: {!! json_encode(config('permissions')) !!},
         };
     </script>
     @endif

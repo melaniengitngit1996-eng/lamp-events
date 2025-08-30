@@ -46,7 +46,7 @@
                                         <p v-if="history.length > 10">...</p>
                                     </template>
                                     <a :href="`/${event.slug}/received-hg/export`" class="float-end" slot="reference" @click="refreshHistory()">
-                                    <el-button type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
+                                    <el-button v-if="permissions.can_export_data" type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
                                     </a>
                                 </el-popover>
                             </td>

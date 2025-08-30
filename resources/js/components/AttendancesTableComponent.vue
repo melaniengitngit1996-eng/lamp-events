@@ -55,7 +55,7 @@
                                         <p v-if="history.length > 10">...</p>
                                     </template>
                                     <a :href="`/${event.slug}/attendances/export`" class="float-end" slot="reference" @click="refreshHistory()">
-                                    <el-button type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
+                                    <el-button v-if="permissions.can_export_data" type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
                                     </a>
                                 </el-popover>
                             </td>
@@ -157,7 +157,8 @@
                     local_church: ''
                 },
                 assignments: window.env.cluster_groups,
-                history: []
+                history: [],
+                permissions: window.auth_user.permissions,
             }
         },
         mounted() {

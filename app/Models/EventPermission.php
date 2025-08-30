@@ -9,6 +9,11 @@ class EventPermission extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'event_id',
+        'user_id'
+    ];
+
     public function event()
     {
         return $this->hasOne(Event::class, 'id', 'event_id');

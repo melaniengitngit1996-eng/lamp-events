@@ -51,7 +51,7 @@
                     </p>
                 </template>
             </el-table-column>
-            <el-table-column align="center" width="120">
+            <el-table-column v-if="permissions.can_add_slots" align="center" width="120">
                 <template slot-scope="scope">
                 <el-button type="primary" size="mini" plain @click="openModal(scope.row)">Add Slot</el-button>
                 </template>
@@ -102,7 +102,8 @@ export default {
                     { required: true, message: 'Please input additional slot count', trigger: 'blur' }
                 ],
                 notes: [{ required: true, message: 'Please input the reason', trigger: 'blur' }],
-            }
+            },
+            permissions: window.auth_user.permissions,
         }
     },
     methods: {

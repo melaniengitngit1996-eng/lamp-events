@@ -43,7 +43,7 @@ class BinanAnniversaryUsersTableSeeder extends Seeder
                 'can_edit_delegate' => 0,
                 'can_delete_delegate' => 0,
                 'can_delete_payment' => 0,
-                'can_export_registrations' => 1,
+                'can_export_data' => 1,
                 'can_view_registrations' => 1,
                 'can_edit_delegate_config' => 0,
                 'can_edit_lookup_data' => 0,

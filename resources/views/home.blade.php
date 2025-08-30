@@ -37,11 +37,9 @@
             <attendance-table :count="{{ $count }}" :overall="{{ $overall }}" :overall_total="{{ $overall_total }}" />
         </el-tab-pane>
 
-        @if (auth()->user()->permissions->can_add_slots === 1)
-            <el-tab-pane label="Slots">
-                <slots-table :slots="{{ $slots_list }}" :event="{{ $event }}" />
-            </el-tab-pane>
-        @endif
+        <el-tab-pane label="Slots">
+            <slots-table :slots="{{ $slots_list }}" :event="{{ $event }}" />
+        </el-tab-pane>
 
         <el-tab-pane label="Received HG">
             <received-hg-table :event="{{ $event }}" />

@@ -19157,7 +19157,7 @@ CREATE TABLE `permissions` (
   `can_edit_delegate` tinyint(1) NOT NULL DEFAULT 0,
   `can_delete_delegate` tinyint(1) NOT NULL DEFAULT 0,
   `can_delete_payment` tinyint(1) NOT NULL DEFAULT 0,
-  `can_export_registrations` tinyint(1) NOT NULL DEFAULT 0,
+  `can_export_data` tinyint(1) NOT NULL DEFAULT 0,
   `can_view_registrations` tinyint(1) NOT NULL DEFAULT 0,
   `can_edit_delegate_config` tinyint(1) NOT NULL DEFAULT 0,
   `can_edit_lookup_data` tinyint(1) NOT NULL DEFAULT 0,
@@ -19171,7 +19171,7 @@ CREATE TABLE `permissions` (
 -- Dumping data for table `permissions`
 --
 
-INSERT INTO `permissions` (`id`, `user_id`, `can_edit_delegate`, `can_delete_delegate`, `can_delete_payment`, `can_export_registrations`, `can_view_registrations`, `can_edit_delegate_config`, `can_edit_lookup_data`, `can_add_lookup_data`, `can_add_slots`, `created_at`, `updated_at`) VALUES
+INSERT INTO `permissions` (`id`, `user_id`, `can_edit_delegate`, `can_delete_delegate`, `can_delete_payment`, `can_export_data`, `can_view_registrations`, `can_edit_delegate_config`, `can_edit_lookup_data`, `can_add_lookup_data`, `can_add_slots`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, '2023-09-01 14:17:31', '2023-09-01 14:17:31'),
 (2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, '2023-09-01 14:17:31', '2023-09-01 14:17:31'),
 (3, 3, 1, 1, 1, 1, 1, 1, 0, 0, 1, '2023-09-01 14:17:31', '2023-09-01 14:17:31'),

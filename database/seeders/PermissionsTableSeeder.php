@@ -53,7 +53,7 @@ class PermissionsTableSeeder extends Seeder
                 'can_delete_delegate' => $isAdmin || $isSuperAdmin,
                 'can_delete_payment' => $isAdmin || $isSuperAdmin,
                 'can_edit_delegate_config' => $isAdmin || $isSuperAdmin,
-                'can_export_registrations' => true,
+                'can_export_data' => true,
                 'can_view_registrations' => true,
                 'can_edit_lookup_data' => $isSuperAdmin,
                 'can_add_lookup_data' => $isSuperAdmin,

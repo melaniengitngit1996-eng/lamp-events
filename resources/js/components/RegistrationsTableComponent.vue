@@ -96,7 +96,7 @@
                       <p v-if="history.length > 10">...</p>
                     </template>
                     <a :href="`/${event.slug}/registrations/export`" slot="reference" @click="refreshHistory()" class="float-end">
-                    <el-button type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
+                    <el-button v-if="permissions.can_export_data" type="success" size="mini">Export to Excel&nbsp;<i class="el-icon-download el-icon-right"></i></el-button>
                     </a>
                   </el-popover>
                 </td>
@@ -196,7 +196,7 @@
             fixed="right"
             label="Operations"
             align="center"
-            width="120">
+            width="110">
             <template slot-scope="scope">
               <a :href="`/${event.slug}/registration/${scope.row.id}/edit`"><el-button type="text" size="small">View Details</el-button></a>
               <el-button v-if="scope.row.email" type="text" size="small" @click="resendMail(scope.row.id)">Resend Mail</el-button>

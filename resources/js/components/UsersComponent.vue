@@ -13,7 +13,7 @@
                 width="300">
                 </el-table-column>
                 <el-table-column
-                prop="email"
+                prop="masked_email"
                 label="Email"
                 width="300">
                 </el-table-column>
@@ -32,12 +32,13 @@
                 </template>
                 </el-table-column>
                 <el-table-column
+                    v-if="permissions.can_manage_users"
                     label="Actions"
                     width="300"
                     align="center">
                     <template slot-scope="scope">
                         <el-row class="text-center">
-                            <el-button type="primary" plain size="small" @click="manageUser(scope.row.id)"><i class="el-icon-s-tools mr-2"></i>&nbsp;&nbsp;Manage</el-button>
+                            <el-button type="primary" plain size="small" @click="manageUser(scope.row)"><i class="el-icon-s-tools mr-2"></i>&nbsp;&nbsp;Manage</el-button>
                             <el-button type="danger" plain size="small"><i class="el-icon-delete-solid mr-2"></i>&nbsp;&nbsp;Delete</el-button>
                         </el-row>
                     </template>
@@ -53,14 +54,76 @@
             </pagination>
 
             <el-dialog
-                title="Tips"
+                title="User Details"
                 :visible.sync="userDialog"
-                width="30%"
-                :before-close="handleClose">
-                <span>This is a message</span>
+                width="60%"
+                custom-class="user-details-dialog">
+                <el-tabs type="border-card" v-model="selected">
+                    <el-tab-pane label="Credentials" name="credentials">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <el-form ref="form" :model="form" label-width="120px" size="mini">
+                                    <el-form-item label="Full Name">
+                                        <el-input v-model="form.name"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="Email Address">
+                                        <el-input v-model="form.email"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="Password" :gap="20">
+                                        <div class="row">
+                                            <el-col :span="12">
+                                                <el-input type="password" v-model="form.password" placeholder="New Password"></el-input>
+                                            </el-col>
+                                            <el-col :span="12">
+                                                <el-input type="password" v-model="form.confirm_password" placeholder="Confirm Password"></el-input>
+                                            </el-col>
+                                        </div>
+                                    </el-form-item>
+                                
+                                    <span slot="footer" class="dialog-footer">
+                                        <el-button @click="userDialog = false">Cancel</el-button>
+                                        <el-button type="primary" @click="onSubmit">Confirm</el-button>
+                                    </span>
+                                </el-form>
+                            </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="Events" name="events">
+                        <el-checkbox-group v-model="form.events" class="mt-3">
+                            <div class="row" v-for="(event, index) in events">
+                                <el-col :span="12">
+                                    <el-checkbox :value="event.id" :label="event.id">
+                                        <div style="
+                                            display: grid;
+                                            margin-bottom: 15px;">
+                                            <label>{{ event.name }}</label>
+                                            <small>{{ event.description }}</small>
+                                        </div>
+                                    </el-checkbox>
+                                </el-col>
+                            </div>
+                        </el-checkbox-group>
+                    </el-tab-pane>
+                    <el-tab-pane label="Permissions" name="permissions">
+                        <el-checkbox-group v-model="form.permissions" class="mt-3">
+                            <div class="row" v-for="(event, index) in permissions_config">
+                                <el-col :span="12">
+                                    <el-checkbox :value="event.id" :label="event.id">
+                                        <div style="
+                                            display: grid;
+                                            margin-bottom: 15px;">
+                                            <label>{{ event.label }}</label>
+                                            <small>{{ event.descriptions }}</small>
+                                        </div>
+                                    </el-checkbox>
+                                </el-col>
+                            </div>
+                        </el-checkbox-group>
+                    </el-tab-pane>
+                </el-tabs>
                 <span slot="footer" class="dialog-footer">
-                    <el-button @click="userDialog = false">Cancel</el-button>
-                    <el-button type="primary" @click="userDialog = false">Confirm</el-button>
+                    <el-button size="mini" @click="userDialog = false">Cancel</el-button>
+                    <el-button size="mini" type="primary" :loading="form.loading" @click="onSubmit">Save Changes</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -72,6 +135,16 @@ export default {
     data() {
         return {
             search: '',
+            form: {
+                id: 0,
+                name: '',
+                email: '',
+                password: '',
+                confirm_password: '',
+                events: [],
+                permissions: [],
+                loading: false
+            },
             tableData: {
                 total: 0,
                 per_page: 2,
@@ -80,11 +153,16 @@ export default {
                 current_page: 1,
                 data: []
             },
-            userDialog: false
+            events: [],
+            selected: "events",
+            userDialog: false,
+            permissions_config: window.env.permissions,
+            permissions: window.auth_user.permissions,
         }
     },
     mounted() {
         this.fetchUsers();
+        this.fetchEvents();
     },
     methods: {
         fetchUsers(ignore_page = true) {
@@ -105,10 +183,82 @@ export default {
                 });
             });
         },
-        manageUser(id) {
-            console.log(id);
+        fetchEvents() {
+            axios
+            .get(`/events/all`)
+            .then(async response => {
+                this.events = response.data;
+            })
+            .catch(error => {
+                this.$notify.error({
+                    title: error
+                });
+            });
+        },
+        async manageUser(data) {
+            this.form.name = data.name;
+            this.form.email = data.email;
+
+            let result = []
+            
+            await data.event_permission.forEach(event => {
+                result.push(event.event_id)
+            });
+
+            console.log(result);
+
+            this.form.events = result
+
+            var excludedKeys = ['id', 'user_id', 'created_at', 'updated_at'];
+
+            var permissions = Object.entries(data.permissions)
+            .filter(([key, value]) => value === true && !excludedKeys.includes(key))
+            .map(([key]) => key);
+
+            this.form.permissions = permissions;
+
+            this.form.id = data.id;
+
             this.userDialog = true
+        },
+        resetForm() {
+            this.form.id = 0;
+            this.form.name = '';
+            this.form.email = '';
+            this.form.password = '';
+            this.form.confirm_password = '';
+            this.form.events = [];
+            this.form.permissions = [];
+            this.form.loading = false;
+
+            this.userDialog = false
+        },
+        onSubmit() {
+            this.form.loading = true;
+            axios
+            .post(`/users/${this.form.id}`, this.form)
+            .then(async response => {
+                this.resetForm();
+                this.fetchUsers(false);
+            })
+            .catch(error => {
+                this.form.loading = false;
+                this.$notify.error({
+                    title: error
+                });
+            });
         }
     }
 }
 </script>
+
+<style>
+.user-details-dialog {
+    margin-top: 5vh !important;
+}
+
+.user-details-dialog .el-dialog__body {
+    padding: 10px 20px !important;
+
+}
+</style>

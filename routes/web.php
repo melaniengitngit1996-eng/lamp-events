@@ -122,5 +122,7 @@ Route::get('/{event:slug}/export/history', [App\Http\Controllers\ExportHistoryCo
 Route::get('users/mobile/create', [App\Http\Controllers\MobileUserController::class, 'create'])->name('user.mobile.create');
 Route::post('users/mobile', [App\Http\Controllers\MobileUserController::class, 'store'])->name('user.mobile.store');
 Route::get('users/all', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
+Route::post('users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
 
 Route::get('/events', [App\Http\Controllers\EventController::class, 'index'])->name('events.index');
+Route::get('/events/all', [App\Http\Controllers\EventController::class, 'all'])->name('events.all');

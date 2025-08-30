@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::with('eventPermission', 'eventPermission.event');
+        $users = User::with('eventPermission', 'eventPermission.event', 'permissions');
 
 
         if ($request->search) {
@@ -27,7 +27,7 @@ class UserController extends Controller
 
         // mask email
         $users->getCollection()->transform(function ($user) {
-            $user->email = $this->maskEmail($user->email);
+            $user->masked_email = $this->maskEmail($user->email);
             return $user;
         });
 
@@ -43,5 +43,42 @@ class UserController extends Controller
         $masked = str_repeat('*', max(strlen($user) - 2, 0));
 
         return $visible . $masked . '@' . $domain;
+    }
+
+    public function update($id, Request $request) {
+        $user = User::find($id);
+
+        if ($user) {
+            // -------- Event Permissions --------
+            // Delete old permissions
+            $user->eventPermission()->delete();
+
+            // Create new permissions for each event ID
+            $permissions = collect($request->events)->map(function ($eventId) {
+                return [
+                    'event_id' => $eventId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            })->toArray();
+
+            // Insert new records
+            $user->eventPermission()->createMany($permissions);
+
+            // ----------- Permissions -----------
+            $permission_config = config('permissions');
+
+            $ids = collect($permission_config)->pluck('id');
+            
+            $access = [];
+
+            foreach ($ids as $id) {
+                $access[$id] = in_array($id, $request->permissions);
+            }
+
+            $user->permissions()->update($access);
+        }
+
+        return $user;
     }
 }
