@@ -96,6 +96,7 @@
                                         label="Physical"
                                     ></el-option>
                                     <el-option
+                                        :disabled="event.id === 1"
                                         value="Online"
                                         label="Online"
                                     ></el-option>
