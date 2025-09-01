@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -77,6 +78,12 @@ class UserController extends Controller
             }
 
             $user->permissions()->update($access);
+
+            if ($request->password) {
+                $user->update([
+                    'password' => Hash::make($request->password)
+                ]);
+            }
         }
 
         return $user;
