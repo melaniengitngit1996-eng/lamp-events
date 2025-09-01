@@ -69,13 +69,14 @@ Artisan::command('send-out-event-reminder-online', function () {
     $this->comment('---------------------------------- end ---------------------------------');
 });
 
-
-Artisan::command('cancel-bookings', function () {
+/* run `php artisan cancel-bookings 1` */
+Artisan::command('cancel-bookings {event_id?}', function () {
+    $eventId = $this->argument('event_id');
     $date = \Carbon\Carbon::today()->subDays(7);
     $this->comment('---------------------------------- ' . $date . ' ---------------------------------');
 
     // get all registrations that have not been paid for more than seven days since they were booked
-    $registrations = Registration::withSum('payments', 'amount')->where('booked_date', '<=', $date)->where('booking_status', BookingStatus::Pending)->get();
+    $registrations = Registration::withSum('payments', 'amount')->where('event_id', $eventId)->where('booked_date', '<=', $date)->where('booking_status', BookingStatus::Pending)->get();
 
     foreach ($registrations as $registration) {
         if (floatval($registration->can_book_rate) > floatval($registration->payments_sum_amount)) {
