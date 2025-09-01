@@ -14,160 +14,159 @@
                         <div class="border rounded-1 p-2 w-full mb-1">
                             <table class="w-full" style="width: 100%;">
                                 <tr>
-                                    <td width="33.3%" class="p-1">
-                                        <label class="text-sm">First Name</label>
-                                        <el-input
-                                            size="mini"
-                                            placeholder="First Name"
-                                            :class="{'has-error' : (errors[i] && errors[i]['firstName']) || (errors[i] && errors[i]['invalid'])}"
-                                            v-model="guest.firstName">
-                                        </el-input>
-                                        <small v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])" class="text-error">
-                                            <span v-if="errors[i]['firstName']">{{ errors[i]['firstName'] }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                    <td width="33.3%" class="p-1">
-                                        <label class="text-sm">Last Name</label>
-                                        <el-input
-                                            size="mini"
-                                            placeholder="Last Name"
-                                            :class="{'has-error' : (errors[i] && errors[i]['lastName']) || (errors[i] && errors[i]['invalid'])}"
-                                            v-model="guest.lastName">
-                                        </el-input>
-                                        <small v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])" class="text-error">
-                                            <span v-if="errors[i].lastName">{{ errors[i].lastName }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                    <td width="33.4%" class="p-1">
-                                        <label class="text-sm">Facebook Name</label>
-                                        <el-input
-                                            size="mini"
-                                            placeholder='Type "None", if no facebook.'
-                                            :class="{'has-error' : (errors[i] && errors[i]['facebookName']) || (errors[i] && errors[i]['invalid'])}"
-                                            v-model="guest.facebookName">
-                                        </el-input>
-                                        <small v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])" class="text-error">
-                                            <span v-if="errors[i].facebookName">{{ errors[i].facebookName }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="p-1">
-                                        <label class="text-sm">Email Address <span v-if="event.enable_zoom_registration && 'Online' === data.step_1.attendingOption">(For Zoom Details and Confirmation Email)</span></label>
-                                        <el-input
-                                            size="mini"
-                                            placeholder="Email Address"
-                                            :class="{'has-error' : (errors[i] && errors[i]['email'])}"
-                                            v-model="guest.email">
-                                        </el-input>
-                                        <small v-if="errors[i] && (errors[i]['email'] || errors[i]['country'])" class="text-error">
-                                            <span v-if="errors[i]['email']">{{ errors[i]['email'] }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                    <td class="p-1">
-                                        <label class="text-sm">Country</label>
-                                        <el-select 
-                                            size="mini" 
-                                            v-model="guest.country" 
-                                            placeholder="Choose" 
-                                            :class="{'has-error' : (errors[i] && errors[i]['country'])}">
-                                            <el-option v-for="country in countries" v-bind:key="country" :label="country" :value="country"></el-option>
-                                        </el-select>
-                                        <small v-if="errors[i] && (errors[i]['email'] || errors[i]['country'])" class="text-error">
-                                            <span v-if="errors[i]['country']">{{ errors[i]['country'] }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-1">
-                                        <label class="text-sm">Local Church</label>
-                                        <el-select 
-                                            :class="{'has-error' : (errors[i] && errors[i]['localChurch']) || (errors[i] && errors[i]['invalid'])}" 
-                                            size="mini" 
-                                            v-model="guest.localChurch" 
-                                            placeholder="Local Church"
-                                            @change="removeClusterGroup(i)">
-                                            <el-option v-for="(value, local_church) in assignments" :key="local_church" :label="local_church" :value="local_church"></el-option>
-                                        </el-select>
-                                        <small v-if="errors[i] && (errors[i]['localChurch'] || errors[i]['clusterGroup'])" class="text-error">
-                                            <span v-if="errors[i]['localChurch']">{{ errors[i]['localChurch'] }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                    <td class="p-1">
-                                        <label class="text-sm">Cluster Group</label>
-                                        <el-select 
-                                            size="mini"
-                                            :class="{'has-error' : (errors[i] && errors[i]['clusterGroup'])}"
-                                            v-model="guest.clusterGroup" 
-                                            placeholder="Cluster Group">
-                                            <el-option v-if="guest.country != ''" label="No Cluster Group" value="No Cluster"></el-option>
-                                            <el-option-group
-                                            v-for="group in assignments[ruleForm.guests[i].localChurch]"
-                                                :key="group.label"
-                                                :label="group.label">
-                                                <el-option
-                                                    v-for="item in group.options"
-                                                    :key="item"
-                                                    :label="item"
-                                                    :value="item">
-                                                </el-option>
-                                            </el-option-group>
-                                        </el-select>
-                                        <small v-if="errors[i] && (errors[i]['localChurch'] || errors[i]['clusterGroup'])" class="text-error">
-                                            <span v-if="errors[i]['clusterGroup']">{{ errors[i]['clusterGroup'] }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                </tr>
-                                <tr v-if="data.step_1.attendingOption != 'Online' && event.with_booking">
-                                    <td colspan="3" class="p-1">
-                                        <label class="text-sm">Select Preferred Dates</label>
-                                        <div v-if="event.has_multiple_venues" style="display: flex; gap: 8px;">
-                                            <div 
-                                                v-for="(date, index) in dates" :key="index" 
-                                                style="width: 25%"
-                                            >
-                                                <label style="margin-bottom: 6px;">
-                                                    {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
-                                                </label>
-                                                <el-select v-model="guest.booked[date.id]" size="mini" placeholder="select venue" @change="onChangeProcessedMulti($event, date.id, i)" @visible-change="onSelectOpen($event, date.id, i)">
-                                                    <el-option 
-                                                        label="--" 
-                                                        value="">
-                                                    </el-option>
-                                                    <el-option 
-                                                        v-for="(venue, e) in date.venues" 
-                                                        :key="e" 
-                                                        :label="venue.venue" 
-                                                        :value="venue.venue"
-                                                        :disabled="isMainVenueDisabled(venue.venue, i)">
-                                                    </el-option>
+                                    <td colspan="3">
+                                        <el-row :gutter="8" v-if="event.has_multiple_venues">
+                                            <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="8" :xl="8">
+                                                <label class="text-sm">First Name</label>
+                                                <el-input
+                                                    size="mini"
+                                                    placeholder="First Name"
+                                                    :class="{'has-error' : (errors[i] && errors[i]['firstName']) || (errors[i] && errors[i]['invalid'])}"
+                                                    v-model="guest.firstName">
+                                                </el-input>
+                                                <small v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])" class="text-error">
+                                                    <span v-if="errors[i]['firstName']">{{ errors[i]['firstName'] }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                            <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="8" :xl="8">
+                                                <label class="text-sm">Last Name</label>
+                                                <el-input
+                                                    size="mini"
+                                                    placeholder="Last Name"
+                                                    :class="{'has-error' : (errors[i] && errors[i]['lastName']) || (errors[i] && errors[i]['invalid'])}"
+                                                    v-model="guest.lastName">
+                                                </el-input>
+                                                <small v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])" class="text-error">
+                                                    <span v-if="errors[i].lastName">{{ errors[i].lastName }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                            <el-col class="pb-1" :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
+                                                <label class="text-sm">Facebook Name</label>
+                                                <el-input
+                                                    size="mini"
+                                                    placeholder='Type "None", if no facebook.'
+                                                    :class="{'has-error' : (errors[i] && errors[i]['facebookName']) || (errors[i] && errors[i]['invalid'])}"
+                                                    v-model="guest.facebookName">
+                                                </el-input>
+                                                <small v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])" class="text-error">
+                                                    <span v-if="errors[i].facebookName">{{ errors[i].facebookName }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                            <el-col class="pb-1" :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
+                                                <label class="text-sm">Email Address <span v-if="event.enable_zoom_registration && 'Online' === data.step_1.attendingOption">(For Zoom Details and Confirmation Email)</span></label>
+                                                <el-input
+                                                    size="mini"
+                                                    placeholder="Email Address"
+                                                    :class="{'has-error' : (errors[i] && errors[i]['email'])}"
+                                                    v-model="guest.email">
+                                                </el-input>
+                                                <small v-if="errors[i] && (errors[i]['email'] || errors[i]['country'])" class="text-error">
+                                                    <span v-if="errors[i]['email']">{{ errors[i]['email'] }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                            <el-col class="pb-1" :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                                                <label class="text-sm">Country</label>
+                                                <el-select 
+                                                    size="mini" 
+                                                    v-model="guest.country" 
+                                                    placeholder="Choose" 
+                                                    :class="{'has-error' : (errors[i] && errors[i]['country'])}">
+                                                    <el-option v-for="country in countries" v-bind:key="country" :label="country" :value="country"></el-option>
                                                 </el-select>
-                                            </div>
-                                        </div>
-                                        <el-checkbox-group v-else v-model="guest.booked" size="mini">
-                                            <el-checkbox-button 
-                                                v-for="(date, index) in dates" 
-                                                :label="date.id" 
-                                                :key="date.id" 
-                                                @change="onChangeProcessed($event, date.id)"
-                                                :disabled="(!guest.booked.includes(date.id) && guest.booked.length === guest_booking_limit) || (date.available === 0 && !guest.booked.includes(date.id))">
-                                                    <label class="mb-1">{{ date.event_date }}</label> <br> 
-                                                    <span>{{ date.available }} left!</span>
-                                            </el-checkbox-button>
-                                        </el-checkbox-group>
-                                        <small v-if="errors[i] && errors[i]['booked']" class="text-error">
-                                            <span v-if="errors[i]['booked']">{{ errors[i]['booked'] }}</span>&nbsp;
-                                        </small>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" class="p-1">
-                                        <label class="text-sm">Do you need any medical assistance during the event? If YES, kindly specify below. If NO, leave it empty.</label>
-                                        <el-input
-                                            size="mini"
-                                            placeholder="Please specify..."
-                                            v-model="guest.specificMedicalAssistance">
-                                        </el-input>
+                                                <small v-if="errors[i] && (errors[i]['email'] || errors[i]['country'])" class="text-error">
+                                                    <span v-if="errors[i]['country']">{{ errors[i]['country'] }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                            <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                                                <label class="text-sm">Local Church</label>
+                                                <el-select 
+                                                    :class="{'has-error' : (errors[i] && errors[i]['localChurch']) || (errors[i] && errors[i]['invalid'])}" 
+                                                    size="mini" 
+                                                    v-model="guest.localChurch" 
+                                                    placeholder="Local Church"
+                                                    @change="removeClusterGroup(i)">
+                                                    <el-option v-for="(value, local_church) in assignments" :key="local_church" :label="local_church" :value="local_church"></el-option>
+                                                </el-select>
+                                                <small v-if="errors[i] && (errors[i]['localChurch'] || errors[i]['clusterGroup'])" class="text-error">
+                                                    <span v-if="errors[i]['localChurch']">{{ errors[i]['localChurch'] }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                            <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                                                <label class="text-sm">Cluster Group</label>
+                                                <el-select 
+                                                    size="mini"
+                                                    :class="{'has-error' : (errors[i] && errors[i]['clusterGroup'])}"
+                                                    v-model="guest.clusterGroup" 
+                                                    placeholder="Cluster Group">
+                                                    <el-option v-if="guest.country != ''" label="No Cluster Group" value="No Cluster"></el-option>
+                                                    <el-option-group
+                                                    v-for="group in assignments[ruleForm.guests[i].localChurch]"
+                                                        :key="group.label"
+                                                        :label="group.label">
+                                                        <el-option
+                                                            v-for="item in group.options"
+                                                            :key="item"
+                                                            :label="item"
+                                                            :value="item">
+                                                        </el-option>
+                                                    </el-option-group>
+                                                </el-select>
+                                                <small v-if="errors[i] && (errors[i]['localChurch'] || errors[i]['clusterGroup'])" class="text-error">
+                                                    <span v-if="errors[i]['clusterGroup']">{{ errors[i]['clusterGroup'] }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row v-if="data.step_1.attendingOption != 'Online' && event.with_booking" :gutter="8">
+                                            <el-col :span="24">
+                                                <label class="text-sm">Select Preferred Dates</label>
+                                                <el-row :gutter="8" v-if="event.has_multiple_venues">
+                                                    <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="3" :xl="3"
+                                                        v-for="(date, index) in dates" :key="index" 
+                                                    >
+                                                        <label class="text-sm" style="margin-bottom: 6px;">
+                                                            {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')" style="font-size: 9px;">{{date.available}} left for {{event.main_venue}}!</el-tag>
+                                                        </label>
+                                                        <el-select v-model="guest.booked[date.id]" size="mini" placeholder="select venue" @change="onChangeProcessedMulti($event, date.id, i)" @visible-change="onSelectOpen($event, date.id, i)">
+                                                            <el-option 
+                                                                label="--" 
+                                                                value="">
+                                                            </el-option>
+                                                            <el-option 
+                                                                v-for="(venue, e) in date.venues" 
+                                                                :key="e" 
+                                                                :label="venue.venue" 
+                                                                :value="venue.venue"
+                                                                :disabled="isMainVenueDisabled(venue.venue, i)">
+                                                            </el-option>
+                                                        </el-select>
+                                                    </el-col>
+                                                </el-row>
+                                                <el-checkbox-group v-else v-model="guest.booked" size="mini">
+                                                    <el-checkbox-button 
+                                                        v-for="(date, index) in dates" 
+                                                        :label="date.id" 
+                                                        :key="date.id" 
+                                                        @change="onChangeProcessed($event, date.id)"
+                                                        :disabled="(!guest.booked.includes(date.id) && guest.booked.length === guest_booking_limit) || (date.available === 0 && !guest.booked.includes(date.id))">
+                                                            <label class="mb-1">{{ date.event_date }}</label> <br> 
+                                                            <span>{{ date.available }} left!</span>
+                                                    </el-checkbox-button>
+                                                </el-checkbox-group>
+                                                <small v-if="errors[i] && errors[i]['booked']" class="text-error">
+                                                    <span v-if="errors[i]['booked']">{{ errors[i]['booked'] }}</span>&nbsp;
+                                                </small>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row :gutter="8">
+                                            <el-col :span="24">
+                                                <label class="text-sm">Do you need any medical assistance during the event? If YES, kindly specify below. If NO, leave it empty.</label>
+                                                <el-input
+                                                    size="mini"
+                                                    placeholder="Please specify..."
+                                                    v-model="guest.specificMedicalAssistance">
+                                                </el-input>
+                                            </el-col>
+                                        </el-row>
                                     </td>
                                 </tr>
                             </table>
