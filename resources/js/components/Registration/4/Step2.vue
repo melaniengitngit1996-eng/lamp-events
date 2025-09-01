@@ -120,7 +120,7 @@
                                             <el-col :span="24">
                                                 <label class="text-sm">Select Preferred Dates</label>
                                                 <el-row :gutter="8" v-if="event.has_multiple_venues">
-                                                    <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="3" :xl="3"
+                                                    <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="6" :xl="6"
                                                         v-for="(date, index) in dates" :key="index" 
                                                     >
                                                         <label class="text-sm" style="margin-bottom: 6px;">
