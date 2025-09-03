@@ -168,9 +168,10 @@ class Controller extends BaseController
         }
     }
 
-    function checkIfAlreadyRegistered($request)
+    function checkIfAlreadyRegistered($event_id, $request)
     {
-        $registration = Registration::where('firstname', $request->firstName)
+        $registration = Registration::where('event_id', $event_id)
+            ->where('firstname', $request->firstName)
             ->where('lastname', $request->lastName)
             ->where('local_church', $request->localChurch)
             ->first();

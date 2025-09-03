@@ -622,7 +622,7 @@ class Registration2Controller extends Controller
                 }
 
                 if (!array_key_exists($key, $errors)) {
-                    $validation = $this->checkIfAlreadyRegistered((object) [
+                    $validation = $this->checkIfAlreadyRegistered($event->id, (object) [
                         'firstName' => $value->firstName,
                         'lastName' => $value->lastName,
                         'localChurch' => $value->localChurch
@@ -674,7 +674,7 @@ class Registration2Controller extends Controller
                 return response()->json(['errors' => $errors], 500);
             }
         } else {
-            $validation = $this->checkIfAlreadyRegistered($request);
+            $validation = $this->checkIfAlreadyRegistered($event->id, $request);
 
             if (array_key_exists('error', $validation)) {
                 return response()->json(['error' => $validation['error']], 500);
