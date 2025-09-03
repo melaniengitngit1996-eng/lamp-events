@@ -132,10 +132,18 @@ class Registration2Controller extends Controller
 
         $registration = (array) Registration::with('bookings', 'bookings.slot', 'additional_data', 'lookup')->where('event_id', $event->id)->whereIn('uuid', $uuid)->get()->toArray();
 
-        $registration = array_map(function ($data) {
-            $data['booked_dates'] = array_map(function ($dates) {
-                return $dates['slot']['event_date'];
+        $registration = array_map(function ($data) use ($event) {
+            $data['booked_dates'] = array_map(function ($dates) use ($event) {
+                if ($event->has_multiple_venues) {
+                    return [
+                        'event_date' => $dates['slot']['event_date'],
+                        'venue' => $dates['venue']
+                    ];
+                } else {
+                    return $dates['slot']['event_date'];
+                }
             }, $data['bookings']);
+
             $data['avail_new_lamp_id'] = $data['lookup']['avail_new_lamp_id'] ?? NULL;
             $data['has_viewed_ticket'] = $data['additional_data']['has_viewed_ticket'] ?? NULL;
 

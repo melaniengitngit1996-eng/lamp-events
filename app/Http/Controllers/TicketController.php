@@ -17,8 +17,15 @@ class TicketController extends Controller
     {
         $registration = Registration::with('bookings', 'bookings.slot')->where('event_id', $event->id)->where('uuid', $uuid)->first();
 
-        $registration->booked_dates = array_map(function ($dates) {
-            return $dates['slot']['event_date'];
+        $registration->booked_dates = array_map(function ($dates) use ($event) {
+            if ($event->has_multiple_venues) {
+                return [
+                    'event_date' => $dates['slot']['event_date'],
+                    'venue' => $dates['venue']
+                ];
+            } else {
+                return $dates['slot']['event_date'];
+            }
         }, $registration->bookings->toArray());
 
         return view('ticket.show', [
@@ -31,8 +38,15 @@ class TicketController extends Controller
     {
         $registration = Registration::with('bookings', 'bookings.slot', 'event')->find($id);
 
-        $registration->booked_dates = array_map(function ($dates) {
-            return $dates['slot']['event_date'];
+        $registration->booked_dates = array_map(function ($dates) use ($event) {
+            if ($event->has_multiple_venues) {
+                return [
+                    'event_date' => $dates['slot']['event_date'],
+                    'venue' => $dates['venue']
+                ];
+            } else {
+                return $dates['slot']['event_date'];
+            }
         }, $registration->bookings->toArray());
 
         return view('ticket.edit', [

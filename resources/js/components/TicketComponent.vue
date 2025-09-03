@@ -28,12 +28,6 @@
                                     <span class="text-md font-bold d-block text-break">{{ registration.email || '--' }}</span>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <small>Registration Type</small>
-                                    <span class="text-md font-bold d-block">{{ registration.registration_type }}</span>
-                                </div>
-                            </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 div-qr-code">
                             <barcode-component :uuid="registration.uuid" />
@@ -41,15 +35,27 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 mb-3">
+                        <div class="el-col el-col-md-8 el-col-12 mb-3">
+                            <small>Registration Type</small>
+                            <span class="text-md font-bold d-block">{{ registration.registration_type }}</span>
+                        </div>
+                        <div v-if="registration.booked_dates.length > 0" class="el-col el-col-md-16 el-col-12 mb-3">
+                            <small>Registration Status</small>
+                            <span class="text-md font-bold d-block">
+                                <el-tag size="mini" effect="dark" :type="registration.booking_status === 'Confirmed' ? 'success' : (registration.booking_status === 'Cancelled' ? 'danger' : 'warning')">{{ registration.booking_status }}</el-tag>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="el-col el-col-12 el-col-md-8 mb-3">
                             <small>Rate</small> <small>({{registration.attending_option}})</small>
                             <span class="text-md font-bold d-block">{{ $func.formatAmount(registration.rate) }}</span>
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 mb-3">
+                        <div class="el-col el-col-12 el-col-md-8 mb-3">
                             <small>Local Church</small>
                             <span class="text-md font-bold d-block">{{ registration.local_church }}</span>
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-4 mb-3">
+                        <div class="el-col el-col-12 el-col-md-8 mb-3">
                             <small>Country</small>
                             <span class="text-md font-bold d-block">{{ registration.country }}</span>
                         </div>
@@ -57,16 +63,28 @@
 
                     <div v-if="registration.attending_option != 'Online'" class="row mb-3">
                         <div class="col-md-12">
-                            <small class="d-block">Booked Dates</small>
-                            <span class="text-md font-bold" v-if="registration.booked_dates.length > 0" v-html="registration.booked_dates.join([separator = ',  '])"></span>
-                            <span class="font-bold text-black-50 text-md" v-else>Not yet booked. Please reach out to your local coordinator to book your schedule.</span>
-                            <span v-if="registration.booked_dates.length > 0"><el-tag size="mini" effect="dark" :type="registration.booking_status === 'Confirmed' ? 'success' : (registration.booking_status === 'Cancelled' ? 'danger' : 'warning')">{{ registration.booking_status }}</el-tag></span>
+                            <small class="d-block" style="margin-bottom: 5px">Booked Dates</small>
+                            <span class="text-md font-bold" v-if="registration.booked_dates.length > 0 && !event.has_multiple_venues" v-html="registration.booked_dates.join([separator = ',  '])"></span>
+                            <el-row :gutter="5" class="text-md font-bold" style="margin-bottom: -5px" v-else-if="registration.booked_dates.length > 0 && event.has_multiple_venues">
+                                <el-col v-for="booked in registration.booked_dates" :key="booked.event_date" :xs="8" :sm="8" :md="8" :lg="6" :xl="6" style="margin-bottom: 5px">
+                                    <el-tag class="custom-height">
+                                        <span>{{ booked.event_date }}</span>
+                                        <small>{{ booked.venue }}</small>
+                                    </el-tag>
+                                </el-col>
+                            </el-row>
+                            <small class="font-bold text-black-50 text-md" v-else>Not yet booked. Please reach out to your local coordinator to book your schedule.</small>
                         </div>
                     </div>
 
-                    <div v-if="registration.attending_option != 'Online'" class="row">
+                    <hr style="margin: 1rem -20px; border-color: gray;" />
+
+                    <div v-if="registration.attending_option != 'Online'" class="row mt-2">
                         <div class="col-md-12">
-                            <small>***Please screenshot this ticket. This will be your virtual LAMP ID number, in case you opted not to avail the physical card. This will be used in the future LAMP church events and activities.</small>
+                            <small style="
+                                justify-content: flex-start;
+                                display: flex;
+                            ">*** Please screenshot this ticket. This will be your virtual LAMP ID number, in case you opted not to avail the physical card. This will be used in the future LAMP church events and activities.</small>
                         </div>
                     </div>
                 </div>
@@ -205,3 +223,14 @@ export default {
     },   
 }
 </script>
+
+<style>
+.custom-height {
+    height: auto !important;
+    width: 100%;
+    line-height: normal !important;
+    display: inline-grid;
+    text-align: center;
+    padding: 4px 6px;
+}
+</style>
