@@ -23,7 +23,7 @@
                                     :key="e" 
                                     :label="venue.venue" 
                                     :value="venue.venue"
-                                    :disabled="isMainVenueDisabled(venue.venue)">
+                                    :disabled="isMainVenueDisabled(venue.venue) || venue.venue === 'Local Church'">
                                 </el-option>
                             </el-select>
                         </el-form-item>
