@@ -77,7 +77,7 @@
                         </div>
                     </div>
 
-                    <hr style="margin: 1rem -20px; border-color: gray;" />
+                    <hr v-if="registration.attending_option != 'Online'" style="margin: 1rem -20px; border-color: gray;" />
 
                     <div v-if="registration.attending_option != 'Online'" class="row mt-2">
                         <div class="col-md-12">
