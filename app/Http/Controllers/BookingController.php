@@ -26,7 +26,7 @@ class BookingController extends Controller
     public function edit(Event $event, Registration $registration)
     {
         $event = Event::with(['custom_fields', 'venues'])->find($event->id);
-        
+
         return view('booking.edit', [
             'booked_dates' => $registration->bookings()->with(['slot'])->where('status', '!=', BookingStatus::Cancelled)->get(),
             'slots' => Slots::where('event_id', $registration->event_id)->where('registration_type', $registration->registration_type)->get(),
@@ -65,6 +65,14 @@ class BookingController extends Controller
         $new_booked_dates = $request->all()['dates'];
 
         $old_booked_dates = array_column($registration->bookings()->get()->toArray(), 'slot_id');
+
+        if ($event->has_multiple_venues) {
+            $old_booked_dates = array_column(
+                $registration->bookings()->get()->toArray(),
+                'venue', 
+                'slot_id'
+            );
+        }
 
         $limit = $registration->rebooking_limit;
 
@@ -105,9 +113,11 @@ class BookingController extends Controller
             $booking_status = BookingStatus::Pending;
         }
 
-        foreach ($request->dates as $date) {
-            $taken = Booking::where('slot_id', $date)->count();
-            $slot = Slots::where('id', $date)->first();
+        foreach ($request->dates as $key => $date) {
+            $slot_id = $event->has_multiple_venues ? $key : $date;
+            $venue = $event->has_multiple_venues ? $date : $event->main_venue;
+            $taken = Booking::where('slot_id', $slot_id)->count();
+            $slot = Slots::where('id', $slot_id)->first();
             $remaining = $slot->available;
 
             if ($remaining > 0) {
@@ -117,13 +127,16 @@ class BookingController extends Controller
                     'rebooking_limit' => $limit
                 ]);
 
-                // store bookings
-                $registration->bookings()->create([
-                    'slot_id' => $date,
+                $new_booking = [
+                    'slot_id' => $slot_id,
                     'event_id' => $event->id,
                     'local_church' => $registration->local_church,
-                    'status' => $booking_status
-                ]);
+                    'status' => $booking_status,
+                    'venue' => $venue
+                ];
+
+                // store bookings
+                $registration->bookings()->create($new_booking);
 
                 // add activity to registration
                 if ($hasChanges) {
