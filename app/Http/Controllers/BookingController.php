@@ -25,6 +25,8 @@ class BookingController extends Controller
 
     public function edit(Event $event, Registration $registration)
     {
+        $event = Event::with(['custom_fields', 'venues'])->find($event->id);
+        
         return view('booking.edit', [
             'booked_dates' => $registration->bookings()->with(['slot'])->where('status', '!=', BookingStatus::Cancelled)->get(),
             'slots' => Slots::where('event_id', $registration->event_id)->where('registration_type', $registration->registration_type)->get(),

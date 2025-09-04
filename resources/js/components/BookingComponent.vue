@@ -3,7 +3,31 @@
         <div class="card">
             <div class="card-body pt-0">
                 <div class="row justify-content-center">
-                    <el-form-item class="check-dates" :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" prop="booked" required>
+                    <label class="mt-3" v-if="event.has_multiple_venues">Choose the dates you would like to attend {{event.main_venue}}. Maximum of {{max}} days.</label>
+                    <el-form-item 
+                        v-if="event.has_multiple_venues" 
+                        v-for="(date, index) in dates" :key="index" 
+                        :prop="'booked.' + date.id"
+                        :rules="[
+                            { required: true, message: `Please select a venue`, trigger: 'change' }
+                        ]"
+                        class="check-dates" 
+                        required
+                    >
+                        <template slot="label">
+                            {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
+                        </template>
+                        <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
+                            <el-option 
+                                v-for="(venue, e) in date.venues" 
+                                :key="e" 
+                                :label="venue.venue" 
+                                :value="venue.venue"
+                                :disabled="isMainVenueDisabled(venue.venue)">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item v-else class="check-dates" :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" prop="booked" required>
                         <!-- <el-tag v-if="(ruleForm.booked.length > 0)" class="bg-white border-0"><i class="el-icon-date"></i>&nbsp;&nbsp;You are booked on<span v-for="(value, index) in ruleForm.booked" :key="index"> {{ dates[value-1]['event_date'] }}&nbsp;</span></el-tag> -->
                         <el-checkbox-group v-model="ruleForm.booked" size="small">
                             <div class="row">
@@ -46,8 +70,7 @@ export default {
             type: Array
         },
         self_redirect: {
-            required: true,
-            type: Boolean
+            required: true
         },
         hide_button: {
             required: false,
@@ -56,7 +79,6 @@ export default {
         },
         is_admin: {
             default: false,
-            type: Boolean,
             required: false
         },
         registration: {
@@ -78,14 +100,35 @@ export default {
                 {required: true, message: 'Please select atleast one day', trigger: ['blur', 'change']},
             ],
         },
-        max: 2
+        max: 2,
+        previous_values: {}
       }
     },
     mounted() {
-        this.dates = this.slots.map(({event_date, id, available, seat_count}) => ({event_date, id, available, seat_count}) );
         this.ruleForm.booked = this.booked_dates.map(function (date) { return date.slot.id; });
         this.initial = this.booked_dates.map(function (date) { return date.slot.id; });
         this.max = this.registration.can_book_days
+        var booked_dates = this.ruleForm.booked;
+
+        if (this.event.has_multiple_venues) {
+            this.ruleForm.booked = Object.fromEntries(this.booked_dates.map(item => [item.slot.id, item.venue]));
+        }
+
+        this.dates = this.slots.map((date) => {
+            var available = booked_dates.includes(date.id) ? date.available-1 : date.available;
+            var detail = {
+                "event_date": date.event_date,
+                "id": date.id,
+                "available": available,
+                "seat_count": date.seat_count
+            };
+
+            if (this.event.has_multiple_venues) {
+                detail['venues'] = this.event.venues
+            }
+
+            return detail;
+        });
     },
     methods: {
         submitForm(formName) {
@@ -151,6 +194,38 @@ export default {
                     break;
                 }
             }
+        },
+        onChangeProcessedMulti(newValue, dateId) {
+            const prev = this.previous_values[`_${dateId}`] || "";
+
+            for (let i = 0, len = this.dates.length; i < len; i++) {
+                if (this.dates[i].id === dateId) {
+                    if (newValue === this.event.main_venue) {
+                        // only minus if prev had some value
+                        this.dates[i].available -= 1;
+                    } else {
+                        if (prev) {
+                            this.dates[i].available += 1;
+                        }
+                    }
+                    break;
+                }
+            }
+        },
+        onSelectOpen(open, dateId) {
+            if (open) {
+                // store the current value before it changes
+                this.previous_values[`_${dateId}`] = this.ruleForm.booked[dateId];
+            }
+        },
+        isMainVenueDisabled(venueName) {
+            if (venueName !== this.event.main_venue) return false;
+
+            // Count how many times this.event.main_venue is already selected
+            const count = Object.values(this.ruleForm.booked)
+                .filter(v => v === this.event.main_venue).length;
+
+            return count >= this.max;
         }
     }
 }
