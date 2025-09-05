@@ -77,9 +77,9 @@
                         </el-form>
                     </el-card>
 
-                    <div class="row">
+                    <div class="row" :style="`--theme-color: ${themeColor}`">
                         <div class="col-md-12">
-                            <el-button :loading="isLoading" :autofocus="true" type="theme" @click="validateDelegate('ruleForm')" :disabled="disabled">Continue</el-button>
+                            <el-button :loading="isLoading" :autofocus="true" type="theme" class="el-button--theme" @click="validateDelegate('ruleForm')" :disabled="disabled">Continue</el-button>
                         </div>
                     </div>
                 </div>
@@ -142,6 +142,7 @@ export default {
     },
     data () {
       return {
+        themeColor: this.event.border_color,
         ruleForm: {
             'lastName': '',
             'localChurch': '',
@@ -224,6 +225,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.el-button--theme {
+    color: #FFF !important;
+    background-color: var(--theme-color) !important;
+    border-color: var(--theme-color) !important;
+}
 
+.el-link.el-link--theme:hover {
+    color: var(--theme-color) !important;
+}
+
+.el-link.el-link--theme {
+    color: var(--theme-color) !important;
+    text-decoration: none !important;
+}
 </style>
