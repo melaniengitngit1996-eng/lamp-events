@@ -17,6 +17,8 @@
         <meta property="og:description" content="{{ $event['description'] }}"/>
     @endif
 
+    @yield('style')
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <script>

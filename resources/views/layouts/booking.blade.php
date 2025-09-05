@@ -26,6 +26,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    @yield('style')
+
     <script>
         window.env = {
             cluster_groups: {!! json_encode(config('clustergroups')) !!},
