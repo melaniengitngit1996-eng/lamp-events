@@ -82,7 +82,7 @@ export default {
             required: false
         },
         registration: {
-            required: true,
+            required: false,
         },
         event: {
             required: false

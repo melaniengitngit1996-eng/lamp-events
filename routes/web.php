@@ -95,8 +95,8 @@ Route::get('/{event:slug}/attendances', [App\Http\Controllers\AttendanceControll
 Route::get('/{event:slug}/attendances/export', [App\Http\Controllers\AttendanceController::class, 'export'])->name('attendance.export');
 
 // booking
-Route::get('/booking', [App\Http\Controllers\BookingController::class, 'create'])->name('booking.create');
-Route::get('/booking/validate', [App\Http\Controllers\BookingController::class, 'validation'])->name('booking.validation');
+Route::get('/{event:slug}/booking', [App\Http\Controllers\BookingController::class, 'create'])->name('booking.create');
+Route::get('/{event:slug}/booking/validate', [App\Http\Controllers\BookingController::class, 'validation'])->name('booking.validation');
 
 // config
 Route::get('{event:slug}/config', [App\Http\Controllers\ConfigurationController::class, 'show'])->name('configurations');

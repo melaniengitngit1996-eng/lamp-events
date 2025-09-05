@@ -18,9 +18,12 @@ class BookingController extends Controller
         $this->middleware('auth', ['except' => ['create', 'index', 'show', 'validation', 'update']]);
     }
 
-    public function create()
+    public function create(Event $event)
     {
-        return view('booking.create');
+        $event = Event::with(['custom_fields', 'venues'])->find($event->id);
+        return view('booking.create', [
+            'event' => $event
+        ]);
     }
 
     public function edit(Event $event, Registration $registration)
@@ -170,9 +173,10 @@ class BookingController extends Controller
         return $registration->bookings()->with(['slot'])->get();
     }
 
-    public function validation(Request $request)
+    public function validation(Event $event, Request $request)
     {
         $registration = Registration::with('bookings', 'bookings.slot')
+            ->where('event_id', $event->id)
             ->where('uuid', $request->referenceNumber)
             ->where('lastname', $request->lastName)
             ->where('local_church', $request->localChurch)
@@ -191,17 +195,24 @@ class BookingController extends Controller
             return response()->json(['error' => 'Already reached rebooking limit.'], 500);
         }
 
-        if (in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
+        if (!in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
             return response()->json(['error' => 'Delegate is not registered for physical/hybrid.'], 500);
         }
 
-        $registration->booked_dates = array_map(function ($dates) {
-            return $dates['slot']['event_date'];
+        $registration->booked_dates = array_map(function ($dates) use ($event) {
+            if ($event->has_multiple_venues) {
+                return [
+                    'event_date' => $dates['slot']['event_date'],
+                    'venue' => $dates['venue']
+                ];
+            } else {
+                return $dates['slot']['event_date'];
+            }
         }, $registration->bookings->toArray());
 
         return [
             'delegate' => $registration,
-            'slots' => Slots::where('registration_type', $registration->registration_type)->get(),
+            'slots' => Slots::where('event_id', $event->id)->where('registration_type', $registration->registration_type)->get(),
         ];
     }
 }

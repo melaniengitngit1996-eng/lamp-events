@@ -4,24 +4,24 @@
     <div class="row justify-content-center mb-4">
         <div class="col-md-6">
             <div v-if="! validated" class="row justify-content-center">
-                <div class="col-md-6 mb-3">
-                    <el-card shadow="always" class="mb-3 p-1" style="border-top: 10px solid rgb(45 122 95); height: 100% !important;">
+                <div class="col-md-6">
+                    <el-card shadow="always" class="mb-3 p-1" :style="`border-top: 10px solid ${event.border_color}; height: 100% !important;`">
                         <div class="text-black">
-                            <h6 class="fw-bolder text-muted">LAMP WORLDWIDE AWTA {{ year }}</h6>
+                            <h6 class="fw-bolder text-muted">{{ event.name }}</h6>
                             <small>
-                            Timeline: {{ event_date }}<br/>
-                            Venue: Calamba Tent<br/>
-                            Theme: {{ theme }}<br/>
+                            Timeline: {{ event.event_date }}<br/>
+                            Venue: {{ event.main_venue }}<br/>
+                            Theme: {{ event.description }}<br/>
                             <br/>
                             </small>
 
                             <h6 class="fw-bolder text-muted">GUIDELINES: </h6>
                             <small>
-                            Both members and visitors will be able to start booking their seats on October 1 until {{rebooking_deadline}} for Hybrid Attendees.<br/><br/>
+                            Both members and visitors will be able to start booking their seats on September 1 until {{event.rebooking_deadline}} for Hybrid Attendees.<br/><br/>
 
-                            Hybrid Attendees should book for intended AWTA days only. Visitors will need to coordinate with their cluster local coordinators for their bookings.<br/><br/>
+                            Physical Attendees should book for intended AWTA days only. Visitors will need to coordinate with their cluster local coordinators for their bookings.<br/><br/>
 
-                            Rebooking is until {{rebooking_deadline}} only. <br/><br/>
+                            Rebooking is until {{event.rebooking_deadline}} only. <br/><br/>
                             For any booking issues/concerns, kindly reach out to your local Registrars.<br/><br/>
 
                             Book now — hurry while seats last!
@@ -30,7 +30,7 @@
                     </el-card>
                 </div>
                 <div class="col-md-6">
-                    <el-card shadow="always" class="mb-3 pb-0" style="border-top: 10px solid rgb(45 122 95)">
+                    <el-card shadow="always" class="mb-3 pb-0" :style="`border-top: 10px solid ${event.border_color}`">
                         <h3>Manage Booking</h3>
                         <p class="mt-2 c-booking-subheader">Type in your details to manage your booking</p>
 
@@ -90,13 +90,13 @@
                         <el-tab-pane label="Ticket">
                             <el-alert
                                 class="mb-3"
-                                :title="`Congratulations! You are already booked for the AWTA ${year}.`"
+                                :title="`Congratulations! You are already booked for the ${event.name}.`"
                                 type="success"
-                                description="Please do screenshot this ticket if your AWTA card is lost, this will be your gate pass to the event place."
+                                description="Please do screenshot this ticket if your LAMP ID is lost, this will be your gate pass to the event place."
                                 :closable="false"
                                 show-icon>
                             </el-alert>
-                            <ticket-component :registrations="[retrieved.details]" :isRebooking="true"/>
+                            <ticket-component :registrations="[retrieved.details]" :isRebooking="true" :event="event"/>
                         </el-tab-pane>
                         <el-tab-pane label="Booking">
                             <el-alert
@@ -106,10 +106,10 @@
                                 type="warning"
                                 :closable="false">
                             </el-alert>
-                            <booking :booked_dates="retrieved.details.booking_status === 'Cancelled' ? [] : retrieved.details.bookings" :slots="retrieved.slots" :uuid="retrieved.uuid" :can_book_days="retrieved.can_book_days" :self_redirect="false" :hide_button="retrieved.details.rebooking_limit === 0"/>
+                            <booking :booked_dates="retrieved.details.booking_status === 'Cancelled' ? [] : retrieved.details.bookings" :slots="retrieved.slots" :uuid="retrieved.uuid" :can_book_days="retrieved.can_book_days" :self_redirect="false" :hide_button="retrieved.details.rebooking_limit === 0" :registration="retrieved.registration" :event="event" />
                         </el-tab-pane>
                     </el-tabs>
-                    <booking v-else :booked_dates="retrieved.details.booking_status === 'Cancelled' ? [] : retrieved.details.bookings" :slots="retrieved.slots" :uuid="retrieved.uuid" :can_book_days="retrieved.can_book_days" :self_redirect="false" :hide_button="retrieved.details.rebooking_limit === 0"/>
+                    <booking v-else :booked_dates="retrieved.details.booking_status === 'Cancelled' ? [] : retrieved.details.bookings" :slots="retrieved.slots" :uuid="retrieved.uuid" :can_book_days="retrieved.can_book_days" :self_redirect="false" :hide_button="retrieved.details.rebooking_limit === 0" :registration="retrieved.registration" :event="event" />
                 </div>
             </div>
         </div>
@@ -135,6 +135,11 @@
 
 <script>
 export default {
+    props: {
+        event: {
+            required: false
+        }
+    },
     data () {
       return {
         ruleForm: {
@@ -162,13 +167,10 @@ export default {
             slots: [],
             uuid: null,
             details: {},
-            can_book_days: null
+            can_book_days: null,
+            registration: {}
         },
-        event_date: window.env.event_date,
         assignments: window.env.cluster_groups,
-        theme: window.env.theme,
-        rebooking_deadline: window.env.rebooking_deadline,
-        year: window.env.year
       }
     },
     mounted() {
@@ -194,7 +196,7 @@ export default {
 
                     this.fieldErrors, this.error = null
 
-                    axios.get("/booking/validate", { params: this.ruleForm })
+                    axios.get(`/${this.event.slug}/booking/validate`, { params: this.ruleForm })
                     .then(async (response) => {
                         loading.close()
 
@@ -206,7 +208,8 @@ export default {
                             slots: data.slots,
                             uuid: data.delegate.uuid,
                             details: data.delegate,
-                            can_book_days: data.delegate.can_book_days
+                            can_book_days: data.delegate.can_book_days,
+                            registration: data.delegate
                         }
                     })
                     .catch((error) => {

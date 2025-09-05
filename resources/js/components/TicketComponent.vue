@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center my-4">
-        <div v-bind:class="{'col-lg-12 mb-4' : isRebooking, 'col-md-6 col-lg-4 mb-4' : !isRebooking}" v-for="(registration, i) in registrations" :key="i">
+        <div v-bind:class="{'col-md-8 col-sm-12 mb-4' : isRebooking, 'col-md-6 col-lg-4 mb-4' : !isRebooking}" v-for="(registration, i) in registrations" :key="i">
             <el-card :id="`capture_${i}`" class="box-card ticket-header">
                 <div slot="header" class="clearfix">
                     <span class="text-uppercase">{{ event.name }}</span>

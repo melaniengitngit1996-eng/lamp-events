@@ -4,11 +4,11 @@
 <div class="px-4">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <img width="100%" class="mb-3 rounded shadow" src="/images/2024_banner_B.jpeg">
+            <img width="100%" class="mb-3 rounded shadow" src="/images/banners/{{ $event->banner_file_name }}">
         </div>
     </div>
     
-    <manage-booking />
+    <manage-booking :event="{{ $event }}" />
 </div>
 @endsection
 
