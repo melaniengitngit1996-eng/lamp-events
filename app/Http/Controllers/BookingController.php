@@ -145,7 +145,7 @@ class BookingController extends Controller
             }
         }
 
-        if ($hasChanges) {
+        if ($hasChanges && count($new_booked_dates) > 0) {
             // add activity to registration
             $dates = array_map(function ($date) use ($event) {
                 if ($event->has_multiple_venues) {
@@ -160,14 +160,14 @@ class BookingController extends Controller
             ]);
 
             if ($hasPermission) {
-                $registration->updateBookingActivities($registration, $registration->booking_activities, array('This delegate\'s booking was updated by ' . auth()->user()->name . ' to ' . implode(', ', $dates)));
+                $registration->updateBookingActivities($registration, $registration->booking_activities, array('<b>' . auth()->user()->name . '</b>: Updated to ' . implode(', ', $dates)));
             } else {
-                $registration->updateBookingActivities($registration, $registration->booking_activities, array($registration->fullname . ' updated the booking details to ' . implode(', ', $dates)));
+                $registration->updateBookingActivities($registration, $registration->booking_activities, array('<b>' . $registration->fullname . '</b>: Rebooked to ' . implode(', ', $dates)));
             }
         }
 
         if (count($new_booked_dates) === 0 && count($old_booked_dates) > 0) {
-            $registration->updateBookingActivities($registration, $registration->booking_activities, array('Removed all the booked dates by ' . auth()->user()->name));
+            $registration->updateBookingActivities($registration, $registration->booking_activities, array('<b>' . auth()->user()->name . '</b>: Removed all the booked dates'));
         }
 
         if ($hasChanges) {

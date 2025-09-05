@@ -56,7 +56,7 @@
                     type="default"
                     size="large"
                     timestamp="{{ $activity['timestamp'] }}">
-                    {{ $activity['message'] }}
+                    {!! $activity['message'] !!}
                 </el-timeline-item>
                 @endforeach
             </el-timeline>
