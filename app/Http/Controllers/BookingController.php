@@ -140,25 +140,29 @@ class BookingController extends Controller
 
                 // store bookings
                 $registration->bookings()->create($new_booking);
-
-                // add activity to registration
-                if ($hasChanges) {
-                    $dates = array_map(function ($date) {
-                        return $date['slot']['event_date'];
-                    }, $registration->bookings()->with('slot')->get()->toArray());
-
-                    $registration->update([
-                        'booked_date' => NOW()
-                    ]);
-
-                    if ($hasPermission) {
-                        $registration->updateBookingActivities($registration, $registration->booking_activities, array('This delegate was rebooked by ' . auth()->user()->name . ' for ' . implode(', ', $dates)));
-                    } else {
-                        $registration->updateBookingActivities($registration, $registration->booking_activities, array($registration->fullname . ' rebooked for ' . implode(', ', $dates)));
-                    }
-                }
             } else {
                 return response()->json(['error' => 'Sorry, no remaining seats left. Please refresh the page and try again.'], 500);
+            }
+        }
+
+        if ($hasChanges) {
+            // add activity to registration
+            $dates = array_map(function ($date) use ($event) {
+                if ($event->has_multiple_venues) {
+                    return $date['slot']['event_date'] . ' (' . $date['venue'] . ')';
+                } else {
+                    return $date['slot']['event_date'];
+                }
+            }, $registration->bookings()->with('slot')->get()->toArray());
+
+            $registration->update([
+                'booked_date' => NOW()
+            ]);
+
+            if ($hasPermission) {
+                $registration->updateBookingActivities($registration, $registration->booking_activities, array('This delegate\'s booking was updated by ' . auth()->user()->name . ' to ' . implode(', ', $dates)));
+            } else {
+                $registration->updateBookingActivities($registration, $registration->booking_activities, array($registration->fullname . ' updated the booking details to ' . implode(', ', $dates)));
             }
         }
 
