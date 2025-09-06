@@ -151,7 +151,8 @@ return [
                 "QC (Quezon City)",
                 "SP1 (Langgam/NHA/Batangas)",
                 "SP2 (Brgy. UB)",
-                "SP4MC (San Pedro/ Landco)",
+                "SP4 (San Pedro-Bacoor-Paranaque)",
+                "SP4CB1 (Landco)",
                 "VAL Valenzuela",
                 "CLB Calamba"
             ]
