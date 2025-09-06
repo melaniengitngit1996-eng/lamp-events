@@ -44,16 +44,25 @@ class BookingController extends Controller
      * @param  String $uuid
      * @return \Illuminate\Http\Response
      */
-    public function show($registration_id)
+    public function show(Event $event, $registration_id)
     {
         $registration = Registration::with('bookings', 'bookings.slot')->where('id', $registration_id)->first();
 
-        $registration->booked_dates = array_map(function ($dates) {
-            return $dates['slot']['event_date'];
+        $registration->booked_dates = array_map(function ($dates) use ($event) {
+            if ($event->has_multiple_venues) {
+                return [
+                    'event_date' => $dates['slot']['event_date'],
+                    'venue' => $dates['venue']
+                ];
+            } else {
+                return $dates['slot']['event_date'];
+            }
         }, $registration->bookings->toArray());
 
+        $event = Event::with(['custom_fields', 'venues'])->find($event->id);
         return view('booking.show', [
-            'registration' => $registration
+            'registration' => $registration,
+            'event' => $event
         ]);
     }
 
