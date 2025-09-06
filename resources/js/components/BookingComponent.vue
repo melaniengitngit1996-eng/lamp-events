@@ -3,24 +3,22 @@
         <div class="card">
             <div class="card-body pt-0">
                 <div class="row justify-content-center">
-                    <label class="mt-3" v-if="event.has_multiple_venues">Choose the dates you would like to attend {{event.main_venue}}. Maximum of {{max}} days.</label>
+                    <label class="mt-3" v-if="event.has_multiple_venues">Please choose a venue for the dates you’d like to attend in person. You may select up to {{max}} days.</label>
                     <el-form-item 
                         v-if="event.has_multiple_venues" 
                         v-for="(date, index) in dates" :key="index" 
                         :prop="'booked.' + date.id"
                         :rules="[
-                            { required: true, message: `Please select a venue`, trigger: 'change' }
+                            { validator: validateBooked, trigger: 'change' }
                         ]"
                         class="check-dates" 
-                        required
                     >
                         <template slot="label">
                             {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
                         </template>
                         <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
                             <el-option 
-                                label="--" 
-                                value="">
+                                label="--">
                             </el-option>
                             <el-option 
                                 v-for="(venue, e) in date.venues" 
@@ -149,8 +147,18 @@ export default {
                         background: 'rgba(0, 0, 0, 0.7)'
                     });
 
+                    console.log(this.ruleForm.booked);
+
+                    var booked = this.ruleForm.booked;
+
+                    if (this.event.has_multiple_venues) {
+                        booked = Object.fromEntries(
+                            Object.entries(this.ruleForm.booked).filter(([_, v]) => v !== null && v !== "")
+                        );
+                    }
+
                     await axios.post(`/${this.event.slug}/booking/${this.registration.id}/update`, {
-                        dates: this.ruleForm.booked,
+                        dates: booked,
                         is_admin: this.is_admin
                     }) 
                     .then(async (response) => {
@@ -168,7 +176,7 @@ export default {
                                 if (this.self_redirect)
                                     window.location.reload();
                                 else
-                                    window.location.href = `booking/${this.registration.id}`;
+                                    window.location.href = `booking/${this.registration.id}/view`;
                             }
                         });
                     }).catch((error) => {
@@ -230,7 +238,16 @@ export default {
                 .filter(v => v === this.event.main_venue).length;
 
             return count >= this.max;
-        }
+        },
+        validateBooked(rule, value, callback) {
+            const allEmpty = Object.values(this.ruleForm.booked).every(v => v === "");
+
+            if (allEmpty) {
+                callback(new Error("Please select the venue"));
+            } else {
+                callback();
+            }
+        },
     }
 }
 </script>

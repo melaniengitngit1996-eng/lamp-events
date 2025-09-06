@@ -128,8 +128,7 @@
                                                         </label>
                                                         <el-select v-model="guest.booked[date.id]" size="mini" placeholder="select venue" @change="onChangeProcessedMulti($event, date.id, i)" @visible-change="onSelectOpen($event, date.id, i)">
                                                             <el-option 
-                                                                label="--" 
-                                                                value="">
+                                                                label="--">
                                                             </el-option>
                                                             <el-option 
                                                                 v-for="(venue, e) in date.venues" 

@@ -18,8 +18,7 @@
                             </template>
                             <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
                                 <el-option 
-                                    label="--" 
-                                    value="">
+                                    label="--">
                                 </el-option>
                                 <el-option 
                                     v-for="(venue, e) in date.venues" 
@@ -143,15 +142,13 @@
 
                         if (this.event.has_multiple_venues) {
                             const filtered = Object.fromEntries(
-                                Object.entries(this.ruleForm.booked).filter(([_, v]) => v !== "")
+                                Object.entries(this.ruleForm.booked).filter(([_, v]) => v !== null && v !== "")
                             );
 
                             booked = {
                                 booked: filtered
                             }
                         }
-
-                        console.log(booked);
 
                         this.$emit('submit', booked);
                         console.log('submiting...');

@@ -124,8 +124,7 @@
                     :key="index"
                     type="default"
                     size="large"
-                    :timestamp="activity.timestamp">
-                    {{ activity.message }}
+                    :timestamp="activity.timestamp" v-html="activity.message">
                 </el-timeline-item>
             </el-timeline>
         </div>

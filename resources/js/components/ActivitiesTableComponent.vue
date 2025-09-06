@@ -9,7 +9,7 @@
       :color="activity.color"
       :size="activity.size"
       :timestamp="activity.timestamp">
-      {{activity.content}}
+      {!! activity.content !!}
     </el-timeline-item>
   </el-timeline>
 </div>

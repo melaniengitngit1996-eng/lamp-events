@@ -6972,7 +6972,7 @@ var render = function render() {
         size: activity.size,
         timestamp: activity.timestamp
       }
-    }, [_vm._v("\n      " + _vm._s(activity.content) + "\n    ")]);
+    }, [_vm._v("\n      {!! activity.content !!}\n    ")]);
   }), 1)], 1);
 };
 
