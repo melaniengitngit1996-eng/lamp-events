@@ -15,17 +15,50 @@
                             <br/>
                             </small>
 
-                            <h6 class="fw-bolder text-muted">GUIDELINES: </h6>
-                            <small>
-                            Both members and visitors will be able to start booking their seats on September 1 until {{event.rebooking_deadline}} for Hybrid Attendees.<br/><br/>
+                            <main class="container p-0" role="main">
+                                <header class="mb-3">
+                                    <h6 class="fw-bolder text-muted">GUIDELINES</h6>
+                                    <small>Please read the following guidelines carefully before rebooking.</small>
+                                </header>
 
-                            Physical Attendees should book for intended AWTA days only. Visitors will need to coordinate with their cluster local coordinators for their bookings.<br/><br/>
 
-                            Rebooking is until {{event.rebooking_deadline}} only. <br/><br/>
-                            For any booking issues/concerns, kindly reach out to your local Registrars.<br/><br/>
+                                <section aria-labelledby="general">
+                                    <h6 class="fw-bolder text-muted">Calamba Tent Attendance</h6>
+                                    <small>
+                                        <ul>
+                                            <li>Members may book up to <strong>4 days of attendance</strong> (first come, first served).</li>
+                                            <li>Slots available per day: <strong>1,000 for members</strong> and <strong>200 for guests</strong>.</li>
+                                            <li>Guests may attend for a maximum of <strong>2 days only</strong>.</li>
+                                            <li>Registration period: <strong>September 1 – November 30</strong> or until slots are filled.</li>
+                                            <li>Registration fee: <strong>₱950</strong>.</li>
+                                        </ul>
+                                    </small>
+                                </section>
 
-                            Book now — hurry while seats last!
-                            </small>
+
+                                <section aria-labelledby="satellite">
+                                    <h6 class="fw-bolder text-muted">Satellite Attendance</h6>
+                                    <small>
+                                        <ul>
+                                            <li>Attend at your <strong>local church location (Satellite)</strong>.</li>
+                                            <li>All satellite locations will be open for <strong>4 days</strong>.</li>
+                                            <li>Satellite registration period: <strong>November 1 – December 14, 2025</strong>.</li>
+                                            <li>Satellite attendance fee: <strong>₱100</strong>.</li>
+                                        </ul>
+                                    </small>
+                                </section>
+
+
+                                <section class="mb-3" aria-labelledby="help">
+                                    <h6 class="fw-bolder text-muted">Assistance</h6>
+                                    <small class="note">For any booking issues or concerns, kindly reach out to your local Registrars.</small>
+                                </section>
+
+
+                                <footer>
+                                    <small class="note"><strong>Book now — hurry while slots last!</strong></small>
+                                </footer>
+                            </main>
                         </div>
                     </el-card>
                 </div>
