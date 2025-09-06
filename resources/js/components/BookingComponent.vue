@@ -19,6 +19,10 @@
                         </template>
                         <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
                             <el-option 
+                                label="--" 
+                                value="">
+                            </el-option>
+                            <el-option 
                                 v-for="(venue, e) in date.venues" 
                                 :key="e" 
                                 :label="venue.venue" 

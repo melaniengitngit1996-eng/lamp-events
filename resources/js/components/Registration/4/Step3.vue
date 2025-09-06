@@ -4,20 +4,23 @@
            <el-form :model="ruleForm" ref="ruleForm" label-position="right" class="demo-ruleForm">
                 <el-card shadow="always" class="mb-3">
                     <div class="row justify-content-center">
-                        <label v-if="event.has_multiple_venues">Choose the dates you would like to attend {{event.main_venue}}. Maximum of {{max}} days.</label>
+                        <label v-if="event.has_multiple_venues">Please choose a venue for the dates you’d like to attend in person. You may select up to {{max}} days.</label>
                         <el-form-item 
                             v-if="event.has_multiple_venues" 
                             v-for="(date, index) in dates" :key="index" 
                             :prop="'booked.' + date.id"
                             :rules="[
-                                { required: true, message: `Please select a venue`, trigger: 'change' }
+                                { validator: validateBooked, trigger: 'change' }
                             ]"
-                            required
                         >
                             <template slot="label">
                                 {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
                             </template>
                             <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
+                                <el-option 
+                                    label="--" 
+                                    value="">
+                                </el-option>
                                 <el-option 
                                     v-for="(venue, e) in date.venues" 
                                     :key="e" 
@@ -120,6 +123,8 @@
                 this.max = this.data.step_2.canBookDays
             if (this.data.step_1.withAwtaCard === 'yes')
                 this.max = this.data.step_1.found.canBookDays
+
+            // this.max = 4
         },
         methods: {
             submitForm(action) {
@@ -134,7 +139,21 @@
 
                 this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
-                        this.$emit('submit', this.ruleForm);
+                        var booked = this.ruleForm;
+
+                        if (this.event.has_multiple_venues) {
+                            const filtered = Object.fromEntries(
+                                Object.entries(this.ruleForm.booked).filter(([_, v]) => v !== "")
+                            );
+
+                            booked = {
+                                booked: filtered
+                            }
+                        }
+
+                        console.log(booked);
+
+                        this.$emit('submit', booked);
                         console.log('submiting...');
                     } else {
                        console.log('error submit!!');
@@ -184,7 +203,16 @@
                     .filter(v => v === this.event.main_venue).length;
 
                 return count >= this.max;
-            }
+            },
+            validateBooked(rule, value, callback) {
+                const allEmpty = Object.values(this.ruleForm.booked).every(v => v === "");
+
+                if (allEmpty) {
+                    callback(new Error("Please select the venue"));
+                } else {
+                    callback();
+                }
+            },
         }
    }
    </script>
