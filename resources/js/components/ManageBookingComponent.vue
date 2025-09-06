@@ -7,17 +7,9 @@
                 <div class="col-md-6">
                     <el-card shadow="always" class="mb-3 p-1" :style="`border-top: 10px solid ${event.border_color}; height: 100% !important;`">
                         <div class="text-black">
-                            <h6 class="fw-bolder text-muted">{{ event.name }}</h6>
-                            <small>
-                            Timeline: {{ event.event_date }}<br/>
-                            Venue: {{ event.main_venue }}<br/>
-                            Theme: {{ event.description }}<br/>
-                            <br/>
-                            </small>
-
                             <main class="container p-0" role="main">
                                 <header class="mb-3">
-                                    <h6 class="fw-bolder text-muted">GUIDELINES</h6>
+                                    <h6 class="fw-bolder text-muted text-uppercase" style="line-height: inherit;">{{ event.name }} GUIDELINES</h6>
                                     <small>Please read the following guidelines carefully before rebooking.</small>
                                 </header>
 
