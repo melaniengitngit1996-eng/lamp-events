@@ -2,7 +2,7 @@
     <div class="row justify-content-center my-4">
         <div v-bind:class="{'col-md-8 col-sm-12 mb-4' : isRebooking, 'col-md-6 col-lg-4 mb-4' : !isRebooking}" v-for="(registration, i) in registrations" :key="i">
             <el-card :id="`capture_${i}`" class="box-card ticket-header">
-                <div slot="header" class="clearfix">
+                <div slot="header" class="clearfix" style="align-items: center; display: flex;">
                     <span class="text-uppercase" style="font-size: 12px">{{ event.name }}</span>
 
                     <el-button icon="el-icon-download" class="block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
