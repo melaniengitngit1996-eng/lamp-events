@@ -112,6 +112,16 @@
             <div v-else class="row justify-content-center">
                 <div class="col-md-12">
                     <el-tabs v-if="(retrieved.details.bookings.length > 0)" type="border-card" class="p-0">
+                        <el-tab-pane label="Booking">
+                            <el-alert
+                                v-if="(retrieved.details.rebooking_limit === 0)"
+                                class="mb-3"
+                                title="You already reached your rebooking limit. Delegates can only rebook 3x."
+                                type="warning"
+                                :closable="false">
+                            </el-alert>
+                            <booking :booked_dates="retrieved.details.booking_status === 'Cancelled' ? [] : retrieved.details.bookings" :slots="retrieved.slots" :uuid="retrieved.uuid" :can_book_days="retrieved.can_book_days" :self_redirect="false" :hide_button="retrieved.details.rebooking_limit === 0" :registration="retrieved.registration" :event="event" />
+                        </el-tab-pane>
                         <el-tab-pane label="Ticket">
                             <el-alert
                                 class="mb-3"
@@ -122,16 +132,6 @@
                                 show-icon>
                             </el-alert>
                             <ticket-component :registrations="[retrieved.details]" :isRebooking="true" :event="event"/>
-                        </el-tab-pane>
-                        <el-tab-pane label="Booking">
-                            <el-alert
-                                v-if="(retrieved.details.rebooking_limit === 0)"
-                                class="mb-3"
-                                title="You already reached your rebooking limit. Delegates can only rebook 3x."
-                                type="warning"
-                                :closable="false">
-                            </el-alert>
-                            <booking :booked_dates="retrieved.details.booking_status === 'Cancelled' ? [] : retrieved.details.bookings" :slots="retrieved.slots" :uuid="retrieved.uuid" :can_book_days="retrieved.can_book_days" :self_redirect="false" :hide_button="retrieved.details.rebooking_limit === 0" :registration="retrieved.registration" :event="event" />
                         </el-tab-pane>
                     </el-tabs>
                     <booking v-else :booked_dates="retrieved.details.booking_status === 'Cancelled' ? [] : retrieved.details.bookings" :slots="retrieved.slots" :uuid="retrieved.uuid" :can_book_days="retrieved.can_book_days" :self_redirect="false" :hide_button="retrieved.details.rebooking_limit === 0" :registration="retrieved.registration" :event="event" />
