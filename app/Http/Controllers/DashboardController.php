@@ -199,8 +199,11 @@ class DashboardController extends Controller
         $data = [];
 
         foreach ($allotments as $day => $allotment) {
-            $member = ReceivedHG::with('slot')->where('slot_id', $allotment[0])->get();
-            $guest = ReceivedHG::with('slot')->where('slot_id', $allotment[1])->get();
+            $member_slot_details = Slots::where('id', $allotment[0])->first();
+            $guest_slot_details = Slots::where('id', $allotment[1])->first();
+
+            $member = ReceivedHG::where('date_received', $member_slot_details['event_date']->toDateString())->where('registration_type', 'Member')->get();
+            $guest =  ReceivedHG::where('date_received', $guest_slot_details['event_date']->toDateString())->where('registration_type', 'Guest')->get();
 
             $collection = [
                 'day' => $day,
@@ -217,8 +220,11 @@ class DashboardController extends Controller
 
             $local_churches = explode(',', env('LOCAL_CHURCHES'));
             foreach ($local_churches as $lc) {
-                $lc_member = ReceivedHG::with('slot')->where('slot_id', $allotment[0])->where('local_church', $lc)->get();
-                $lc_guest = ReceivedHG::with('slot')->where('slot_id', $allotment[1])->where('local_church', $lc)->get();
+                $member_slot_details = Slots::where('id', $allotment[0])->first();
+                $guest_slot_details = Slots::where('id', $allotment[1])->first();
+
+                $lc_member = ReceivedHG::where('date_received', $member_slot_details['event_date']->toDateString())->where('registration_type', 'Member')->where('local_church', $lc)->get();
+                $lc_guest =  ReceivedHG::where('date_received', $guest_slot_details['event_date']->toDateString())->where('registration_type', 'Guest')->where('local_church', $lc)->get();
 
                 $collection['local_churches'][] = [
                     'local_church' => $lc,

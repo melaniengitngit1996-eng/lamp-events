@@ -64,7 +64,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="slot.event_date"
+                    prop="registration.date_received"
                     label="Date Received HG"
                     sortable
                     align="center">

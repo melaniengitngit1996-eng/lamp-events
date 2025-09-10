@@ -13,10 +13,11 @@ class ReceivedHG extends Model
     protected $fillable = [
         'registration_id',
         'registration_uuid',
-        'slot_id',
+        'date_received',
         'local_church',
         'registration_type',
-        'notes'
+        'notes',
+        'event_id'
     ];
 
     /**

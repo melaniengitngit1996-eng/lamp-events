@@ -76,41 +76,28 @@ class ReceivedHGController
             return response()->json(['error' => 'Delegate not found.'], 422);
         }
 
-        if (!$request->day) {
-            return response()->json(['error' => 'Please select AWTA day.'], 422);
+        if (!$request->date_received) {
+            return response()->json(['error' => 'Please select the date received.'], 422);
         }
 
         if (!$request->notes || $request->notes == '') {
             return response()->json(['error' => 'Please add notes.'], 422);
         }
 
-        $slots = $event->slots;
-
-        $groupedSlots = $slots->groupBy('description')->map(function ($items) {
-            return $items->pluck('id')->all();
-        });
-        
-        $slots = $groupedSlots[$request->day];
-
-        if ($registration->registration_type === 'Member') {
-            $slot_id = $slots[0];
-        } else {
-            $slot_id = $slots[1];
-        }
-
         $hg = ReceivedHG::create([
             'event_id' => $event->id,
             'registration_uuid' => $registration->uuid,
-            'slot_id' => $slot_id,
+            'date_received' => $request->date_received,
             'local_church' => $registration->local_church,
             'registration_type' => $registration->registration_type,
-            'notes' => $request->notes
+            'notes' => $request->notes,
+            'registration_id' => $registration->id
         ]);
 
-        $slot = Slots::find($slot_id)->getOriginal('event_date');
+        $date = date_create($request->date_received);
 
         $registration->update([
-            'is_received_hg' => date_format($slot, 'Y-m-d')
+            'is_received_hg' => date_format($date, 'Y-m-d')
         ]);
 
         return response()->json([

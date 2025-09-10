@@ -2,10 +2,13 @@
     <div class="row justify-content-center my-4">
         <div v-bind:class="{'col-md-8 col-sm-12 mb-4' : isRebooking, 'col-md-6 col-lg-4 mb-4' : !isRebooking}" v-for="(registration, i) in registrations" :key="i">
             <el-card :id="`capture_${i}`" class="box-card ticket-header">
-                <div slot="header" class="clearfix" style="align-items: center; display: flex;">
-                    <span class="text-uppercase" style="font-size: 12px">{{ event.name }}</span>
-
-                    <el-button icon="el-icon-download" class="block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
+                <div slot="header" class="clearfix" style="align-items: center; display: flex; justify-content: space-between;">
+                    <div style="width: 90%;">
+                        <span class="text-uppercase" style="font-size: 12px">{{ event.name }}</span>
+                    </div>
+                    <div style="width: 30px; float: right;">
+                        <el-button icon="el-icon-download" class="block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
+                    </div>
                 </div>
                 <div>
                     <div class="row">
@@ -67,10 +70,7 @@
                             <span class="text-md font-bold" v-if="registration.booked_dates.length > 0 && !event.has_multiple_venues" v-html="registration.booked_dates.join([separator = ',  '])"></span>
                             <el-row :gutter="5" class="text-md font-bold" style="margin-bottom: -5px" v-else-if="registration.booked_dates.length > 0 && event.has_multiple_venues">
                                 <el-col v-for="booked in registration.booked_dates" :key="booked.event_date" :xs="8" :sm="8" :md="8" :lg="6" :xl="6" style="margin-bottom: 5px">
-                                    <el-tag class="custom-height">
-                                        <span>{{ booked.event_date }}</span>
-                                        <small>{{ booked.venue }}</small>
-                                    </el-tag>
+                                    <span class="custom-height el-tag el-tag--light"><span style="display: inline-block !important;">{{ booked.event_date }}</span> <span style="display: inline-block !important;">{{ booked.venue }}</span></span>
                                 </el-col>
                             </el-row>
                             <small class="font-bold text-black-50 text-md" v-else>Not yet booked. Please reach out to your local coordinator to book your schedule.</small>
