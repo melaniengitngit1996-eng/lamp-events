@@ -20,6 +20,12 @@ class BookingController extends Controller
 
     public function create(Event $event)
     {
+        if ($event->is_maintenance) {
+            return view('registration.maintenance', [
+                'event' => $event
+            ]);
+        }
+        
         $event = Event::with(['custom_fields', 'venues'])->find($event->id);
         return view('booking.create', [
             'event' => $event

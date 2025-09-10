@@ -106,6 +106,12 @@ class Registration2Controller extends Controller
             ]);
         }
 
+        if ($event->is_maintenance) {
+            return view('registration.maintenance', [
+                'event' => $event
+            ]);
+        }
+
         $directory = "registration.{$event->template_id}.create";
         $event = Event::with(['custom_fields', 'venues'])->find($event->id);
         return view($directory, [
