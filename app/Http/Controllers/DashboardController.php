@@ -317,7 +317,7 @@ class DashboardController extends Controller
     }
 
     public function view_received_hg_per_church(Event $event, Request $request) {
-        $received_hg = ReceivedHG::with('registration', 'slot');
+        $received_hg = ReceivedHG::with('registration', 'slot')->where('event_id', $event->id);
 
         $slots = $event->slots;
 

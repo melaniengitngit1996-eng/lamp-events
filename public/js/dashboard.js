@@ -7141,10 +7141,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart.register(chart_js__WEBPACK_IMPORTED_
       return "".concat(percentage, "%");
     },
     view_attendance: function view_attendance(local_church) {
-      window.open("/dashboard/".concat(this.event.slug, "/attendance?local_church=").concat(local_church, "&awta_day=").concat(window.env.awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
+      window.open("/".concat(this.event.slug, "/dashboard/attendance?local_church=").concat(local_church, "&awta_day=").concat(window.env.awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
     },
     view_received_hg: function view_received_hg(awta_day) {
-      window.open("/dashboard/".concat(this.event.slug, "/received-hg?awta_day=").concat(awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
+      window.open("/".concat(this.event.slug, "/dashboard/received-hg?awta_day=").concat(awta_day), "mywindow", "menubar=1,resizable=1,width=1200,height=800");
     },
     getSummaries: function getSummaries(param) {
       var columns = param.columns,

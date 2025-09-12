@@ -17,7 +17,8 @@ class ReceivedHG extends Model
         'local_church',
         'registration_type',
         'notes',
-        'event_id'
+        'event_id',
+        'slot_id'
     ];
 
     /**

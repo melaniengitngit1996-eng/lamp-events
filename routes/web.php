@@ -102,8 +102,8 @@ Route::get('/{event:slug}/booking/validate', [App\Http\Controllers\BookingContro
 Route::get('{event:slug}/config', [App\Http\Controllers\ConfigurationController::class, 'show'])->name('configurations');
 
 // dashboard
-Route::get('/dashboard/{event:slug}/attendance', [App\Http\Controllers\DashboardController::class, 'view_attendance_per_church'])->name('dashboard.attendance');
-Route::get('/dashboard/{event:slug}/received-hg', [App\Http\Controllers\DashboardController::class, 'view_received_hg_per_church'])->name('dashboard.hg');
+Route::get('/{event:slug}/dashboard/attendance', [App\Http\Controllers\DashboardController::class, 'view_attendance_per_church'])->name('dashboard.attendance');
+Route::get('/{event:slug}/dashboard/received-hg', [App\Http\Controllers\DashboardController::class, 'view_received_hg_per_church'])->name('dashboard.hg');
 
 Route::get('{event:slug}/received-hg', [App\Http\Controllers\Api\ReceivedHGController::class, 'index'])->name('hg.index');
 Route::get('{event:slug}/received-hg/export', [App\Http\Controllers\Api\ReceivedHGController::class, 'export'])->name('hg.export');

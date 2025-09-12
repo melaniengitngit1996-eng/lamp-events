@@ -66,14 +66,19 @@ class ReceivedHGController
             return response()->json(['error' => 'Delegate not found.'], 422);
         }
 
-        $received = ReceivedHG::where('registration_uuid', $uuid)->where('event_id', $event->id)->first();
+        $received = ReceivedHG::where('registration_uuid', $uuid)->first();
 
         if ($received) {
             return response()->json(['error' => 'This delegate has record already.'], 422);
         }
 
-        if (!$registration) {
-            return response()->json(['error' => 'Delegate not found.'], 422);
+        $slot = Slots::where('event_id', $event->id)
+            ->where('event_date', $request->date_received)
+            ->where('registration_type', $registration->registration_type)
+            ->first();
+
+        if (!$slot) {
+            return response()->json(['error' => 'Event not found.'], 422);
         }
 
         if (!$request->date_received) {
@@ -86,6 +91,7 @@ class ReceivedHGController
 
         $hg = ReceivedHG::create([
             'event_id' => $event->id,
+            'slot_id' => $slot->id,
             'registration_uuid' => $registration->uuid,
             'date_received' => $request->date_received,
             'local_church' => $registration->local_church,
@@ -103,7 +109,7 @@ class ReceivedHGController
         return response()->json([
             'success' => 'Successfully Recorded!',
             'data' => $hg
-        ], 422);
+        ], 200);
     }
 
     public function export(Event $event) {
