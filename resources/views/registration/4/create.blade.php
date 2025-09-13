@@ -19,7 +19,7 @@
 @endsection
 
 @section('footer')
-    @if ($event->with_booking)
+    @if ($event->with_booking && $event->slug != 7382159074)
         <footer class="footer shadow">
             <div class="container py-2">
                 <center>

@@ -7,6 +7,7 @@
 @endsection
 
 @section('footer')
+@if ($event->slug != 7382159074)
 <footer class="footer shadow">
     <div class="container py-2">
         <center>
@@ -14,4 +15,5 @@
         </center>
     </div>
 </footer>
+@endif
 @endsection
