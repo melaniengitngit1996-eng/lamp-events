@@ -137,7 +137,7 @@
                     class="mb-3"
                 >
                     <div class="row">
-                        <div v-for="field in event.custom_fields" class="col-md-12" v-if="evaluateRule(field.visibility_rule)">
+                        <div v-for="field in event.custom_fields" :class="field.type === 'select' ? 'col-md-6 col-12' : 'col-md-12'" v-if="evaluateRule(field.visibility_rule)">
                             <el-form-item
                                 :label="field.label"
                                 :prop="field.name"
@@ -554,7 +554,7 @@ export default {
                                 customClass: "prompt-message",
                             }
                         ).then(async () => {
-                            if (this.ruleForm.attendingOption === "Online" || !this.event.with_booking) {
+                            if (this.ruleForm.attendingOption === "Online" || !this.event.with_booking || (this.event.slug == 7382159074 && this.ruleForm.attendingOption === "Physical" && this.ruleForm.registrationType === 'Member')) {
                                 this.$emit("submit", this.ruleForm);
                             } else {
                                 this.$emit("change-step", {

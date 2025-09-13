@@ -289,6 +289,8 @@ class Registration2Controller extends Controller
                 'has_viewed_ticket' => NULL
             ]);
 
+            // $registration = Registration::where('uuid', $awta_card_number)->first();
+
             $lookup = LookUp::where('lamp_id', $awta_card_number)->first();
 
             // checking if the member is in the master list
@@ -324,7 +326,23 @@ class Registration2Controller extends Controller
             }
 
             if (in_array($attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
-                $this->book($event, $registration, $request->step_3['booked']);
+                $booked = $request->step_3['booked'] ?? null;
+
+                if (
+                    $event->slug == 7382159074 && 
+                    AttendingOption::Physical === $registration->attending_option && 
+                    RegistrationType::Member === $registration->registration_type
+                ) {
+                    $slots = Slots::where('event_id', $event->id)->where('registration_type', $registration->registration_type)->get();
+         
+                    $booked = [];
+         
+                    foreach ($slots as $slot) {
+                        $booked[$slot->id] = $custom_fields_value['venue'];
+                    }
+                }
+
+                $this->book($event, $registration, $booked);
             }
 
             $registration = $this->updatePaymentStatus($registration->id, true);
@@ -360,7 +378,7 @@ class Registration2Controller extends Controller
 
                     // Remove bookings without selected venue
                     // Bookings without venue means not booked
-                    if ($event->has_multiple_venues) {
+                    if ($event->has_multiple_venues && $event->slug != 7382159074) {
                         $book = array_filter($value['booked'], function ($venue) {
                             return !empty(trim((string)$venue));
                         });
@@ -627,7 +645,11 @@ class Registration2Controller extends Controller
                     }                    
 
                     if ($allEmpty && 'Online' != $value->attendingOption && $event->with_booking) {
-                        $errors[$key]['booked'] = 'Please select a venue for your preferred dates.';
+                        if ($event->slug == 7382159074) {
+                            $errors[$key]['booked'] = 'Please select your preferred dates.';
+                        } else {
+                            $errors[$key]['booked'] = 'Please select a venue for your preferred dates.';
+                        }
                     }
                 } else {
                     if (count($value->booked) === 0 && 'Online' != $value->attendingOption && $event->with_booking) {
@@ -647,7 +669,7 @@ class Registration2Controller extends Controller
                     }
                 }
 
-                if ($event->has_multiple_venues) {
+                if ($event->has_multiple_venues && $event->slug != 7382159074) {
                     $multi_venue_booked = array_keys(array_filter((array) $value->booked, function ($venue) {
                         return !empty(trim($venue));
                     }));

@@ -55,13 +55,25 @@ class Registered extends Notification
         if ($this->registration->booking_status === BookingStatus::Pending) {
             $markup = 'mail.registration.pending';
             $subject = 'Booking on-hold for ' . $event->name;
+
+            if($event->slug == 7382159074) {
+                $subject = 'Registration on-hold for ' . $event->name;
+            }
         } else if ($this->registration->booking_status === BookingStatus::Cancelled) {
             $markup = 'mail.registration.cancelled';
             $subject = 'Booking cancelled for ' . $event->name;
             $url = url('/booking/');
+
+            if($event->slug == 7382159074) {
+                $subject = 'Registration cancelled for ' . $event->name;
+            }
         } else if ($this->registration->booking_status === BookingStatus::Confirmed) {
             $markup = 'mail.registration.confirmed';
             $subject = 'Booking confirmed for ' . $event->name;
+
+            if($event->slug == 7382159074) {
+                $subject = 'Registration confirmed for ' . $event->name;
+            }
         }
 
         // $this->registration->booking_status === BookingStatus::Confirmed && 
@@ -109,6 +121,7 @@ class Registered extends Notification
                 'with_zoom' => !empty($event->zoom_url),
                 'enable_id_issuance' => $event->enable_id_issuance,
                 'enable_zoom_registration' => $event->enable_zoom_registration,
+                'event_slug' => $event->slug,
                 'zoom' => [
                     'link' => $event->zoom_url,
                     'id' => $event->zoom_id,

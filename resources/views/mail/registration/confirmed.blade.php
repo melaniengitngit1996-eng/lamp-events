@@ -1,13 +1,17 @@
 @component('mail::message')
 <center>
-<label style="font-size: 20px; color: #6ea56e; font-weight: 600;">Booking Confirmed!<label>
+<label style="font-size: 20px; color: #6ea56e; font-weight: 600;">@if($event_slug == 7382159074) Registration Confirmed! @else Booking Confirmed! @endif<label>
 </center>
 <br />
 <br />
 
 <b>Hi {{ $name }},</b>
 
+@if($event_slug == 7382159074)
+Congratulations, your registration is already confirmed!
+@else
 Congratulations, your booking is already confirmed!
+@endif
 
 @component('mail::panel')
 <b>Event:</b> {{ $event_name }} <br />

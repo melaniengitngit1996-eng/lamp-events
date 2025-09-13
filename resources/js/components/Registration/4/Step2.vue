@@ -118,8 +118,8 @@
                                         </el-row>
                                         <el-row v-if="data.step_1.attendingOption != 'Online' && event.with_booking" :gutter="8">
                                             <el-col :span="24">
-                                                <label class="text-sm">Select Preferred Dates</label>
-                                                <el-row :gutter="8" v-if="event.has_multiple_venues">
+                                                <label class="text-sm">Select Preferred Dates <span v-if="event.slug == 7382159074">(Calamba Tent)</span></label>
+                                                <el-row :gutter="8" v-if="event.has_multiple_venues && event.slug != 7382159074">
                                                     <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="6" :xl="6"
                                                         v-for="(date, index) in dates" :key="index" 
                                                     >
@@ -507,7 +507,7 @@
             }
 
             if (this.data.step_1.registrationType === 'Guest') {
-                if (this.event.has_multiple_venues) {
+                if (this.event.has_multiple_venues && this.event.slug != 7382159074) {
                     this.ruleForm.guests[0].booked = {};
                 }
 
@@ -520,7 +520,7 @@
                         "seat_count": date.seat_count
                     };
 
-                    if (this.event.has_multiple_venues) {
+                    if (this.event.has_multiple_venues && this.event.slug != 7382159074) {
                         detail['venues'] = this.event.venues
 
                         this.$set(this.ruleForm.guests[0].booked, date.id, '');
@@ -530,7 +530,7 @@
                 });
             }
 
-            if (!this.event.has_multiple_venues) {
+            if (!this.event.has_multiple_venues || this.event.slug == 7382159074) {
                 this.ruleForm.guests.forEach(element => {
                     this.dates = this.dates.map(function (date) {
                         date.available = element.booked.includes(date.id) ? date.available-1 : date.available;
@@ -553,7 +553,19 @@
 
                 this.$refs['ruleForm'].validate((valid) => {
                     if (valid) {
-                        if (this.data.step_1.registrationType === 'Guest' || (this.data.step_1.registrationType === 'Member' && this.data.step_1.attendingOption === "Online") || !this.event.with_booking) {
+                        if (
+                            this.data.step_1.registrationType === 'Guest' || 
+                            (
+                                this.data.step_1.registrationType === 'Member' && 
+                                this.data.step_1.attendingOption === "Online"
+                            ) || 
+                            !this.event.with_booking || 
+                            (
+                                this.data.step_1.registrationType === 'Member' && 
+                                this.data.step_1.attendingOption === "Physical" && 
+                                this.event.slug == 7382159074
+                            )
+                        ) {
                             this.$emit('submit', this.ruleForm);
                         } else {
                             this.$emit('change-step', {destination: 'step_3', current: 'step_2', data: this.ruleForm});
