@@ -74,6 +74,7 @@ Artisan::command('cancel-bookings {event_id?}', function () {
     $eventId = $this->argument('event_id');
     $date = \Carbon\Carbon::today()->subDays(7);
     $this->comment('---------------------------------- ' . $date . ' ---------------------------------');
+    \Log::info('---------------------------------- ' . $date . ' ---------------------------------');
 
     // get all registrations that have not been paid for more than seven days since they were booked
     $registrations = Registration::withSum('payments', 'amount')->where('event_id', $eventId)->where('booked_date', '<=', $date)->where('booking_status', BookingStatus::Pending)->get();
@@ -98,11 +99,13 @@ Artisan::command('cancel-bookings {event_id?}', function () {
 
             $registration->updateBookingActivities($registration, $registration->booking_activities, array('<b>System:</b> Booking cancelled due to unsettled payment.'));
 
+            \Log::info('[' . $registration->uuid . '] ' . $registration->fullname . '\'s booking is now cancelled. Date Booked: ' . $registration->booked_date);
             $this->comment('[' . $registration->uuid . '] ' . $registration->fullname . '\'s booking is now cancelled. Date Booked: ' . $registration->booked_date);
         }
     }
 
     if (count($registrations) === 0) {
         $this->comment('No expired booking found.');
+        \Log::info('No expired booking found.');
     }
 })->purpose('Booking cancellation for unsettled registrations');
