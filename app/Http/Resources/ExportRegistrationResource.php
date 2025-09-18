@@ -21,7 +21,7 @@ class ExportRegistrationResource extends JsonResource
             return $date['slot']['event_date'];
         }, $booked);
 
-        $attendances = $this->attendances()->with('slot')->get()->toArray();
+        $attendances = $this->attendances->toArray();
 
         $attended_dates = array_map(function ($date) {
             return $date['slot']['event_date'];

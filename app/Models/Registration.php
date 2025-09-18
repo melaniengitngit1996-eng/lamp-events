@@ -141,7 +141,7 @@ class Registration extends MyModel
      */
     public function attendances()
     {
-        return $this->hasMany(Attendance::class);
+        return $this->hasMany(Attendance::class, 'registration_id', 'id');
     }
 
     public function lookup()

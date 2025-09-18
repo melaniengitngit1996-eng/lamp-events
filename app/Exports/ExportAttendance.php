@@ -31,7 +31,7 @@ class ExportAttendance implements FromCollection, WithHeadings
         ]);
         
         return ExportAttendanceResource::collection(
-            Attendance::with('registration', 'slot')->get()
+            Attendance::with('registration', 'slot')->where('event_id', $this->event->id)->get()
         );
     }
 

@@ -32,6 +32,7 @@ class ExportRegistration implements FromCollection, WithHeadings
 
         return ExportRegistrationResource::collection(
             Registration::select(array(
+                'id',
                 'created_at',
                 'uuid',
                 'email',
@@ -54,6 +55,7 @@ class ExportRegistration implements FromCollection, WithHeadings
             ))
             ->where('event_id', $this->event->id)
             ->withSum('payments', 'amount', 'old_uuid')
+            ->with(['attendances.slot'])
             ->get()
         );
     }
