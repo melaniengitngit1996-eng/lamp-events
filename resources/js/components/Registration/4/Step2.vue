@@ -528,6 +528,8 @@
 
                     return detail;
                 });
+
+                console.log(this.dates);
             }
 
             if (!this.event.has_multiple_venues || this.event.slug == 7382159074) {
@@ -540,7 +542,7 @@
                 });
 
                 if (this.event.with_booking) {
-                    this.ruleForm.guests[0].booked = this.slots.guest.map(item => item.id);
+                    this.ruleForm.guests[0].booked = [];
                 }
             }
         },
