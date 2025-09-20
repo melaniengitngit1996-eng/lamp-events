@@ -25,6 +25,11 @@
                                     <br />
                                     <el-button @click="fetchUsers()" size="mini" type="primary">Search</el-button>
                                 </td>
+                                <td v-if="permissions.can_manage_users">
+                                    <br />
+                                        <el-button @click="createUser()" type="success" class="float-end" size="mini">Add User</el-button>
+                                    </el-popover>
+                                </td>
                             </tr>
                         </table>
                     </template>
@@ -227,8 +232,6 @@ export default {
                 result.push(event.event_id)
             });
 
-            console.log(result);
-
             this.form.events = result
 
             var excludedKeys = ['id', 'user_id', 'created_at', 'updated_at'];
@@ -240,6 +243,20 @@ export default {
             this.form.permissions = permissions;
 
             this.form.id = data.id;
+
+            this.userDialog = true
+        },
+        async createUser() {
+            this.form = {
+                id: 0,
+                name: '',
+                email: '',
+                password: '',
+                confirm_password: '',
+                events: [],
+                permissions: [],
+                loading: false
+            }
 
             this.userDialog = true
         },
@@ -291,11 +308,29 @@ export default {
         },
         onSubmit() {
             this.form.loading = true;
+
+            var url = `/users`;
+
+            if (this.form.id) {
+                url = `/users/${this.form.id}`;
+            }
+            
             axios
-            .post(`/users/${this.form.id}`, this.form)
+            .post(url, this.form)
             .then(async response => {
                 this.resetForm();
-                this.fetchUsers(false);
+                this.$alert('', 'User successfully created!', {
+                    confirmButtonText: 'OK',
+                    showCancelButton: false,
+                    closeOnPressEscape: false,
+                    closeOnClickModal: false,
+                    showClose: false,
+                    center: true,
+                    type: 'success',
+                    callback: action => {
+                        this.fetchUsers();
+                    }
+                });
             })
             .catch(error => {
                 this.form.loading = false;

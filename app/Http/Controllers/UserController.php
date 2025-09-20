@@ -89,6 +89,42 @@ class UserController extends Controller
         return $user;
     }
 
+    public function store(Request $request) {
+        // -------- Create User --------
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : null,
+        ]);
+    
+        if ($user) {
+            // -------- Event Permissions --------
+            $permissions = collect($request->events)->map(function ($eventId) {
+                return [
+                    'event_id' => $eventId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            })->toArray();
+    
+            $user->eventPermission()->createMany($permissions);
+    
+            // ----------- Permissions -----------
+            $permission_config = config('permissions');
+    
+            $ids = collect($permission_config)->pluck('id');
+    
+            $access = [];
+            foreach ($ids as $id) {
+                $access[$id] = in_array($id, $request->permissions ?? []);
+            }
+    
+            $user->permissions()->create($access);
+        }
+    
+        return $user;
+    }    
+
     /**
      * Delete user
      *

@@ -121,6 +121,7 @@ Route::get('/{event:slug}/export/history', [App\Http\Controllers\ExportHistoryCo
 
 Route::get('users/mobile/create', [App\Http\Controllers\MobileUserController::class, 'create'])->name('user.mobile.create');
 Route::post('users/mobile', [App\Http\Controllers\MobileUserController::class, 'store'])->name('user.mobile.store');
+Route::post('users', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
 Route::get('users/all', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
 Route::delete('users/{id}/delete', [App\Http\Controllers\UserController::class, 'destroy'])->name('user.delete');
 Route::post('users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
