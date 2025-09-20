@@ -7,41 +7,63 @@
                 size="mini"
                 border
                 style="width: 100%">
-                <el-table-column
-                prop="name"
-                label="Name"
-                width="300">
-                </el-table-column>
-                <el-table-column
-                prop="masked_email"
-                label="Email"
-                width="300">
-                </el-table-column>
-                <el-table-column
-                label="Permissions">
-                <template slot-scope="scope">
-                    <el-tag
-                        class="m-1"
-                        v-for="item in scope.row.event_permission"
-                        :key="item.id"
-                        type=""
-                        effect="plain"
-                        size="mini">
-                        {{ item.event.name }}
-                    </el-tag>
-                </template>
-                </el-table-column>
-                <el-table-column
-                    v-if="permissions.can_manage_users"
-                    label="Actions"
-                    width="300"
-                    align="center">
-                    <template slot-scope="scope">
-                        <el-row class="text-center">
-                            <el-button type="primary" plain size="small" @click="manageUser(scope.row)"><i class="el-icon-s-tools mr-2"></i>&nbsp;&nbsp;Manage</el-button>
-                            <el-button type="danger" plain size="small"><i class="el-icon-delete-solid mr-2"></i>&nbsp;&nbsp;Delete</el-button>
-                        </el-row>
+                <el-table-column>
+                    <template slot="header" slot-scope="scope">
+                        <table class="w-100">
+                            <tr style="background-color: #f5f7fa;">
+                                <td width="250">
+                                    <small>Search by Name</small>
+                                    <input type="hidden" name="type" value="lookup" />
+                                    <el-input
+                                        clearable
+                                        v-model="search"
+                                        size="mini"
+                                        name="search"
+                                        placeholder="Type to search"/>
+                                </td>
+                                <td>
+                                    <br />
+                                    <el-button @click="fetchUsers()" size="mini" type="primary">Search</el-button>
+                                </td>
+                            </tr>
+                        </table>
                     </template>
+                    <el-table-column
+                    prop="name"
+                    label="Name"
+                    width="300">
+                    </el-table-column>
+                    <el-table-column
+                    prop="masked_email"
+                    label="Email"
+                    width="300">
+                    </el-table-column>
+                    <el-table-column
+                    label="Permissions">
+                    <template slot-scope="scope">
+                        <el-tag
+                            class="m-1"
+                            v-for="item in scope.row.event_permission"
+                            :key="item.id"
+                            type=""
+                            effect="plain"
+                            size="mini">
+                            {{ item.event.name }}
+                        </el-tag>
+                    </template>
+                    </el-table-column>
+                    <el-table-column
+                        v-if="permissions.can_manage_users"
+                        label="Actions"
+                        width="300"
+                        align="center">
+                        <template slot-scope="scope">
+                            <el-row class="text-center">
+                                <el-button type="primary" plain size="small" @click="manageUser(scope.row)"><i class="el-icon-s-tools mr-2"></i>&nbsp;&nbsp;Manage</el-button>
+                                <el-button type="danger" plain size="small" @click="deleteUser(scope.row.id)"><i class="el-icon-delete-solid mr-2"></i>&nbsp;&nbsp;Delete</el-button>
+                            </el-row>
+                        </template>
+                    </el-table-column>
                 </el-table-column>
             </el-table>
 
@@ -220,6 +242,40 @@ export default {
             this.form.id = data.id;
 
             this.userDialog = true
+        },
+        deleteUser(id) {
+            this.$confirm(`Are you sure you want to delete this user?`, 'Warning', {
+                customClass: 'prompt-message',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel',
+                type: 'warning'
+            }).then(async () => {
+            const loading = this.$loading({
+                lock: true,
+                text: 'Loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+
+            setTimeout(async () => {
+                await axios.delete(`/users/${id}/delete`)
+                .then(async (response) => {
+                loading.close();
+                
+                this.$alert('', 'User Successfully Deleted!', {
+                    confirmButtonText: 'OK',
+                    showCancelButton: false,
+                    closeOnPressEscape: false,
+                    closeOnClickModal: false,
+                    showClose: false,
+                    center: true,
+                    type: 'success',
+                    callback: action => {
+                        this.fetchUsers();
+                    }
+                });
+                })
+            }, 1000);
+            })
         },
         resetForm() {
             this.form.id = 0;
