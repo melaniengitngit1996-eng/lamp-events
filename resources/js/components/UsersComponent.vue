@@ -19,7 +19,8 @@
                                         v-model="search"
                                         size="mini"
                                         name="search"
-                                        placeholder="Type to search"/>
+                                        placeholder="Type to search"
+                                        @clear="fetchUsers()"/>
                                 </td>
                                 <td>
                                     <br />
