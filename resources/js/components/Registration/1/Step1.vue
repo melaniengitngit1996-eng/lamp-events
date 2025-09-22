@@ -146,10 +146,10 @@
                                     placeholder="Choose"
                                 >
                                     <el-option
-                                        v-for="field in field.options.split(',')"
-                                        :key="field"
-                                        :value="field"
-                                        :label="field"
+                                        v-for="option in field.options.split(',')"
+                                        :key="option"
+                                        :value="option"
+                                        :label="option"
                                     ></el-option>
                                 </el-select>
                             </el-form-item>
