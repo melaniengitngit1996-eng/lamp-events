@@ -107,6 +107,22 @@
                     </el-form-item>
                   </div>
                   <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="Attending Option">
+                      <small class="text-sm">When enabled, participants must select their mode of attendance: Physical, Online, or Hybrid.</small>
+                      <el-switch class="d-block" v-model="form.show_attending_option"></el-switch>
+                    </el-form-item>
+                  </div>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Booking" name="booking">
+                <div class="row">
+                  <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="Booking">
+                      <small class="text-sm">When enabled, participants must select specific dates to book. If disabled, registrants are automatically booked for all event dates.</small>
+                      <el-switch class="d-block" v-model="form.with_booking"></el-switch>
+                    </el-form-item>
+                  </div>
+                  <div class="col-md-12">
                     <el-form-item class="rm-margin" label="Guest Booking">
                       <small class="text-sm">When enabled, users must enter a valid booking code in order to register a guest.</small>
                       <el-switch class="d-block" v-model="form.with_guest_booking_code"></el-switch>
@@ -165,6 +181,55 @@
                   </div>
                 </div>
               </el-tab-pane>
+              <el-tab-pane label="Socials" name="socials">
+                <div class="row">
+                  <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="FB Group URL">
+                      <small class="text-sm">Link to the Facebook group where announcements will be posted. This link will also be included in emails. Leave empty if not applicable.</small>
+                      <el-input v-model="form.fb_group_url"></el-input>
+                    </el-form-item>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <el-form-item class="rm-margin" label="Zoom Credentials">
+                    <small class="text-sm">Meeting details (e.g., Zoom link, Meeting ID, and Passcode) that participants will use to join sessions. Leave empty if not applicable.</small>
+                    <div style="display: flex; gap: 10px">
+                      <div style="width: 60%">
+                        <small class="text-sm" style="margin-right: 5px">Link</small>
+                        <el-input v-model="form.zoom_url"></el-input>
+                      </div>
+                      <div style="width: 20%">
+                        <small class="text-sm" style="margin-right: 5px">ID</small>
+                        <el-input v-model="form.zoom_id"></el-input>
+                      </div>
+                      <div style="width: 20%">
+                        <small class="text-sm" style="margin-right: 5px">Passcode</small>
+                        <el-input v-model="form.zoom_password"></el-input>
+                      </div>
+                    </div>
+                  </el-form-item>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Content" name="content">
+                <div class="row">
+                  <div class="col-md-6">
+                    <el-form-item label="Banner File Name">
+                        <el-input v-model="form.banner_file_name"></el-input>
+                    </el-form-item>
+                  </div>
+                  <div class="col-md-6">
+                    <el-form-item label="Border Color">
+                      <el-color-picker v-model="form.border_color"></el-color-picker>
+                    </el-form-item>
+                  </div>
+                  <div class="col-md-12">
+                    <el-form-item  class="rm-margin" label="Form Description Block">
+                      <small class="text-sm">HTML block on the registration form for event details (schedule, timings, venue, etc.). Leave empty if not needed.</small>
+                      <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 100}" v-model="form.form_description_block"></el-input>
+                    </el-form-item>
+                  </div>
+                </div>
+              </el-tab-pane>
               <el-tab-pane label="Custom Fields" name="customer_fields">
               </el-tab-pane>
               <el-tab-pane label="Event Venues" name="event_venues">
@@ -189,8 +254,8 @@
       },
       data() {
         return {
-          eventDialog: false,
-          selected: 'attendance',
+          eventDialog: true,
+          selected: 'content',
           localChurches: Object.keys(window.env.cluster_groups),
           form: {
             name: '',

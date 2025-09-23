@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExportRegistrationResource extends JsonResource
 {
+    public static $event;
+
     /**
      * Transform the resource into an array.
      *
@@ -18,7 +20,11 @@ class ExportRegistrationResource extends JsonResource
         $booked = $this->bookings()->with('slot')->where('status', '!=', BookingStatus::Cancelled)->get()->toArray();
 
         $booked_dates = array_map(function ($date) {
-            return $date['slot']['event_date'];
+            if (self::$event->has_multiple_venues) {
+                return $date['slot']['event_date'] . ' - ' . $date['venue'];
+            } else {
+                return $date['slot']['event_date'];
+            }
         }, $booked);
 
         $attendances = $this->attendances->toArray();

@@ -30,6 +30,8 @@ class ExportRegistration implements FromCollection, WithHeadings
             'user_id' => Auth::user()->id
         ]);
 
+        ExportRegistrationResource::$event = $this->event;
+
         return ExportRegistrationResource::collection(
             Registration::select(array(
                 'id',
