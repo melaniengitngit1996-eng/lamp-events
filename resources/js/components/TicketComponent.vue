@@ -68,9 +68,10 @@
                         <div class="col-md-12">
                             <small class="d-block" style="margin-bottom: 5px">Booked Dates</small>
                             <span class="text-md font-bold" v-if="registration.booked_dates.length > 0 && !event.has_multiple_venues" v-html="registration.booked_dates.join([separator = ',  '])"></span>
+                            
                             <el-row :gutter="5" class="text-md font-bold" style="margin-bottom: -5px" v-else-if="registration.booked_dates.length > 0 && event.has_multiple_venues">
                                 <el-col v-for="booked in registration.booked_dates" :key="booked.event_date" :xs="8" :sm="8" :md="8" :lg="6" :xl="6" style="margin-bottom: 5px">
-                                    <span class="custom-height el-tag el-tag--light"><span style="display: inline-block !important;">{{ booked.event_date }}</span> <span style="display: inline-block !important;">{{ booked.venue }}</span></span>
+                                    <div class="el-tag custom-height"><div style="display: inline-block !important; color: #409EFF">{{ booked.event_date }}</div> <div style="display: inline-block !important;">{{ booked.venue }}</div></div>
                                 </el-col>
                             </el-row>
                             <small class="font-bold text-black-50 text-md" v-else>Not yet booked. Please reach out to your local coordinator to book your schedule.</small>
@@ -233,7 +234,7 @@ export default {
     height: auto !important;
     width: 100%;
     line-height: normal !important;
-    display: inline-grid;
+    display: grid;
     text-align: center;
     padding: 4px 6px;
 }
