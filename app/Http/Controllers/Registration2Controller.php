@@ -623,7 +623,7 @@ class Registration2Controller extends Controller
                     $value->attendingOption == AttendingOption::Online && 
                     $event->enable_zoom_registration) {
                     $errors[$key]['email'] = 'Email is required for online attendee.';
-                }  else {
+                }  elseif ($value->email) {
                     if (!filter_var($value->email, FILTER_VALIDATE_EMAIL)) {
                         $errors[$key]['email'] = 'Email address is invalid.';
                     }

@@ -254,7 +254,7 @@
       },
       data() {
         return {
-          eventDialog: true,
+          eventDialog: false,
           selected: 'content',
           localChurches: Object.keys(window.env.cluster_groups),
           form: {
