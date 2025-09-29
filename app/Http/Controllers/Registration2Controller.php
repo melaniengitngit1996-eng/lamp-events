@@ -618,8 +618,15 @@ class Registration2Controller extends Controller
                     $errors[$key]['facebookName'] = 'Facebook Name is required.';
                 }
 
-                if (!$value->email && $event->enable_zoom_registration) {
+                if (
+                    !$value->email && 
+                    $value->attendingOption == AttendingOption::Online && 
+                    $event->enable_zoom_registration) {
                     $errors[$key]['email'] = 'Email is required for online attendee.';
+                }  else {
+                    if (!filter_var($value->email, FILTER_VALIDATE_EMAIL)) {
+                        $errors[$key]['email'] = 'Email address is invalid.';
+                    }
                 }
 
                 if (!$value->clusterGroup) {

@@ -146,7 +146,7 @@
                                                         :label="date.id" 
                                                         :key="date.id" 
                                                         @change="onChangeProcessed($event, date.id)"
-                                                        :disabled="(!guest.booked.includes(date.id) && guest.booked.length === guest_booking_limit) || (date.available === 0 && !guest.booked.includes(date.id))">
+                                                        :disabled="(!guest.booked?.includes(date.id) && guest.booked.length === guest_booking_limit) || (date.available === 0 && !guest.booked.includes(date.id))">
                                                             <label class="mb-1">{{ date.event_date }}</label> <br> 
                                                             <span>{{ date.available }} left!</span>
                                                     </el-checkbox-button>
@@ -582,7 +582,7 @@
                 this.ruleForm.guests.splice(index,1);
             },
             addRow() {
-                this.ruleForm.guests.push({
+                var data = {
                     email: '',
                     firstName: '',
                     lastName: '',
@@ -594,9 +594,15 @@
                     booked: this.event.with_booking ? (this.event.has_multiple_venues ? {} : []) : this.slots.guest.map(item => item.id),
                     specificMedicalAssistance: '',
                     attendingOption: this.data.step_1.attendingOption
-                });
+                };
 
-                if (this.event.has_multiple_venues) {
+                if (this.event.slug == 7382159074) {
+                    data.booked = [];
+                }
+
+                this.ruleForm.guests.push(data);
+
+                if (this.event.has_multiple_venues && this.event.slug != 7382159074) {
                     this.slots.guest.map((date) => {
                         this.$set(this.ruleForm.guests[this.ruleForm.guests.length - 1].booked, date.id, '');
                     })
