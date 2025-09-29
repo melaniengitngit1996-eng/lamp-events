@@ -4,7 +4,7 @@
             <el-card :id="`capture_${i}`" class="box-card ticket-header">
                 <div slot="header" class="clearfix" style="align-items: center; display: flex; justify-content: space-between;">
                     <div style="width: 90%;">
-                        <span class="text-uppercase" style="font-size: 12px">{{ event.name }}</span>
+                        <span class="text-uppercase" style="font-size: 10px">{{ event.name }}</span>
                     </div>
                     <div style="width: 30px; float: right;">
                         <el-button icon="el-icon-download" class="block el-button el-button--primary float-end is-plain md:hidden mx-0 p-1 sm:hidden xs:hidden" type="primary" plain @click.preventDefault="printThis(`capture_${i}`)" />
