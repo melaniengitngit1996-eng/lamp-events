@@ -112,6 +112,27 @@
                       <el-switch class="d-block" v-model="form.show_attending_option"></el-switch>
                     </el-form-item>
                   </div>
+                  <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="Under Maintenance">
+                      <small class="text-sm">When enabled, a maintenance page will be shown. Registration and booking will be unavailable.</small>
+                      <el-switch class="d-block" v-model="form.is_maintenance"></el-switch>
+                    </el-form-item>
+                  </div>
+                  <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="LAMP Physical ID Issuance">
+                      <small class="text-sm">When enabled, a prompt with an option will appear at the end of registration, and a reminder about the LAMP ID issuance will also be included in emails.</small>
+                      <el-switch class="d-block" v-model="form.enable_id_issuance"></el-switch>
+                    </el-form-item>
+                  </div>
+                  <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="Available Set IDs">
+                      <small class="text-sm">Series of ID numbers reserved for issuance during new member registrations.</small>
+                      <el-select v-model="form.available_id_set" placeholder="please select the set of ids">
+                        <el-option label="Zone one" value="shanghai"></el-option>
+                        <el-option label="Zone two" value="beijing"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="Booking" name="booking">
@@ -181,7 +202,7 @@
                   </div>
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="Socials" name="socials">
+              <el-tab-pane label="Socials & Streaming" name="socials">
                 <div class="row">
                   <div class="col-md-12">
                     <el-form-item class="rm-margin" label="FB Group URL">
@@ -194,7 +215,11 @@
                   <el-form-item class="rm-margin" label="Zoom Credentials">
                     <small class="text-sm">Meeting details (e.g., Zoom link, Meeting ID, and Passcode) that participants will use to join sessions. Leave empty if not applicable.</small>
                     <div style="display: flex; gap: 10px">
-                      <div style="width: 60%">
+                      <div style="width: 10%">
+                        <small class="text-sm" style="margin-right: 5px">with Zoom?</small>
+                        <el-checkbox v-model="form.enable_zoom_registration">Yes</el-checkbox>
+                      </div>
+                      <div style="width: 50%">
                         <small class="text-sm" style="margin-right: 5px">Link</small>
                         <el-input v-model="form.zoom_url"></el-input>
                       </div>
@@ -228,11 +253,49 @@
                       <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 100}" v-model="form.form_description_block"></el-input>
                     </el-form-item>
                   </div>
+                  <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="Dates & Timings">
+                      <small class="text-sm">Defines the dates and timings shown across emails, registration forms, and other event details</small>
+                      <div style="display: flex; gap: 10px">
+                        <div style="width: 25%">
+                          <small class="text-sm" style="margin-right: 5px">Event Date</small>
+                          <el-input v-model="form.event_date"></el-input>
+                        </div>
+                        <div style="width: 25%">
+                          <small class="text-sm" style="margin-right: 5px">Event Timing</small>
+                          <el-input v-model="form.event_timing"></el-input>
+                        </div>
+                        <div style="width: 25%">
+                          <small class="text-sm" style="margin-right: 5px">Hybrid Registration Deadline</small>
+                          <el-input v-model="form.hybrid_registration_deadline"></el-input>
+                        </div>
+                        <div style="width: 25%">
+                          <small class="text-sm" style="margin-right: 5px">Rebooking Deadline</small>
+                          <el-input v-model="form.rebooking_deadline"></el-input>
+                        </div>
+                      </div>
+                    </el-form-item>
+                  </div>
                 </div>
               </el-tab-pane>
               <el-tab-pane label="Custom Fields" name="customer_fields">
               </el-tab-pane>
               <el-tab-pane label="Event Venues" name="event_venues">
+                <div class="row">
+                  <div class="col-md-6">
+                    <el-form-item class="rm-margin" label="Venue">
+                      <small class="text-sm">Primary venue and official location for the event</small>
+                      <el-input v-model="form.main_venue"></el-input>
+                    </el-form-item>
+                  </div>
+                  <div class="col-md-12">
+                    <el-form-item class="rm-margin" label="Map URL">
+                      <small class="text-sm">Paste the URL of the designated main venue map for this event (Google Maps link)</small>
+                      <el-input v-model="form.venue_map"></el-input>
+                    </el-form-item>
+                  </div>
+                  <!-- add here the adding of multiple venues & has_multiple_venues selection -->
+                </div>
               </el-tab-pane>
               <el-tab-pane label="Rates" name="rates">
               </el-tab-pane>
