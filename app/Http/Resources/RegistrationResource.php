@@ -42,10 +42,8 @@ class RegistrationResource extends JsonResource
         $data = [
             'created_at' => $this->created_at,
             'uuid' => $this->uuid,
-            'email' => $this->email,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
-            'facebook_name' => $this->facebook_name,
             'registration_type' => $this->registration_type,
             'local_church' => $this->local_church,
             'cluster_group' => $this->cluster_group,
