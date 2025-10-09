@@ -74,6 +74,14 @@
                 >
                     <div class="px-2 row">
                         <el-alert
+                            v-if="event.slug == 7382159074"
+                            title="All slots for Calamba tent are now taken. Registration for satellite and online participants will open on November 1, 2025. For further inquiries, please reach out to your local Registrars."
+                            type="warning"
+                            show-icon
+                        >
+                        </el-alert>
+                        <el-alert
+                            v-else
                             :title="`All registration after ${event.hybrid_registration_deadline} is considered online. For further inquiries, please reach out to your local Registrars.`"
                             type="warning"
                             show-icon
