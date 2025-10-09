@@ -92,7 +92,7 @@
                                     placeholder="Choose"
                                 >
                                     <el-option
-                                        :disabled="event.id === 1 && ruleForm.registrationType === 'Guest'"
+                                        :disabled="event.id === 1"
                                         value="Physical"
                                         label="Physical"
                                     ></el-option>
