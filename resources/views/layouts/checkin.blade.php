@@ -7,11 +7,15 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta property="og:image" content="https://lampawta.com/images/meta_banner.png" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://lampawta.com/registration"/>
-    <meta property="og:title" content="Annual Worship and Thanksgiving {{ config('settings.year') }}" />
-    <meta property="og:description" content="{{ config('settings.theme') }}"/>
+    @if (!empty($event))
+        @if (!empty($event['banner_file_name']))
+        <meta property="og:image" content="/images/banners/{{ $event['banner_file_name'] }}" />
+        @endif
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://lampawta.com/{{ $event['slug'] }}/registration"/>
+        <meta property="og:title" content="{{ $event['name'] }}" />
+        <meta property="og:description" content="{{ $event['description'] }}"/>
+    @endif
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
