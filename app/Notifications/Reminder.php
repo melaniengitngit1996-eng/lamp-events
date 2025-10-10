@@ -74,16 +74,17 @@ class Reminder extends Notification
                 'venue' => $event->venue_complete_address,
                 'event_timing' => $event->event_timing,
                 'event_date' => $event->event_date,
+                'enable_zoom_registration' => $event->enable_zoom_registration,
                 'zoom' => [
                     'link' => $event->zoom_url,
                     'id' => $event->zoom_id,
                     'passcode' => $event->zoom_password,
                 ]
-            ])
-            ->attach($file, [
-                'as' => 'event_details.pdf',
-                'mime' => 'application/pdf',
             ]);
+            // ->attach($file, [
+            //     'as' => 'event_details.pdf',
+            //     'mime' => 'application/pdf',
+            // ]);
 
     }
 }

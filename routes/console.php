@@ -31,41 +31,70 @@ Artisan::command('send-out-event-reminder {event_id?}', function () {
     ])->get();
     
     foreach ($registrations as $registration) {
-        if ($registration->email != '') {
-            Notification::route('mail', [
-                $registration->email => $registration->fullname,
-            ])->notify(new Reminder($registration));
-
-            $this->comment($registration->id . ' - sent reminder to ' . $registration->fullname . ' - ' . $registration->email);
-        } else {
-            $this->comment($registration->id . ' - reminder not sent for ' . $registration->fullname . ' - [no email address provided]');
+        $email = trim((string) $registration->email);
+    
+        // Skip if empty or doesn't contain @
+        if ($email === '' || strpos($email, '@') === false) {
+            $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid email] {$email}");
+            continue;
+        }
+    
+        // Validate format properly
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid format] {$email}");
+            continue;
+        }
+    
+        try {
+            Notification::route('mail', [$email => $registration->fullname])
+                ->notify(new Reminder($registration));
+    
+            $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
+        } catch (\Throwable $e) {
+            $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
         }
     }
     $this->comment('---------------------------------- end ---------------------------------');
 });
 
-Artisan::command('send-out-event-reminder-online', function () {
+Artisan::command('send-out-event-reminder-online {event_id?}', function () {
     $this->comment('---------------------------------- ' . \Carbon\Carbon::today() . ' ---------------------------------');
+    $eventId = $this->argument('event_id');
     if (env('TEST_MAIL') == true) {
         $registration = Registration::where('uuid', 'LAMP00002')->first();
         Notification::route('mail', [
             $registration->email => $registration->fullname,
         ])->notify(new Reminder($registration));
     } else {
-        $registrations = Registration::where('attending_option', AttendingOption::Online)->where('id', '>', 2755)->get();
+        $registrations = Registration::where('event_id', $eventId)->where('attending_option', AttendingOption::Online)->get();
         
         foreach ($registrations as $registration) {
-            if ($registration->email != '') {
-                Notification::route('mail', [
-                    $registration->email => $registration->fullname,
-                ])->notify(new Reminder($registration));
-
-                $this->comment($registration->id . ' - sent reminder to ' . $registration->fullname . ' - ' . $registration->email);
-            } else {
-                $this->comment($registration->id . ' - reminder not sent for ' . $registration->fullname . ' - [no email address provided]');
+            $email = trim((string) $registration->email);
+        
+            // Skip if empty or doesn't contain @
+            if ($email === '' || strpos($email, '@') === false) {
+                $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid email] {$email}");
+                continue;
             }
-        }
+        
+            // Validate format properly
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid format] {$email}");
+                continue;
+            }
+        
+            try {
+                Notification::route('mail', [$email => $registration->fullname])
+                    ->notify(new Reminder($registration));
+        
+                $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
+            } catch (\Throwable $e) {
+                $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
+            }
+        }        
+        
     }
+
     $this->comment('---------------------------------- end ---------------------------------');
 });
 
