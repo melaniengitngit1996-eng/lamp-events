@@ -57,6 +57,7 @@ Artisan::command('send-out-event-reminder {event_id?}', function () {
     $this->comment('---------------------------------- end ---------------------------------');
 });
 
+/* run `php artisan send-out-event-reminder-online 7` */
 Artisan::command('send-out-event-reminder-online {event_id?}', function () {
     $this->comment('---------------------------------- ' . \Carbon\Carbon::today() . ' ---------------------------------');
     $eventId = $this->argument('event_id');
