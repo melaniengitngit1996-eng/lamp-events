@@ -60,8 +60,8 @@ class CheckInController extends Controller
             return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire AWTA days.'], 500);
         }
 
-        if (in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
-            return response()->json(['error' => 'Delegate is registered for physical/hybrid.'], 500);
+        if (in_array($registration->attending_option, [AttendingOption::Online])) {
+            return response()->json(['error' => 'Delegate is registered for online.'], 500);
         }
 
         return [
