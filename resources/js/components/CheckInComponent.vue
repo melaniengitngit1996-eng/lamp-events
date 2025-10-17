@@ -189,7 +189,7 @@ export default {
                 })
                 .then(async (response) => {
                     var data = response.data[response.data.length-1];
-                    window.location.href = `/${this.event.slug}check-in/passes?id=${data.id}`;
+                    window.location.href = `/${this.event.slug}/check-in/passes?id=${data.id}`;
                 });
             });
         },

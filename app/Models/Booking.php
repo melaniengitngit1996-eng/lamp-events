@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Booking extends Model
 {
@@ -39,7 +40,13 @@ class Booking extends Model
      */
     public function getIsHappeningAttribute()
     {
-        return $this->slot_id == env('SLOT_ID_TODAY_GUEST') || $this->slot_id == env('SLOT_ID_TODAY_MEMBER');
+        $event_id = $this->event_id;
+
+        $event = Cache::rememberForever('event::' . $this->event_id, function () use ($event_id) {
+            return Event::find($event_id);
+        });
+
+        return $this->slot_id == $event->active_guest_slot_id || $this->slot_id == $event->active_member_slot_id;
     }
 
     /**

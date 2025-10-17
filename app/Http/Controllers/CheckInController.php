@@ -25,20 +25,43 @@ class CheckInController extends Controller
         // Get the current time in Philippine Time (PHT, UTC+8)
         $currentTime = Carbon::now('Asia/Manila');
 
-        // Define the start and end times
-        $startTime = Carbon::createFromTime(0, 0, 0, 'Asia/Manila'); // 1:00 PM
-        $endTime = Carbon::createFromTime(21, 0, 0, 'Asia/Manila');   // 9:00 PM
+        $start_time = explode(':', $event->online_checkin_start_time);
+        $end_time = explode(':', $event->online_checkin_end_time);
+
+        $slot_details = Slots::where('id', $event->active_member_slot_id)->first();
+
+        $date = date('Y-m-d', strtotime($slot_details->event_date));
+        $checkin_start = $date . ' ' . $event->online_checkin_start_time;
+        $checkin_end = $date . ' ' . $event->online_checkin_end_time;
+        // Create a DateTime object (assuming the input is in local time)
+        $date = new \DateTime($checkin_start, new \DateTimeZone('Asia/Manila')); // GMT+8
+
+        $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $checkin_start, 'Asia/Manila');
+        $endDateTime   = Carbon::createFromFormat('Y-m-d H:i', $checkin_end, 'Asia/Manila');
+
 
         // Check if the current time is between 2 PM and 9 PM
-        $isWithinRange = $currentTime->between($startTime, $endTime);
+        $isWithinRange = $currentTime->between($startDateTime, $endDateTime);
+
+        // Format the datetime
+        $formatted = $date->format('F d, Y H:i:s \G\M\TP');
+
+        // Append the timezone offset properly
+        $offset = $date->format('P'); // gives +08:00
 
         if ($isWithinRange) {
             return view('checkin.index', [
                 'loc' => $request->lo_c == 2 ? 'Onsite' : 'Online',
-                'event' => $event
+                'event' => $event,
+                'date_start' => $date->format("F d, Y H:i:s") . " GMT" . $offset,
+                'time' => $date->format("g:i A")
             ]);
         } else {
-            return view('checkin.countdown');
+            return view('checkin.countdown', [
+                'event' => $event,
+                'date_start' => $date->format("F d, Y H:i:s") . " GMT" . $offset,
+                'time' => $date->format("g:i A")
+            ]);
         }
     }
 
@@ -57,7 +80,7 @@ class CheckInController extends Controller
         }
 
         if ($registration->is_booking_bypassed) {
-            return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire AWTA days.'], 500);
+            return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire event days.'], 500);
         }
 
         if (in_array($registration->attending_option, [AttendingOption::Online])) {
@@ -97,7 +120,14 @@ class CheckInController extends Controller
     }
 
     public function show(Event $event, Request $request) {
-        $attendance = Attendance::with('registration', 'slot')->whereIn('id', explode(',', $request->id))->get();
+        $attendance = Attendance::with('registration', 'slot')->whereIn('id', explode(',', $request->id))->get()->map(function ($item) {
+            $item->slot['day'] = $item->slot->event_date->format("d");
+            $item->slot['month'] = $item->slot->event_date->format("F");
+            $item['created_at_formatted'] = $item->created_at->format("M d, Y H:i A");
+
+            return $item;
+        });
+
         $all = Attendance::where('registration_id', $attendance[0]->registration_id)->get()->pluck('id');
 
         return view('checkin.show', [

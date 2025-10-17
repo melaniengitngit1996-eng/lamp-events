@@ -1,14 +1,39 @@
 <template>
     <div class="row justify-content-center my-4">
         <div class="col-md-6 col-lg-4 mb-4" v-for="(date, i) in passes" :key="i">
-            <el-card class="box-card add-clip" :style="`border-bottom: 10px solid ${getImage(i+1).color}`">
+            <el-card class="box-card add-clip" :style="`border-bottom: 10px solid ${event.border_color}`">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-5 p-4">
                         <center>
-                        <img :src="`/images/${getImage(i+1).image}`" class="my-3" width="100%">
+                            <svg  width="80%" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Calendar icon June 5">
+                                <!-- Outer rounded background -->
+                                <rect x="0" y="0" width="256" height="256" rx="36" ry="36" fill="#e9e9e9"/>
+
+                                <!-- Top red bar (rounded only on top corners) -->
+                                <path d="M0,36
+                                        a36,36 0 0 1 36,-36
+                                        h184
+                                        a36,36 0 0 1 36,36
+                                        v56
+                                        h-256
+                                        z" 
+                                        :fill="event.border_color"/>
+
+                                <!-- "JUN" text -->
+                                <text x="50%" y="56" text-anchor="middle" dominant-baseline="middle"
+                                        font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="36" fill="#ffffff" letter-spacing="2">
+                                    {{ date.slot.month }}
+                                </text>
+
+                                <!-- Day number -->
+                                <text x="50%" y="165" text-anchor="middle" dominant-baseline="middle"
+                                        font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="120" fill="#333333">
+                                    {{ date.slot.day }}
+                                </text>
+                            </svg>
                         </center>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <el-descriptions class="margin-top" :column="1" size="mini" border>
                             <el-descriptions-item>
                                 <template slot="label">
@@ -32,7 +57,7 @@
                                 <template slot="label">
                                     <i class="el-icon-date"></i>
                                 </template>
-                                {{ date.created_at }}&nbsp;&nbsp;<el-tag size="mini">{{ date.notes }}</el-tag>
+                                {{ date.created_at_formatted }}&nbsp;&nbsp;<el-tag size="mini">{{ date.notes }}</el-tag>
                             </el-descriptions-item>
                         </el-descriptions>
                     </div>
@@ -48,30 +73,10 @@ export default {
         passes: {
             required: true,
             type: Array
-        }
-    },
-    methods: {
-        getImage(id) {
-            if ([1,5].includes(id))
-                return {
-                    'image': 'day_1.png',
-                    'color': '#a44fa4'
-                }
-            if ([2,6].includes(id))
-                return {
-                    'image': 'day_2.png',
-                    'color': '#de0e3f'
-                }
-            if ([3,7].includes(id))
-                return {
-                    'image': 'day_3.png',
-                    'color': '#3f9eff'
-                }
-            if ([4,8].includes(id))
-                return {
-                    'image': 'day_4.png',
-                    'color': 'rgb(44 159 104)'
-                }
+        },
+        event: {
+            required: true,
+            type: Object
         }
     }
 }
