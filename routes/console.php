@@ -58,14 +58,23 @@ Artisan::command('send-out-event-reminder {event_id?}', function () {
 });
 
 /* run `php artisan send-out-event-reminder-online 7` */
-Artisan::command('send-out-event-reminder-online {event_id?}', function () {
+Artisan::command('send-out-event-reminder-online {event_id?} {registration_id?}', function () {
     $this->comment('---------------------------------- ' . \Carbon\Carbon::today() . ' ---------------------------------');
     $eventId = $this->argument('event_id');
-    if (env('TEST_MAIL') == true) {
-        $registration = Registration::where('uuid', 'LAMP00002')->first();
-        Notification::route('mail', [
-            $registration->email => $registration->fullname,
-        ])->notify(new Reminder($registration));
+    $registrationId = $this->argument('registration_id');
+    if ($registrationId) {
+        $registration = Registration::where('id', $registrationId)->first();
+       
+
+        try {
+            Notification::route('mail', [
+                $registration->email => $registration->fullname,
+            ])->notify(new Reminder($registration));
+    
+            $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$registration->email}");
+        } catch (\Throwable $e) {
+            $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
+        }
     } else {
         $registrations = Registration::where('event_id', $eventId)->where('attending_option', AttendingOption::Online)->get();
         
