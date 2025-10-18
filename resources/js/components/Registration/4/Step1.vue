@@ -90,7 +90,7 @@
                     <div class="row">
                         <div v-if="event.show_attending_option" class="col-md-6">
                             <el-form-item
-                                label="How will you attend the AWTA?"
+                                label="How will you attend the event?"
                                 prop="attendingOption"
                                 required
                             >
@@ -100,9 +100,10 @@
                                 >
                                     <el-option
                                         v-for="option in event.attending_options"
-                                        :key="option"
-                                        :value="option"
-                                        :label="option"
+                                        :key="option.label"
+                                        :disabled="evaluateRule(option.disable_if)"
+                                        :value="option.label"
+                                        :label="option.label"
                                     ></el-option>
                                 </el-select>
                             </el-form-item>

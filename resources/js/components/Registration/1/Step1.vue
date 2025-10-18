@@ -93,9 +93,10 @@
                                 >
                                     <el-option
                                         v-for="option in event.attending_options"
-                                        :key="option"
-                                        :value="option"
-                                        :label="option"
+                                        :key="option.label"
+                                        :disabled="evaluateRule(option.disable_if)"
+                                        :value="option.label"
+                                        :label="option.label"
                                     ></el-option>
                                 </el-select>
                             </el-form-item>
@@ -561,6 +562,18 @@ export default {
                 this.ruleForm.clusterGroup = "";
             }
         },
+        evaluateRule(rule) {
+            if (typeof rule === 'boolean') return rule;
+            if (typeof rule === 'function') return rule();
+
+            // If it's a string condition like "ruleForm.attendingOption === 'Online'"
+            try {
+                return new Function('ruleForm', `return ${rule}`)(this.ruleForm);
+            } catch (e) {
+                console.warn('Invalid mandatory_rule condition:', rule);
+                return false;
+            }
+        }
     },
 };
 </script>

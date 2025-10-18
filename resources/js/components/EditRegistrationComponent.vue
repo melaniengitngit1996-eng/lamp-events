@@ -148,7 +148,7 @@
 
                 <div class="col-md-3">
                     <el-form-item
-                        label="How will you attend the AWTA?"
+                        label="How will you attend the event?"
                         prop="attendingOption"
                         :required="ruleForm.registrationType === 'Member'"
                     >
@@ -158,9 +158,9 @@
                         >
                             <el-option
                                 v-for="option in event.attending_options"
-                                :key="option"
-                                :value="option"
-                                :label="option"
+                                :key="option.label"
+                                :value="option.label"
+                                :label="option.label"
                             ></el-option>
                         </el-select>
                     </el-form-item>
