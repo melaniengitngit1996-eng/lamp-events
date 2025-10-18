@@ -430,7 +430,7 @@ export default {
                 lampIDNumber: [
                     {
                         required: true,
-                        message: "Please input AWTA Card Number",
+                        message: "Please input LAMP ID Number",
                         trigger: ["blur", "change"],
                     },
                 ],

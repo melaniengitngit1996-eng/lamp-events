@@ -47,7 +47,7 @@
                                     <span class="text-lg font-bold d-block text-uppercase">{{ $registration->firstname }} {{ $registration->lastname }}</span>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <small>AWTA Card Number</small>
+                                    <small>LAMP ID Number</small>
                                     <span class="text-md font-bold d-block">{{ $registration->uuid }}</span>
                                 </div>
                                 <div class="col-md-4 mb-3">

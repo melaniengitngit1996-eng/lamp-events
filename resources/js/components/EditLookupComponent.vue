@@ -129,7 +129,7 @@ export default {
                     { required: true, message: 'Please select Country', trigger: ['blur', 'change']}
                 ],
                 lampIDNumber: [
-                    { required: true, message: 'Please input AWTA Card Number', trigger: ['blur', 'change']},
+                    { required: true, message: 'Please input LAMP ID Number', trigger: ['blur', 'change']},
                 ],
                 category: [
                     { required: true, message: 'Please select rate', trigger: ['blur', 'change']},

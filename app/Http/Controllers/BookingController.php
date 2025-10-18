@@ -77,7 +77,7 @@ class BookingController extends Controller
         $registration = Registration::withSum('payments', 'amount')->where('id', $registration_id)->first();
 
         if ($registration->is_booking_bypassed) {
-            return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire AWTA days.'], 500);
+            return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire event days.'], 500);
         }
 
         $new_booked_dates = $request->all()['dates'];
@@ -207,7 +207,7 @@ class BookingController extends Controller
         }
 
         if ($registration->is_booking_bypassed) {
-            return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire AWTA days.'], 500);
+            return response()->json(['error' => 'This delegate is a church worker and is already booked for the entire event days.'], 500);
         }
 
         if ($registration->rebooking_limit <= 0) {
