@@ -23,7 +23,6 @@
                                     <el-option
                                         label="Member"
                                         value="Member"
-                                        :disabled="event.slug == 7382159077"
                                     ></el-option>
                                     <el-option
                                         label="Guest"
@@ -94,7 +93,7 @@
                                     <el-option
                                         v-for="option in event.attending_options"
                                         :key="option.label"
-                                        :disabled="evaluateRule(option.disable_if)"
+                                        :disabled="evaluateRule(option.disable_if) && !force_for_admin"
                                         :value="option.label"
                                         :label="option.label"
                                     ></el-option>
@@ -291,6 +290,8 @@
 </template>
 
 <script>
+const params = new URLSearchParams(window.location.search)
+
 export default {
     props: {
         data: {
@@ -329,6 +330,7 @@ export default {
             }
         };
         return {
+            force_for_admin: params.get('admin'),
             ruleForm: {
                 registrationType: "",
                 withAwtaCard: "",
@@ -473,8 +475,6 @@ export default {
         if (Object.keys(this.data.step_1).length != 0) {
             this.ruleForm = this.data.step_1;
         }
-
-        
     },
     created() {
         this.event.custom_fields.forEach(element => {

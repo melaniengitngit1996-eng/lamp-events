@@ -95,15 +95,18 @@ class Registration2Controller extends Controller
      *
      * @param  String $slug
      */
-    public function create(Event $event) {
+    public function create(Event $event, Request $request) {
         if (empty($event)) {
             abort(404);
         }
 
-        if ($event->close_registration) {
-            return view('registration.closed', [
-                'event' => $event
-            ]);
+        // add ?admin=yesplease to force register
+        if (!$request->admin) {
+            if ($event->close_registration) {
+                return view('registration.closed', [
+                    'event' => $event
+                ]);
+            }
         }
 
         if ($event->is_maintenance) {
