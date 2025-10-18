@@ -23,7 +23,6 @@
                                     <el-option
                                         label="Member"
                                         value="Member"
-                                        :disabled="closeRegForMember"
                                     ></el-option>
                                     <el-option
                                         label="Guest"
@@ -320,10 +319,6 @@
 <script>
 export default {
     props: {
-        closeRegForMember: {
-            required: true,
-            type: Boolean,
-        },
         data: {
             required: true,
             type: Object,
