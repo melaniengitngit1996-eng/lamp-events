@@ -585,7 +585,7 @@ export default {
                 this.ruleForm.found = {};
             } else if (scope === "reg-type") {
                 this.ruleForm.withAwtaCard = "";
-                this.ruleForm.attendingOption = this.event.with_booking ? "" : "Physical";
+                this.ruleForm.attendingOption = "";
                 this.ruleForm.lampIDNumber = "";
                 this.ruleForm.bookingCode = "";
                 this.ruleForm.found = {};
