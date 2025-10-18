@@ -157,12 +157,10 @@
                             placeholder="Choose"
                         >
                             <el-option
-                                value="Hybrid"
-                                label="Hybrid"
-                            ></el-option>
-                            <el-option
-                                value="Online"
-                                label="Online"
+                                v-for="option in event.attending_options"
+                                :key="option"
+                                :value="option"
+                                :label="option"
                             ></el-option>
                         </el-select>
                     </el-form-item>

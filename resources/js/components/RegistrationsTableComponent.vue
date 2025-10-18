@@ -56,8 +56,12 @@
                   <small>Attending Option</small>
                   <el-select size="mini" v-model="search.attending_option" clearable placeholder="select">
                     <el-option label="All" value=""></el-option>
-                    <el-option label="Hybrid" value="Hybrid"></el-option>
-                    <el-option label="Online" value="Online"></el-option>
+                    <el-option
+                        v-for="option in event.attending_options"
+                        :key="option"
+                        :value="option"
+                        :label="option"
+                    ></el-option>
                   </el-select>
                 </td>
 

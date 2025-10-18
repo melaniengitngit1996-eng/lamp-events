@@ -18,7 +18,8 @@ class Event extends Model
         'enable_online_checkin' => 'boolean',
         'has_multiple_venues' => 'boolean',
         'enable_id_issuance' => 'boolean',
-        'enable_zoom_registration' => 'boolean'
+        'enable_zoom_registration' => 'boolean',
+        'attending_options' => 'array'
     ];
 
     protected $appends = [

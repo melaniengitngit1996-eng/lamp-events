@@ -92,13 +92,10 @@
                                     placeholder="Choose"
                                 >
                                     <el-option
-                                        :disabled="event.slug == 7382159077"
-                                        value="Physical"
-                                        label="Physical"
-                                    ></el-option>
-                                    <el-option
-                                        value="Online"
-                                        label="Online"
+                                        v-for="option in event.attending_options"
+                                        :key="option"
+                                        :value="option"
+                                        :label="option"
                                     ></el-option>
                                 </el-select>
                             </el-form-item>
@@ -334,7 +331,7 @@ export default {
             ruleForm: {
                 registrationType: "",
                 withAwtaCard: "",
-                attendingOption: this.event.with_booking ? "" : this.event.slug == 7382159077 ? "Online" : "Physical", // set default as hybrid if booking id disabled
+                attendingOption: "", // set default as hybrid if booking id disabled
                 lampIDNumber: "",
                 clusterGroup: "",
                 bookingCode: "",

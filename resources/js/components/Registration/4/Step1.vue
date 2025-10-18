@@ -99,14 +99,10 @@
                                     placeholder="Choose"
                                 >
                                     <el-option
-                                        :disabled="event.id === 1"
-                                        value="Physical"
-                                        label="Physical"
-                                    ></el-option>
-                                    <el-option
-                                        :disabled="event.id === 1"
-                                        value="Online"
-                                        label="Online"
+                                        v-for="option in event.attending_options"
+                                        :key="option"
+                                        :value="option"
+                                        :label="option"
                                     ></el-option>
                                 </el-select>
                             </el-form-item>
