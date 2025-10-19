@@ -58,9 +58,9 @@
                     <el-option label="All" value=""></el-option>
                     <el-option
                         v-for="option in event.attending_options"
-                        :key="option"
-                        :value="option"
-                        :label="option"
+                        :key="option.label"
+                        :value="option.label"
+                        :label="option.label"
                     ></el-option>
                   </el-select>
                 </td>
