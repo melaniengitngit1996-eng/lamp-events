@@ -19,7 +19,8 @@ class Event extends Model
         'has_multiple_venues' => 'boolean',
         'enable_id_issuance' => 'boolean',
         'enable_zoom_registration' => 'boolean',
-        'attending_options' => 'array'
+        'attending_options' => 'array',
+        'is_event_completed' => 'boolean'
     ];
 
     protected $appends = [

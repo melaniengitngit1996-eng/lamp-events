@@ -22,6 +22,10 @@ class CheckInController extends Controller
             abort(404);
         }
         
+        if ($event->is_event_completed) {
+            return view('checkin.closed');
+        }
+
         // Get the current time in Philippine Time (PHT, UTC+8)
         $currentTime = Carbon::now('Asia/Manila');
 
@@ -38,7 +42,6 @@ class CheckInController extends Controller
 
         $startDateTime = Carbon::createFromFormat('Y-m-d H:i', $checkin_start, 'Asia/Manila');
         $endDateTime   = Carbon::createFromFormat('Y-m-d H:i', $checkin_end, 'Asia/Manila');
-
 
         // Check if the current time is between 2 PM and 9 PM
         $isWithinRange = $currentTime->between($startDateTime, $endDateTime);
