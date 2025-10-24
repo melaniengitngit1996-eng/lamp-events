@@ -49,6 +49,18 @@ class AttendanceController extends Controller
     {
         $local_churches = explode(',', env('LOCAL_CHURCHES'));
 
+        $allowed = $event->allowed_for_attendance_default;
+
+        if ($request->allowed) {
+            $allowed = $request->allowed;
+        }
+
+        $allowed = array_filter(explode(',', $allowed), fn($v) => $v !== '');
+
+        if (count($allowed) == 0) {
+            die('A problem occured, please contact the administration. (Error 404: Allowed attending option not found.)');
+        }
+
         $slots = Slots::where('registration_type', 'Member')->where('id', $event->active_member_slot_id)->get();
         $attendance_count = [];
 
@@ -102,7 +114,8 @@ class AttendanceController extends Controller
             'count' => json_encode($attendance_count),
             'guest_current_date' => Slots::where('id', $event->active_guest_slot_id)->first()->event_date,
             'member_current_date' => Slots::where('id', $event->active_member_slot_id)->first()->event_date,
-            'event' => $event
+            'event' => $event,
+            'allowed' => implode(',', $allowed)
         ]);
     }
 
@@ -126,8 +139,10 @@ class AttendanceController extends Controller
             return response()->json(['error' => 'This delegate is not booked for today.'], 500);
         }
 
-        if (!in_array($registration->attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
-            return response()->json(['error' => 'This delegate is not registered for physical/hybrid.'], 500);
+        $allowed = array_filter(explode(',', $request->allowed), fn($v) => $v !== '');
+
+        if (!in_array($registration->attending_option, $allowed)) {
+            return response()->json(['error' => 'This delegate is not registered for '. $request->allowed .'.'], 500);
         }
 
         if ($registration->payment_status != PaymentStatus::Paid && $registration->payment_status != PaymentStatus::Free) {

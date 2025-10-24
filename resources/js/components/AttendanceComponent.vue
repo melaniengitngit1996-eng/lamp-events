@@ -94,7 +94,7 @@
                     <barcode-component :uuid="retrieved.delegate.uuid" />
                 </div>
                 <div class="col-md-12 mb-3">
-                  <small class="text-description d-block mb-2">BOOKED DATES</small>
+                  <small class="text-description d-block mb-2 text-uppercase">BOOKED DATES - {{ retrieved.delegate.attending_option }}</small>
                     <el-tag v-for="(date, index) in retrieved.booked_dates" :key="index" class="mx-2 mb-3">{{ date }}</el-tag>
                 </div>
                 <div class="col-md-12 pt-3">
@@ -161,6 +161,10 @@ export default {
     event: {
         required: true
     },
+    allowed: {
+      required: true,
+      type: String
+    }
   },
   data() {
     return {
@@ -220,7 +224,7 @@ export default {
       if (! this.input)
         this.error = 'Please enter LAMP ID/Guest number.'
 
-      await axios.get(`/attendance/${this.event.id}/` + this.input)
+      await axios.get(`/attendance/${this.event.id}/${this.input}?allowed=${this.allowed}`)
       .then(async (response) => {
         this.loading = false;
         this.retrieved = response.data
