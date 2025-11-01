@@ -116,7 +116,7 @@
                                                 </small>
                                             </el-col>
                                         </el-row>
-                                        <el-row v-if="data.step_1.attendingOption != 'Online' && event.with_booking" :gutter="8">
+                                        <el-row v-if="data.step_1.attendingOption != 'Online' && event.with_booking && event.slug != 7382159074" :gutter="8">
                                             <el-col :span="24">
                                                 <label class="text-sm">Select Preferred Dates <span v-if="event.slug == 7382159074">(Calamba Tent)</span></label>
                                                 <el-row :gutter="8" v-if="event.has_multiple_venues && event.slug != 7382159074">
@@ -135,7 +135,7 @@
                                                                 :key="e" 
                                                                 :label="venue.venue" 
                                                                 :value="venue.venue"
-                                                                :disabled="isMainVenueDisabled(venue.venue, i) || venue.venue === 'Local Church'">
+                                                                :disabled="isMainVenueDisabled(venue.venue, i) || venue.venue === 'Calamba Tent'">
                                                             </el-option>
                                                         </el-select>
                                                     </el-col>

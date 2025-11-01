@@ -70,7 +70,7 @@ class Controller extends BaseController
                 $book['venue'] = $booking;
             }
 
-            if (($event->slug == 7382159074 && $registration->registration_type === 'Member') && $registration->attending_option === 'Physical') {
+            if ($event->slug == 7382159074 && $registration->attending_option === 'Physical') {
                 $book['slot_id'] = $key;
                 $book['venue'] = $booking;
             }

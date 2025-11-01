@@ -379,6 +379,10 @@ class Registration2Controller extends Controller
                         $book = $request->step_3['booked'];
                     }
 
+                    if ($event->has_multiple_venues && $event->slug == 7382159074 && AttendingOption::Online != $request->step_1['attendingOption']) {
+                        $book = array_combine($book, array_fill(0, count($book), 'Local Church'));
+                    }
+
                     // Remove bookings without selected venue
                     // Bookings without venue means not booked
                     if ($event->has_multiple_venues && $event->slug != 7382159074) {
@@ -654,7 +658,7 @@ class Registration2Controller extends Controller
                         }
                     }                    
 
-                    if ($allEmpty && 'Online' != $value->attendingOption && $event->with_booking) {
+                    if ($allEmpty && 'Online' != $value->attendingOption && $event->with_booking && $event->slug != 7382159074) {
                         if ($event->slug == 7382159074) {
                             $errors[$key]['booked'] = 'Please select your preferred dates.';
                         } else {
