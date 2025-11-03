@@ -33,15 +33,19 @@ class HomeController extends Controller
     }
 
     public function show(Event $event, Request $request) {
-        $slots_members = Slots::where('registration_type', 'Member')->where('event_id', $event->id)->with('bookings')->get()->map(function ($slot) {
-            $booked = $slot->bookings->groupBy('local_church')->map(function ($lc) {
-                return $lc->count();
+        $slots_members = Slots::where('registration_type', 'Member')
+            ->where('event_id', $event->id)
+            ->with('bookings')
+            ->get()
+            ->map(function ($slot) {
+                $booked = $slot->bookings->groupBy('local_church')->map(function ($lc) {
+                    return $lc->count();
+                });
+
+                $slot['booked_per_church'] = $booked;
+
+                return $slot;
             });
-
-            $slot['booked_per_church'] = $booked;
-
-            return $slot;
-        });
 
         $slots_guests = Slots::where('registration_type', 'Guest')->where('event_id', $event->id)->with('bookings')->get()->map(function ($slot) {
             $booked = $slot->bookings->groupBy('local_church')->map(function ($lc) {

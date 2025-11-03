@@ -8,7 +8,7 @@
 <div class="mx-4">
     <el-tabs type="border-card">
         <el-tab-pane label="Events">
-            <events-component :events="{{ $events }}" />
+            <events-component :events="{{ $events }}" :event_ids="{{ $event_ids }}" />
         </el-tab-pane>
         <el-tab-pane label="Users">
             <users-component :events="{{ $events }}" />

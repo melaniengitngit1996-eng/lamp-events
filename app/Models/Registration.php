@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Enums\RegistrationType;
+use App\Enums\AttendingOption;
 use App\Models\LookUp;
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -67,10 +69,27 @@ class Registration extends MyModel
     {
         parent::boot();
         self::creating(function ($model) {
+            $event = Event::find($model->event_id);
+
+            $venue = $event->main_venue;
+
+            if ($model->attending_option == AttendingOption::Online) {
+                $venue = AttendingOption::Online;
+            } else {
+                if ($event->slug == 7382159074) { // temporary: remove this entire block, this is just a band aid fix :)
+                    $venue = $model->custom_fields['venue'];
+
+                    if (empty($venue)) {
+                        $venue = $event->main_venue;
+                    }
+                }
+            }
+
             $payment_config = Rates::where('event_id', $model->event_id)
                 ->where('category', $model->category)
                 ->where('attending_option', $model->attending_option)
                 ->where('registration_type', $model->registration_type)
+                ->where('venue', $venue)
                 ->first();
 
             $model->rate = $payment_config->rate;

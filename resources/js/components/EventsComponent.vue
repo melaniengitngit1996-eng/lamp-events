@@ -128,8 +128,9 @@
                     <el-form-item class="rm-margin" label="Available Set IDs">
                       <small class="text-sm">Series of ID numbers reserved for issuance during new member registrations.</small>
                       <el-select v-model="form.available_id_set" placeholder="please select the set of ids">
-                        <el-option label="Zone one" value="shanghai"></el-option>
-                        <el-option label="Zone two" value="beijing"></el-option>
+                        <template v-for="event_id in event_ids">
+                          <el-option :label="`${event_id.prefix} ${event_id.start} to ${event_id.end} (Year ${event_id.year})`" :value="event_id.id"></el-option>
+                        </template>
                       </el-select>
                     </el-form-item>
                   </div>
@@ -147,7 +148,7 @@
                     <el-form-item class="rm-margin" label="Guest Booking">
                       <small class="text-sm">When enabled, users must enter a valid booking code in order to register a guest.</small>
                       <el-switch class="d-block" v-model="form.with_guest_booking_code"></el-switch>
-                      <el-input v-model="form.booking_code" style="width: 200px; margin-top: 10px" placeholder="Booking Code"></el-input>
+                      <el-input type="password" v-model="form.booking_code" style="width: 200px; margin-top: 10px" placeholder="Booking Code"></el-input>
                     </el-form-item>
                   </div>
                   <div class="col-md-12">
@@ -176,25 +177,25 @@
                         <div>
                           <small class="text-sm" style="margin-right: 5px">Guest</small>
                           <el-select v-model="form.active_guest_slot_id" placeholder="Select">
-                          <!-- <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value"
-                            :disabled="item.disabled">
-                          </el-option> -->
+                            <template v-for="slot in form.slots">
+                              <el-option
+                                v-if="slot.registration_type == 'Guest'"
+                                :label="`ID ${slot.id}: ${slot.description} - ${slot.event_date}`"
+                                :value="slot.id">
+                              </el-option>
+                            </template>
                         </el-select>
                         </div>
                         <div>
                           <small class="text-sm" style="margin-right: 5px">Member</small>
                           <el-select v-model="form.active_member_slot_id" placeholder="Select">
-                            <!-- <el-option
-                              v-for="item in options"
-                              :key="item.value"
-                              :label="item.label"
-                              :value="item.value"
-                              :disabled="item.disabled">
-                            </el-option> -->
+                            <template v-for="slot in form.slots">
+                              <el-option
+                                v-if="slot.registration_type == 'Member'"
+                                :label="`ID ${slot.id}: ${slot.description} - ${slot.event_date}`"
+                                :value="slot.id">
+                              </el-option>
+                            </template>
                           </el-select>
                         </div>
                       </div>
@@ -313,6 +314,9 @@
       props: {
         events: {
             required: true
+        },
+        event_ids: {
+          required: true
         }
       },
       data() {
@@ -328,9 +332,58 @@
           }
         }
       },
+      mounted() {
+        console.log(this.event_ids);
+      },
       methods: {
         manageEvent(event) {
-          this.eventDialog = true
+          this.eventDialog = true;
+
+          // event
+          this.form.name = event.name
+          this.form.slug = event.slug
+          this.form.description = event.description
+          this.form.local_church = event.local_church
+          this.form.template_id = event.template_id
+
+          // registration
+          this.form.close_registration = event.close_registration
+          this.form.display_disclosure_prompt = event.display_disclosure_prompt
+          this.form.enable_online_checkin = event.enable_online_checkin
+          this.form.show_attending_option = event.show_attending_option
+          this.form.is_maintenance = event.is_maintenance
+          this.form.enable_id_issuance = event.enable_id_issuance
+          this.form.available_id_set = event.available_id_set
+
+          // booking
+          this.form.with_booking = event.with_booking
+          this.form.with_guest_booking_code = event.with_guest_booking_code
+          this.form.booking_code = event.booking_code
+          this.form.guest_booking_limit = event.guest_booking_limit
+          this.form.member_booking_limit = event.member_booking_limit
+
+          // attendance
+          this.form.slots = event.slots
+          this.form.active_guest_slot_id = event.active_guest_slot_id
+          this.form.active_member_slot_id = event.active_member_slot_id
+
+          // socials
+          this.form.fb_group_url = event.fb_group_url
+          this.form.enable_zoom_registration = event.enable_zoom_registration
+          this.form.zoom_url = event.zoom_url
+          this.form.zoom_id = event.zoom_id
+          this.form.zoom_password = event.zoom_password
+
+          // content
+          this.form.banner_file_name = event.banner_file_name
+          this.form.border_color = event.border_color
+          this.form.form_description_block = event.form_description_block
+          this.form.event_date = event.event_date
+          this.form.event_timing = event.event_timing
+          this.form.hybrid_registration_deadline = event.hybrid_registration_deadline
+          this.form.rebooking_deadline = event.rebooking_deadline
+
+          console.log(event);
         }
       }
     }

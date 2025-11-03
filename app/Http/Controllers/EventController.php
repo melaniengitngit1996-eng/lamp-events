@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\AvailableUuid;
 
 class EventController extends Controller
 {
@@ -14,7 +15,8 @@ class EventController extends Controller
     
     public function index() {
         return view('events.index', [
-            'events' => Event::all()
+            'events' => Event::with('slots', 'custom_fields')->get(),
+            'event_ids' => AvailableUuid::all()
         ]);
     }
 

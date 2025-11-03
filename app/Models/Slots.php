@@ -31,7 +31,7 @@ class Slots extends Model
         $taken = Booking::whereIn('status', [
             BookingStatus::Confirmed,
             BookingStatus::Pending
-        ])->where('slot_id', $this->id)->count();
+        ])->where('slot_id', $this->id)->where('venue', 'Calamba Tent')->count(); // temporary only for Calamba Tent
 
         return $this->seat_count - $taken;
     }
@@ -41,7 +41,7 @@ class Slots extends Model
         $taken = Booking::whereIn('status', [
             BookingStatus::Confirmed,
             BookingStatus::Pending
-        ])->where('slot_id', $this->id)->count();
+        ])->where('slot_id', $this->id)->where('venue', 'Calamba Tent')->count();
 
         return $taken;
     }
@@ -51,14 +51,14 @@ class Slots extends Model
         $taken = Booking::whereIn('status', [
             BookingStatus::Confirmed,
             BookingStatus::Pending
-        ])->where('slot_id', $this->id)->count();
+        ])->where('slot_id', $this->id)->where('venue', 'Calamba Tent')->count();
         
         return number_format(($taken / $this->seat_count) * 100, 2, '.', '');
     }
 
     public function bookings()
     {
-        return $this->hasMany(Booking::class, 'slot_id', 'id');
+        return $this->hasMany(Booking::class, 'slot_id', 'id')->where('venue', 'Calamba Tent');
     }
 
     public function received_hg() {
