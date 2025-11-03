@@ -117,7 +117,7 @@ export default {
         }
 
         this.dates = this.slots.map((date) => {
-            var available = booked_dates.includes(date.id) ? date.available-1 : date.available;
+            var available = date.available;
             var detail = {
                 "event_date": date.event_date,
                 "id": date.id,
