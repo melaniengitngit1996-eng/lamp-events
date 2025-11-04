@@ -99,6 +99,20 @@ class Registered extends Notification
             return $dates['slot']['event_date'];
         }, $this->registration->bookings->toArray());
 
+        $payment_due_date = $event->payment_due_date;
+
+        if ($event->slug == 7382159074) {
+            if ($this->registration->attending_option == 'Online') {
+                $payment_due_date = 'December 24, 2025';
+            } else {
+                if ($this->registration->custom_fields['venue'] == 'Local Church') {
+                    $payment_due_date = 'December 14, 2025';
+                } else {
+                    $payment_due_date = 'November 30, 2025';
+                }
+            }
+        }
+
         return (new MailMessage)
             ->subject($subject)
             ->markdown($markup, [
@@ -109,7 +123,7 @@ class Registered extends Notification
                 'minimum_payment_due_date' => date('M d, Y', strtotime($this->registration->booked_date . ' + 7 days')),
                 'booked_dates' => implode(', ', $booked_dates),
                 'registration' => $this->registration,
-                'payment_due_date' => $event->payment_due_date,
+                'payment_due_date' => $payment_due_date,
                 'event_name' => $event->name,
                 'event_date' => $event->event_date,
                 'theme' => $event->description,
