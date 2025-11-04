@@ -37,9 +37,17 @@ class LookUpController extends Controller
             $query->where('event_id', $event->id);
         }]);
 
-        // if ($search->registration_status != '') {
-        //     $lookUp = $lookUp->where('is_registered', (int) $search->registration_status);
-        // }
+        if ($search->registration_status != '') {
+            if ($search->registration_status == 1) {
+                $lookUp = $lookUp->whereHas('registrations', function ($query) use ($event) {
+                    $query->where('event_id', $event->id);
+                });
+            } else {
+                $lookUp = $lookUp->whereDoesntHave('registrations', function ($query) use ($event) {
+                    $query->where('event_id', $event->id);
+                });
+            }
+        }
 
         if ($search->local_church) {
             $lookUp = $lookUp->where('local_church', $search->local_church);
