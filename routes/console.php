@@ -154,9 +154,9 @@ Artisan::command('cancel-bookings {event_id?}', function () {
 Artisan::command('rebook-to-sattelite-partial-bookings {event_id?}', function () {
     $eventId = $this->argument('event_id');
 
-    $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('payment_status', PaymentStatus::Partial)->where('attending_option', AttendingOption::Physical)->where('rate', 950)->get();
+    // $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('payment_status', PaymentStatus::Partial)->where('attending_option', AttendingOption::Physical)->where('rate', 950)->get();
 
-    // $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('id', 13)->get();
+    $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('id', 3015)->get();
 
     foreach ($registrations as $registration) {
         $registration->bookings()->update([
@@ -165,13 +165,17 @@ Artisan::command('rebook-to-sattelite-partial-bookings {event_id?}', function ()
 
         $registration->update([
             'rate' => 100,
-            'can_book_rate' => 100,
-            'custom_fields->venue' => 'Local Church'
+            'can_book_rate' => 100
         ]);
 
         $registration->updateActivities($registration, $registration->activities, array(
             'Tagged to satellite due to unsettled balance'
         ));
+
+        $customFields = $registration->custom_fields;
+        $customFields['venue'] = 'Local Church';
+        $registration->custom_fields = $customFields;
+        $registration->save();
 
         $email = $registration->email;
 
