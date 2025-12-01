@@ -3,7 +3,7 @@
 <b>Hi {{ $name }},</b>
 
 We sincerely apologize for any inconvenience, but we are <b>unable to confirm your slot at Calamba Tent
-for the {{ $event_name }} at this time</b> due to an unsettled balance.
+for the {{ $event_name }}</b> due to an unsettled balance.
 
 To ensure that you can still participate, we have <b>rebooked your slot to your nearest Satellite venue</b>.
 
