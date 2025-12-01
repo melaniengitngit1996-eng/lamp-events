@@ -3,8 +3,10 @@
 use App\Enums\BookingStatus;
 use App\Models\Registration;
 use App\Enums\AttendingOption;
+use App\Enums\PaymentStatus;
 use App\Notifications\Registered;
 use App\Notifications\Reminder;
+use App\Notifications\Rebooked;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Notification;
@@ -148,3 +150,46 @@ Artisan::command('cancel-bookings {event_id?}', function () {
         \Log::info('No expired booking found.');
     }
 })->purpose('Booking cancellation for unsettled registrations');
+
+Artisan::command('rebook-to-sattelite-partial-bookings {event_id?}', function () {
+    $eventId = $this->argument('event_id');
+
+    // $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('payment_status', PaymentStatus::Partial)->where('attending_option', AttendingOption::Physical)->where('rate', 950)->get();
+
+    $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('id', 13)->get();
+
+    foreach ($registrations as $registration) {
+        $registration->bookings()->update([
+            'venue' => 'Local Church'
+        ]);
+
+        $registration->update([
+            'rate' => 100,
+            'can_book_rate' => 100,
+            'custom_fields->venue' => 'Local Church'
+        ]);
+
+        $registration->updateActivities($registration, $registration->activities, array(
+            'Tagged to satellite due to unsettled balance'
+        ));
+
+        $email = $registration->email;
+
+        try {
+            Notification::route('mail', [$registration->email => $registration->fullname])
+                ->notify(new Rebooked($registration));
+    
+            $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
+        } catch (\Throwable $e) {
+            $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
+        }
+
+        \Log::info('[' . $registration->uuid . '] ' . $registration->fullname . '\'s booking is not yet settled. Date Booked: ' . $registration->booked_date);
+        $this->comment('[' . $registration->uuid . '] ' . $registration->fullname . '\'s booking is not yet settled. Date Booked: ' . $registration->booked_date);
+    }
+
+    if (count($registrations) === 0) {
+        $this->comment('No expired booking found.');
+        \Log::info('No expired booking found.');
+    }
+});
