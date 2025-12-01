@@ -154,9 +154,9 @@ Artisan::command('cancel-bookings {event_id?}', function () {
 Artisan::command('rebook-to-sattelite-partial-bookings {event_id?}', function () {
     $eventId = $this->argument('event_id');
 
-    // $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('payment_status', PaymentStatus::Partial)->where('attending_option', AttendingOption::Physical)->where('rate', 950)->get();
+    $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('payment_status', PaymentStatus::Unsettled)->where('attending_option', AttendingOption::Physical)->where('rate', 950)->get();
 
-    $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('id', 3015)->get();
+    // $registrations = Registration::with('bookings')->where('event_id', $eventId)->where('id', 3015)->get();
 
     foreach ($registrations as $registration) {
         $registration->bookings()->update([
