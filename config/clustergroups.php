@@ -98,7 +98,8 @@ return [
             "label" =>  "Online/Physical",
             "options" => [
                 "Lamirez",
-                "Prk. Tumpok"
+                "Prk. Tumpok",
+                "Octavio"
             ]
         ]
     ],
