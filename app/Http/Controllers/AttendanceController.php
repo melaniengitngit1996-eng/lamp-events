@@ -61,6 +61,16 @@ class AttendanceController extends Controller
             die('A problem occured, please contact the administration. (Error 404: Allowed attending option not found.)');
         }
 
+        $venue = '';
+
+        if ($request->venue) {
+            $venue = $request->venue;
+        }
+
+        if (empty($venue)) {
+            die('A problem occured, please contact the administration. (Error 404: Event venue not found.)');
+        }
+
         $slots = Slots::where('registration_type', 'Member')->where('id', $event->active_member_slot_id)->get();
         $attendance_count = [];
 
@@ -115,7 +125,8 @@ class AttendanceController extends Controller
             'guest_current_date' => Slots::where('id', $event->active_guest_slot_id)->first()->event_date,
             'member_current_date' => Slots::where('id', $event->active_member_slot_id)->first()->event_date,
             'event' => $event,
-            'allowed' => implode(',', $allowed)
+            'allowed' => implode(',', $allowed),
+            'venue' => $venue
         ]);
     }
 
@@ -145,6 +156,14 @@ class AttendanceController extends Controller
             return response()->json(['error' => 'This delegate is not registered for '. $request->allowed .'.'], 500);
         }
 
+        if (!$request->venue) {
+            return response()->json(['error' => 'Attendance link is invalid, please reach out to the administrator.'], 500);
+        }
+
+        if ($registration->custom_fields['venue'] != $request->venue) {
+            return response()->json(['error' => 'This delegate is not registered for '. $request->venue .'.'], 500);
+        }
+        
         if ($registration->payment_status != PaymentStatus::Paid && $registration->payment_status != PaymentStatus::Free) {
             return response()->json(['error' => 'This delegate has remaining balance. Please reach out to your local coordinator.'], 500);
         }

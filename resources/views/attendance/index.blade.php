@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<attendance-component :count="{{ $count }}" :event="{{ $event }}" allowed="{{ $allowed }}" />
+<attendance-component :count="{{ $count }}" :event="{{ $event }}" allowed="{{ $allowed }}" venue="{{ $venue }}"/>
 @endsection
 
 @section('footer')

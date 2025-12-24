@@ -164,6 +164,10 @@ export default {
     allowed: {
       required: true,
       type: String
+    },
+    venue: {
+      required: true,
+      type: String
     }
   },
   data() {
@@ -224,7 +228,7 @@ export default {
       if (! this.input)
         this.error = 'Please enter LAMP ID/Guest number.'
 
-      await axios.get(`/attendance/${this.event.id}/${this.input}?allowed=${this.allowed}`)
+      await axios.get(`/attendance/${this.event.id}/${this.input}?allowed=${this.allowed}&venue=${this.venue}`)
       .then(async (response) => {
         this.loading = false;
         this.retrieved = response.data
