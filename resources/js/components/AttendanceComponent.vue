@@ -34,7 +34,7 @@
                   <template v-for="(item, index) in count">
                     <table class="border text-center w-full" style="width: 100%">
                       <tr>
-                        <td class="border px-2 py-1" colspan="4">{{ item.event_date }}</td>
+                        <td class="border px-2 py-1" colspan="4"><b>{{ venue }} - {{ item.event_date }}</b></td>
                       </tr>
                       <tr>
                         <td class="border px-2 py-1"></td>
