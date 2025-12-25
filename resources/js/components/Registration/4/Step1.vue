@@ -159,7 +159,6 @@
                                         v-for="option in field.options.split(',')"
                                         :key="option"
                                         :value="option"
-                                        :disabled="field.label == 'Venue' && option == 'Calamba Tent' && event.slug == 7382159074"
                                         :label="option"
                                     ></el-option>
                                 </el-select>

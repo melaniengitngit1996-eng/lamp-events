@@ -25,7 +25,7 @@
                                     :key="e" 
                                     :label="venue.venue" 
                                     :value="venue.venue"
-                                    :disabled="isMainVenueDisabled(venue.venue) || venue.venue === 'Calamba Tent'">
+                                    :disabled="isMainVenueDisabled(venue.venue)">
                                 </el-option>
                             </el-select>
                         </el-form-item>

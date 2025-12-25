@@ -135,7 +135,7 @@
                                                                 :key="e" 
                                                                 :label="venue.venue" 
                                                                 :value="venue.venue"
-                                                                :disabled="isMainVenueDisabled(venue.venue, i) || venue.venue === 'Calamba Tent'">
+                                                                :disabled="isMainVenueDisabled(venue.venue, i)">
                                                             </el-option>
                                                         </el-select>
                                                     </el-col>
