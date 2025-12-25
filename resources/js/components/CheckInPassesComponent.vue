@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-center my-4">
         <div class="col-md-6 col-lg-5 mb-4" v-for="(date, i) in passes" :key="i">
-            <el-card class="box-card add-clip" :style="`border-bottom: 10px solid ${event.border_color}`">
+            <el-card class="box-card add-clip" :style="`border-bottom: 10px solid ${date.slot.ticket_color}`">
                 <div class="row">
                     <div class="col-md-4 p-4">
                         <center>
@@ -17,7 +17,7 @@
                                         v56
                                         h-256
                                         z" 
-                                        :fill="event.border_color"/>
+                                        :fill="date.slot.ticket_color"/>
 
                                 <!-- "JUN" text -->
                                 <text x="50%" y="56" text-anchor="middle" dominant-baseline="middle"

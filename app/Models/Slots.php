@@ -22,6 +22,7 @@ class Slots extends Model
         'registration_type',
         'event_date',
         'activities',
+        'ticket_color',
         'created_at',
         'updated_at'
     ];
