@@ -191,6 +191,8 @@ class AttendanceController extends Controller
 
         $slot_id = $registration->registration_type === 'Member' ? $event->active_member_slot_id : $event->active_guest_slot_id;
 
+        $booking = $registration->bookings()->where('slot_id', $slot_id)->first();
+
         return $registration->attendances()->firstOrCreate(
             [
                 'event_id' => $event->id,
@@ -200,7 +202,7 @@ class AttendanceController extends Controller
                 'registration_type' => $registration->registration_type,
                 'local_church' => $request->details['local_church'],
                 'notes' => AttendanceType::Physical,
-                'venue' => $registration->custom_fields['venue'],
+                'venue' => $booking->venue,
             ]
         );
     }
