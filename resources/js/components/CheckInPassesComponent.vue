@@ -1,9 +1,9 @@
 <template>
     <div class="row justify-content-center my-4">
-        <div class="col-md-6 col-lg-4 mb-4" v-for="(date, i) in passes" :key="i">
+        <div class="col-md-6 col-lg-5 mb-4" v-for="(date, i) in passes" :key="i">
             <el-card class="box-card add-clip" :style="`border-bottom: 10px solid ${event.border_color}`">
                 <div class="row">
-                    <div class="col-md-5 p-4">
+                    <div class="col-md-4 p-4">
                         <center>
                             <svg  width="80%" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Calendar icon June 5">
                                 <!-- Outer rounded background -->
@@ -33,7 +33,7 @@
                             </svg>
                         </center>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <el-descriptions class="margin-top" :column="1" size="mini" border>
                             <el-descriptions-item>
                                 <template slot="label">
@@ -58,6 +58,12 @@
                                     <i class="el-icon-date"></i>
                                 </template>
                                 {{ date.created_at_formatted }}&nbsp;&nbsp;<el-tag size="mini">{{ date.notes }}</el-tag>
+                            </el-descriptions-item>
+                            <el-descriptions-item>
+                                <template slot="label">
+                                    <i class="el-icon-edit"></i>
+                                </template>
+                                Booked for {{ date.registration.custom_fields.venue }}</el-tag>
                             </el-descriptions-item>
                         </el-descriptions>
                     </div>
