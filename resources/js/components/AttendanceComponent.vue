@@ -33,7 +33,7 @@
               <div class="card-body">
                   <template v-for="(item, index) in count">
                     <table class="border text-center w-full" style="width: 100%">
-                      <tr>
+                      <tr class="text-uppercase" :style="`background-color: ${item.ticket_color}; color: white`">
                         <td class="border px-2 py-1" colspan="4"><b>{{ venue }} - {{ item.event_date }}</b></td>
                       </tr>
                       <tr>
