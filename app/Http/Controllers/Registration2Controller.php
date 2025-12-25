@@ -380,7 +380,7 @@ class Registration2Controller extends Controller
                     }
 
                     if ($event->has_multiple_venues && $event->slug == 7382159074 && AttendingOption::Online != $request->step_1['attendingOption']) {
-                        $book = array_combine($book, array_fill(0, count($book), 'Local Church'));
+                        $book = array_combine($book, array_fill(0, count($book), $request->step_1['venue']));
                     }
 
                     // Remove bookings without selected venue
