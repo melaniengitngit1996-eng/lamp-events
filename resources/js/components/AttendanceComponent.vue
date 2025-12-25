@@ -97,6 +97,10 @@
                   <small class="text-description d-block mb-2 text-uppercase">BOOKED DATES - {{ retrieved.delegate.attending_option }}</small>
                     <el-tag v-for="(date, index) in retrieved.booked_dates" :key="index" class="mx-2 mb-3">{{ date }}</el-tag>
                 </div>
+                <div class="col-md-12 mb-3">
+                  <small class="text-description d-block mb-2 text-uppercase">BOOKED VENUE</small>
+                  <h5 class="d-block mb-0 text-uppercase">{{ retrieved.delegate.custom_fields.venue }}</h5>
+                </div>
                 <div class="col-md-12 pt-3">
                   <small class="text-description d-block mb-2">ATTENDANCE STATUS (TODAY)</small>
                   <h5 class="text-success" v-if="retrieved.attended">PRESENT</h5>
