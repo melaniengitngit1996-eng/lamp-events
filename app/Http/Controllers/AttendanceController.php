@@ -148,9 +148,9 @@ class AttendanceController extends Controller
 
         $slot_id = $registration->registration_type === 'Member' ? $event->active_member_slot_id : $event->active_guest_slot_id;
 
-        $isBooked = $registration->bookings()->where('slot_id', $slot_id)->first();
+        $booking = $registration->bookings()->where('slot_id', $slot_id)->first();
 
-        if (!$isBooked) {
+        if (!$booking) {
             return response()->json(['error' => 'This delegate is not booked for today.'], 500);
         }
 
@@ -164,7 +164,7 @@ class AttendanceController extends Controller
             return response()->json(['error' => 'Attendance link is invalid, please reach out to the administrator.'], 500);
         }
 
-        if ($registration->custom_fields['venue'] != $request->venue) {
+        if ($booking->venue != $request->venue) {
             return response()->json(['error' => 'This delegate is not registered for '. $request->venue .'.'], 500);
         }
         
@@ -178,6 +178,7 @@ class AttendanceController extends Controller
 
         return [
             'delegate' => $registration,
+            'booking_today' => $booking,
             'bookings' => $registration->bookings()->with(['slot'])->get(),
             'booked_dates' => $booked_dates,
             'attended' => !empty($registration->attendances()->where('slot_id', $slot_id)->first())
