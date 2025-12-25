@@ -15,7 +15,8 @@ class Attendance extends Model
         'local_church',
         'event_id',
         'registration_type',
-        'notes'
+        'notes',
+        'venue'
     ];
 
     protected $casts = [

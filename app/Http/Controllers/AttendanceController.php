@@ -91,10 +91,12 @@ class AttendanceController extends Controller
                             ->where('local_church', $local_church)
                             ->where('slot_id', $member->id)
                             ->where('status', BookingStatus::Confirmed)
+                            ->where('venue', $venue)
                             ->count(),
                         'attended' => DB::table('attendances')
                             ->where('local_church', $local_church)
                             ->where('slot_id', $member->id)
+                            ->where('venue', $venue)
                             ->count(),
                     ),
                     'guest' => array(
@@ -102,10 +104,12 @@ class AttendanceController extends Controller
                             ->where('local_church', $local_church)
                             ->where('slot_id', $guest->id)
                             ->where('status', BookingStatus::Confirmed)
+                            ->where('venue', $venue)
                             ->count(),
                         'attended' => DB::table('attendances')
                             ->where('local_church', $local_church)
                             ->where('slot_id', $guest->id)
+                            ->where('venue', $venue)
                             ->count(),
                     )
                 );
@@ -186,19 +190,18 @@ class AttendanceController extends Controller
 
         $slot_id = $registration->registration_type === 'Member' ? $event->active_member_slot_id : $event->active_guest_slot_id;
 
-        $attendance = $registration->attendances->where('slot_id', $slot_id)->first();
-
-        if (!$attendance) {
-            return $registration->attendances()->create([
+        return $registration->attendances()->firstOrCreate(
+            [
                 'event_id' => $event->id,
                 'slot_id' => $slot_id,
+            ],
+            [
                 'registration_type' => $registration->registration_type,
                 'local_church' => $request->details['local_church'],
-                'notes' => AttendanceType::Physical
-            ]);
-        }
-
-        return $attendance;
+                'notes' => AttendanceType::Physical,
+                'venue' => $registration->custom_fields['venue'],
+            ]
+        );
     }
 
     public function export(Event $event) {
