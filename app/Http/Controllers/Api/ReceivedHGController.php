@@ -51,7 +51,11 @@ class ReceivedHGController
             return response()->json(['error' => 'Delegate not found.'], 422);
         }
 
-        return $registration;
+        $data = $registration;
+
+        $data['email'] = ($registration->email === null || $registration->email === '') ? 'no email' : $registration->email;
+
+        return $data;
     }
 
     public function store(Event $event, $uuid, Request $request)
