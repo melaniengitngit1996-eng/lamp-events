@@ -115,7 +115,8 @@ class CheckInController extends Controller
                 'event_id' => $event->id,
                 'local_church' => $registration->local_church,
                 'registration_type' => $registration->registration_type,
-                'notes' => $request->loc == 'Online' ? AttendanceType::OnlineCheckIn : AttendanceType::OnsiteCheckIn
+                'notes' => $request->loc == 'Online' ? AttendanceType::OnlineCheckIn : AttendanceType::OnsiteCheckIn,
+                'venue' => $booking->venue
             ]);
         }
 
