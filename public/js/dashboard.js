@@ -7218,7 +7218,7 @@ __webpack_require__.r(__webpack_exports__);
     this.search.awta_day = this.getUrlVars()['awta_day'] ? this.getUrlVars()['awta_day'].replace('%20', ' ') : window.env.awta_day;
     this.search.attendance = this.getUrlVars()['attendance'] ? this.getUrlVars()['attendance'].replace('%20Yet%20', ' Yet ') : '';
     this.tableData.current_page = this.getUrlVars()['page'] ? this.getUrlVars()['page'] : 1;
-    this.tableData = this.data;
+    this.tableData.data = this.data;
   },
   methods: {
     fetchReceivedHG: function fetchReceivedHG() {
@@ -8135,18 +8135,7 @@ var render = function render() {
         return [_vm._v("\n            " + _vm._s(_vm.$func.formatToDateTime(scope.row.created_at)) + "\n            ")];
       }
     }])
-  })], 1)], 1), _vm._v(" "), _vm.tableData.data.length > 0 ? _c("pagination", {
-    staticClass: "m-0",
-    attrs: {
-      pagination: _vm.tableData,
-      offset: 4
-    },
-    on: {
-      paginate: function paginate($event) {
-        return _vm.fetchReceivedHG(true);
-      }
-    }
-  }) : _vm._e()], 1)]);
+  })], 1)], 1)], 1)]);
 };
 
 var staticRenderFns = [];

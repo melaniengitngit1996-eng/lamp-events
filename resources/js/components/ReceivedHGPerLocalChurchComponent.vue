@@ -123,13 +123,13 @@
           </el-table-column>
         </el-table>
   
-        <pagination 
+        <!-- <pagination 
             v-if="tableData.data.length > 0"
             class="m-0"
             :pagination="tableData"
             @paginate="fetchReceivedHG(true)"
             :offset="4">
-        </pagination>
+        </pagination> -->
       </div>
     </div>
   </template>
@@ -165,7 +165,7 @@
         this.search.awta_day = (this.getUrlVars()['awta_day']) ? this.getUrlVars()['awta_day'].replace('%20', ' ') : window.env.awta_day
         this.search.attendance = (this.getUrlVars()['attendance']) ? this.getUrlVars()['attendance'].replace('%20Yet%20', ' Yet ') : ''
         this.tableData.current_page = (this.getUrlVars()['page']) ? this.getUrlVars()['page'] : 1
-        this.tableData = this.data
+        this.tableData.data = this.data
       },
       methods: {
         fetchReceivedHG(paginate = false) {

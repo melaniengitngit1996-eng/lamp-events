@@ -344,10 +344,10 @@ class DashboardController extends Controller
             });
         }
 
-        $received_hg = $received_hg->paginate(10);
-        
+        $received_hg = $received_hg;
+
         return view('dashboard.received_hg', [
-            'data' => $received_hg,
+            'data' => $received_hg->get(),
             'event' => $event,
             'days' => $event->slots->groupBy('description')
         ]);
