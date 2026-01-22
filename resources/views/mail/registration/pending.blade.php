@@ -1,6 +1,6 @@
 @component('mail::message')
 <center>
-<label style="font-size: 20px; color: orange; font-weight: 600;">@if($event_slug == 7382159074) Registration On-Hold! @else Booking On-Hold! @endif<label>
+<label style="font-size: 20px; color: orange; font-weight: 600;">@if($event_slug == 7382159074 || $event_slug == 7382159075) Registration On-Hold! @else Booking On-Hold! @endif<label>
 </center>
 <br />
 <br />
@@ -24,7 +24,11 @@ Please settle your balance or atleast pay half to confirm your booking on or bef
 @endif
 @endcomponent
 
+@if($event_slug == 7382159075)
+To settle it, please reach out to camp registration team.
+@else
 To settle it, please reach out to your local Registrars.
+@endif
 
 We hope to see you there!
  

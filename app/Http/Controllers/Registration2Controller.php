@@ -264,6 +264,10 @@ class Registration2Controller extends Controller
                     break;
             }
 
+            // ------------------------- custom blocks -------------------------------
+            $this->addCampingData($category, $request->step_1['withAwtaCard'], $details, $event, 'Member');
+            // ------------------------- custom block ends here ----------------------
+
             $registration = Registration::create([
                 'uuid' => strtoupper($uuid),
                 'event_id' => $event->id,
@@ -390,6 +394,14 @@ class Registration2Controller extends Controller
                             return !empty(trim((string)$venue));
                         });
                     }
+                    // dd($details);
+                    $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $value);
+
+                    $category = 'Adult';
+                    
+                    // ------------------------- custom blocks -------------------------------
+                    $this->addCampingData($category, null, $value, $event, 'Guest');
+                    // ------------------------- custom block ends here ----------------------
 
                     $registration = Registration::create([
                         'uuid' => $uuid,
@@ -403,7 +415,7 @@ class Registration2Controller extends Controller
                         'local_church' => $details->localChurch,
                         'cluster_group' => $details->clusterGroup,
                         'country' => $details->country,
-                        'category' => 'Adult',
+                        'category' => $category,
                         'attending_option' => $request->step_1['attendingOption'],
                         'medical_assistance_needed' => $details->specificMedicalAssistance,
                         'with_awta_card' => 'none',
@@ -614,15 +626,15 @@ class Registration2Controller extends Controller
                 $value = json_decode($value);
 
                 if (!$value->firstName) {
-                    $errors[$key]['firstName'] = 'First Name is required.';
+                    $errors[$key]['firstName'] = 'First name is required.';
                 }
 
                 if (!$value->lastName) {
-                    $errors[$key]['lastName'] = 'Last Name is required.';
+                    $errors[$key]['lastName'] = 'Last name is required.';
                 }
 
                 if (!$value->facebookName) {
-                    $errors[$key]['facebookName'] = 'Facebook Name is required.';
+                    $errors[$key]['facebookName'] = 'Facebook name is required.';
                 }
 
                 if (
@@ -637,11 +649,11 @@ class Registration2Controller extends Controller
                 }
 
                 if (!$value->clusterGroup) {
-                    $errors[$key]['clusterGroup'] = 'Cluster Group is required.';
+                    $errors[$key]['clusterGroup'] = 'Cluster group is required.';
                 }
 
                 if (!$value->localChurch) {
-                    $errors[$key]['localChurch'] = 'Local Church is required.';
+                    $errors[$key]['localChurch'] = 'Local church is required.';
                 }
 
                 if (!$value->country) {
@@ -670,6 +682,10 @@ class Registration2Controller extends Controller
                         $errors[$key]['booked'] = 'Select preferred dates.';
                     }
                 }
+
+                // ------------------------- custom blocks -------------------------------
+                $this->addCampingValidations($errors, $key, $value, $event);
+                // ------------------------- custom blocks ends here ---------------------
 
                 if (!array_key_exists($key, $errors)) {
                     $validation = $this->checkIfAlreadyRegistered($event->id, (object) [
@@ -749,5 +765,39 @@ class Registration2Controller extends Controller
     public function export(Event $event)
     {
         return Excel::download(new ExportRegistration($event), 'registrations_' . TIME() . '.csv');
+    }
+
+    private function addCampingData(&$category, $with_awta_card, $details, $event, $registration_type) {
+        if ($event->slug == 7382159075) {
+            $category = $details['camper_category'];
+        }
+    }
+
+    private function addCampingValidations(&$errors, $key, $value, $event) {
+        if ($event->slug == 7382159075) {
+            if (!$value->birthday) {
+                $errors[$key]['birthday'] = 'Birth date is required.';
+            }
+
+            if (!$value->camper_category) {
+                $errors[$key]['camper_category'] = 'Camper category is required.';
+            }
+
+            if (!$value->holy_ghost_seeker) {
+                $errors[$key]['holy_ghost_seeker'] = 'Select an answer.';
+            }
+
+            if (!$value->inviter_complete_name) {
+                $errors[$key]['inviter_complete_name'] = 'Name of Inviter is required.';
+            }
+
+            if (!$value->transportation) {
+                $errors[$key]['transportation'] = 'Select preferred mode of transportation.';
+            }
+
+            if (!$value->tshirt_size) {
+                $errors[$key]['tshirt_size'] = 'Select t-shirt size.';
+            }
+        }
     }
 }

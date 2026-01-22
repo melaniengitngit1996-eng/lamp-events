@@ -137,50 +137,6 @@
                 </el-card>
 
                 <el-card
-                    v-if="event.custom_fields.length > 0 && hasVisibleCustomFields"
-                    shadow="always"
-                    class="mb-3"
-                >
-                    <div class="row">
-                        <div v-for="field in event.custom_fields" :class="field.type === 'select' ? 'col-md-6 col-12' : 'col-md-12'" v-if="evaluateRule(field.visibility_rule)">
-                            <el-form-item
-                                :label="field.label"
-                                :prop="field.name"
-                                :class="field.description ? 'rm-margin' : ''"
-                                :required="evaluateRule(field.mandatory_rule)"
-                            >
-                                <small v-if="field.description" class="text-sm">{{ field.description }}</small>
-                                <el-select
-                                    v-if="field.type === 'select'"
-                                    v-model="ruleForm[field.name]"
-                                    placeholder="Choose"
-                                >
-                                    <el-option
-                                        v-for="option in field.options.split(',')"
-                                        :key="option"
-                                        :value="option"
-                                        :label="option"
-                                    ></el-option>
-                                </el-select>
-
-                                <el-input
-                                    v-if="field.type === 'text'"
-                                    v-model="ruleForm[field.name]"
-                                    :clearable="true"
-                                ></el-input>
-
-                                <el-date-picker
-                                    v-if="field.type === 'datepicker'"
-                                    v-model="ruleForm[field.name]"
-                                    type="date"
-                                    placeholder="Pick a day">
-                                </el-date-picker>
-                            </el-form-item>
-                        </div>
-                    </div>
-                </el-card>
-
-                <el-card
                     v-if="
                         ruleForm.registrationType === 'Member' &&
                         (ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')
@@ -204,6 +160,83 @@
                                     @clear="resetData('awta-card')"
                                     :clearable="true"
                                 ></el-input>
+                            </el-form-item>
+                        </div>
+                    </div>
+                </el-card>
+
+                <el-card
+                    v-if="
+                        ruleForm.registrationType === 'Member' &&
+                        ruleForm.withAwtaCard === 'yes'
+                    "
+                    shadow="always"
+                    class="mb-3"
+                >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <el-form-item
+                                class="transform-uppercase"
+                                label="Birth Date"
+                                prop="birthday"
+                                :required="ruleForm.withAwtaCard === 'yes'"
+                            >
+                                <el-date-picker
+                                    style="width: 100%"
+                                    v-model="ruleForm['birthday']"
+                                    type="date"
+                                    placeholder="Pick a day">
+                                </el-date-picker>
+                            </el-form-item>
+                        </div>
+                        <div class="col-md-6">
+                            <el-form-item
+                                class="transform-uppercase"
+                                label="Camper Category"
+                                prop="camper_category"
+                                :required="ruleForm.withAwtaCard === 'yes'"
+                            >
+                                <el-select
+                                    v-model="ruleForm['camper_category']"
+                                    placeholder="Choose"
+                                >
+                                    <el-option value="Kids" label="Kid (6y/o and below)"></el-option>
+                                    <el-option value="Student" label="Student (7y/o and above)"></el-option>
+                                    <el-option value="Adult" label="Working / Adult"></el-option>
+                                    <el-option value="Senior" label="Senior"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                    </div>
+                </el-card>
+
+                <el-card
+                    v-if="
+                        ruleForm.registrationType === 'Member' &&
+                        ruleForm.withAwtaCard === 'yes'
+                    "
+                    shadow="always"
+                    class="mb-3"
+                >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <el-form-item
+                                class="transform-uppercase"
+                                label="Holy Ghost seeker?"
+                                prop="holy_ghost_seeker"
+                                :required="ruleForm.withAwtaCard === 'yes'"
+                            >
+                                <el-select
+                                    v-model="ruleForm['holy_ghost_seeker']"
+                                    placeholder="Choose"
+                                >
+                                    <el-option
+                                        v-for="option in 'yes,no'.split(',')"
+                                        :key="option"
+                                        :value="option"
+                                        :label="option"
+                                    ></el-option>
+                                </el-select>
                             </el-form-item>
                         </div>
                     </div>
@@ -252,6 +285,70 @@
                                 </el-option-group>
                             </el-select>
                         </el-form-item>
+                    </div>
+                </el-card>
+
+                <el-card
+                    v-if="
+                        ruleForm.registrationType === 'Member' &&
+                        ruleForm.withAwtaCard === 'yes'
+                    "
+                    shadow="always"
+                    class="mb-3"
+                >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <el-form-item
+                                class="transform-uppercase"
+                                label="T-shirt Size"
+                                prop="tshirt_size"
+                                :required="ruleForm.withAwtaCard === 'yes'"
+                            >
+                                <el-select
+                                    v-model="ruleForm['tshirt_size']"
+                                    placeholder="Choose"
+                                >
+                                    <el-option
+                                        v-for="option in 'Kids - 2,Kids - 4,Kids - 6,Kids - 8,Kids - 9,Kids - 10,Kids - 12,Kids - 14,XS,S,M,L,XL,2XL,3XL'.split(',')"
+                                        :key="option"
+                                        :value="option"
+                                        :label="option"
+                                    ></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
+                    </div>
+                </el-card>
+
+                <el-card
+                    v-if="
+                        ruleForm.registrationType === 'Member' &&
+                        ruleForm.withAwtaCard === 'yes'
+                    "
+                    shadow="always"
+                    class="mb-3"
+                >
+                    <div class="row">
+                        <div class="col-md-6">
+                            <el-form-item
+                                class="transform-uppercase"
+                                label="Mode of Transportation"
+                                prop="transportation"
+                                :required="ruleForm.withAwtaCard === 'yes'"
+                            >
+                                <el-select
+                                    v-model="ruleForm['transportation']"
+                                    placeholder="Choose"
+                                >
+                                    <el-option
+                                        v-for="option in 'Private,Camp Provided,Commute'.split(',')"
+                                        :key="option"
+                                        :value="option"
+                                        :label="option"
+                                    ></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
                     </div>
                 </el-card>
 
@@ -361,7 +458,7 @@ export default {
             ruleForm: {
                 registrationType: "",
                 withAwtaCard: "",
-                attendingOption: this.event.with_booking ? "" : "Physical", // set default as physical if booking id disabled
+                attendingOption: "Physical", // set default as physical if booking id disabled
                 reasonForOnlineAttendance: "",
                 zoomAccessEmail: "",
                 lampIDNumber: "",
@@ -384,13 +481,6 @@ export default {
                     {
                         required: true,
                         message: "Please select an answer",
-                        trigger: ["blur", "change"],
-                    },
-                ],
-                attendingOption: [
-                    {
-                        required: true,
-                        message: "Please select your attending option",
                         trigger: ["blur", "change"],
                     },
                 ],
@@ -591,7 +681,6 @@ export default {
                 this.ruleForm.found = {};
             } else if (scope === "reg-type") {
                 this.ruleForm.withAwtaCard = "";
-                this.ruleForm.attendingOption = "";
                 this.ruleForm.lampIDNumber = "";
                 this.ruleForm.bookingCode = "";
                 this.ruleForm.found = {};

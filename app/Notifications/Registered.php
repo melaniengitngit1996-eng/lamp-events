@@ -56,7 +56,7 @@ class Registered extends Notification
             $markup = 'mail.registration.pending';
             $subject = 'Booking on-hold for ' . $event->name;
 
-            if($event->slug == 7382159074) {
+            if($event->slug == 7382159074 || $event->slug == 7382159075) {
                 $subject = 'Registration on-hold for ' . $event->name;
             }
         } else if ($this->registration->booking_status === BookingStatus::Cancelled) {
@@ -64,14 +64,14 @@ class Registered extends Notification
             $subject = 'Booking cancelled for ' . $event->name;
             $url = url('/booking/');
 
-            if($event->slug == 7382159074) {
+            if($event->slug == 7382159074 || $event->slug == 7382159075) {
                 $subject = 'Registration cancelled for ' . $event->name;
             }
         } else if ($this->registration->booking_status === BookingStatus::Confirmed) {
             $markup = 'mail.registration.confirmed';
             $subject = 'Booking confirmed for ' . $event->name;
 
-            if($event->slug == 7382159074) {
+            if($event->slug == 7382159074 || $event->slug == 7382159075) {
                 $subject = 'Registration confirmed for ' . $event->name;
             }
         }
@@ -113,14 +113,22 @@ class Registered extends Notification
             }
         }
 
+        $minimum_due = number_format($this->registration->can_book_rate);
+        $minimum_payment_due_date = date('M d, Y', strtotime($this->registration->booked_date . ' + 7 days'));
+
+        if ($event->slug == 7382159075) {
+            $minimum_payment_due_date = 'March 1, 2026';
+            $minimum_due = number_format($balance / 2);
+        }
+
         return (new MailMessage)
             ->subject($subject)
             ->markdown($markup, [
                 'url' => $url,
                 'name' => $this->registration->fullname,
                 'balance' => strval(number_format($balance)) . ($this->registration->avail_new_lamp_id === 'yes' ? ' (with additional Php 35 for LAMP ID)' : ''),
-                'minimum_due' => number_format($this->registration->can_book_rate),
-                'minimum_payment_due_date' => date('M d, Y', strtotime($this->registration->booked_date . ' + 7 days')),
+                'minimum_due' => $minimum_due,
+                'minimum_payment_due_date' => $minimum_payment_due_date,
                 'booked_dates' => implode(', ', $booked_dates),
                 'registration' => $this->registration,
                 'payment_due_date' => $payment_due_date,

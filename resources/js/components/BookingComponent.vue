@@ -4,31 +4,32 @@
             <div class="card-body pt-0">
                 <div class="row justify-content-center">
                     <label class="mt-3" v-if="event.has_multiple_venues">Please choose a venue for the dates you’d like to attend in person. You may select up to {{max}} days.</label>
-                    <el-form-item 
-                        v-if="event.has_multiple_venues" 
-                        v-for="(date, index) in dates" :key="index" 
-                        :prop="'booked.' + date.id"
-                        :rules="[
-                            { validator: validateBooked, trigger: 'change' }
-                        ]"
-                        class="check-dates" 
-                    >
-                        <template slot="label">
-                            {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
-                        </template>
-                        <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
-                            <el-option 
-                                label="--">
-                            </el-option>
-                            <el-option 
-                                v-for="(venue, e) in date.venues" 
-                                :key="e" 
-                                :label="venue.venue" 
-                                :value="venue.venue"
-                                :disabled="isMainVenueDisabled(venue.venue)">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
+                    <div v-if="event.has_multiple_venues">
+                        <el-form-item 
+                            v-for="(date, index) in dates" :key="index" 
+                            :prop="'booked.' + date.id"
+                            :rules="[
+                                { validator: validateBooked, trigger: 'change' }
+                            ]"
+                            class="check-dates" 
+                        >
+                            <template slot="label">
+                                {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
+                            </template>
+                            <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
+                                <el-option 
+                                    label="--">
+                                </el-option>
+                                <el-option 
+                                    v-for="(venue, e) in date.venues" 
+                                    :key="e" 
+                                    :label="venue.venue" 
+                                    :value="venue.venue"
+                                    :disabled="isMainVenueDisabled(venue.venue)">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </div>
                     <el-form-item v-else class="check-dates" :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" prop="booked" required>
                         <!-- <el-tag v-if="(ruleForm.booked.length > 0)" class="bg-white border-0"><i class="el-icon-date"></i>&nbsp;&nbsp;You are booked on<span v-for="(value, index) in ruleForm.booked" :key="index"> {{ dates[value-1]['event_date'] }}&nbsp;</span></el-tag> -->
                         <el-checkbox-group v-model="ruleForm.booked" size="small">
