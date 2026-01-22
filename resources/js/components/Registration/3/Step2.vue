@@ -244,7 +244,7 @@
                                                         @change="onChangeProcessed($event, date.id)"
                                                         :disabled="(!guest.booked?.includes(date.id) && guest.booked.length === guest_booking_limit) || (date.available === 0 && !guest.booked.includes(date.id))">
                                                             <label class="mb-1">{{ date.event_date }}</label> <br> 
-                                                            <span>{{ date.available }} left!</span>
+                                                            <!-- <span>{{ date.available }} left!</span> -->
                                                     </el-checkbox-button>
                                                 </el-checkbox-group>
                                                 <small v-if="errors[i] && errors[i]['booked']" class="text-error">

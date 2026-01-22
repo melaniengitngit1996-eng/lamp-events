@@ -122,8 +122,6 @@
             async submit(data) {
                 this.showWaiver = true;
 
-                console.log(data);
-
                 await this.waitForContinue();
 
                 this.showWaiver = false;

@@ -9,7 +9,7 @@
         <span class="content">
             <div class="m-0">
                 <section class="waiver-section">
-                    <h3>LAMP CHURCH MUNTINLUPA FAMILY CAMP 2026 WAIVER FORM</h3>
+                    <h3 style="text-align: left;">LAMP CHURCH MUNTINLUPA FAMILY CAMP 2026 WAIVER FORM</h3>
 
                     <div class="waiver-box">
                         <p>
@@ -77,7 +77,7 @@
 <style>
 .waiver-box {
   max-height: 220px;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 6px;

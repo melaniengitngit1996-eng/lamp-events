@@ -42,7 +42,7 @@
                             <el-checkbox-group v-model="ruleForm.booked" size="small">
                                 <div class="row">
                                     <div v-for="(date, index) in dates" :key="index" class="col-md-3 text-center">
-                                        <el-badge :value="`${date.available} left!`" class="item my-3 c-booking-date" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">
+                                        <div class="item my-3 c-booking-date">
                                             <el-checkbox
                                                 :label="date.id"
                                                 name="booked"
@@ -51,7 +51,7 @@
                                                 @change="onChangeProcessed($event,date.id)">
                                                 <span v-if="ruleForm.booked.includes(date.id)">&#10003;&nbsp;</span>{{ date.event_date }}
                                             </el-checkbox>
-                                        </el-badge>
+                                        </div>
                                     </div>
                                 </div>
                             </el-checkbox-group>
