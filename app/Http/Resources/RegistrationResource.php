@@ -60,13 +60,22 @@ class RegistrationResource extends JsonResource
             'payments_sum_amount' => $this->payments_sum_amount,
             'medical_assistance_needed' => $this->medical_assistance_needed,
             'visitor_to_member' => $this->visitor_to_member,
-            'old_uuid' => $this->old_uuid
+            'old_uuid' => $this->old_uuid,
         ];
 
         if (!empty($this->custom_fields)) {
             foreach ($this->custom_fields as $field => $value) {
                 $data[$field] = $value;
             }
+        }
+
+        if ($this->event->slug == 7382159075) {
+            $birthdate = new \DateTime($this->custom_fields['birthday'], new \DateTimeZone('UTC') ); 
+            $referenceDate = new \DateTime( '2026-04-02', new \DateTimeZone('Asia/Manila') ); 
+            $age = $referenceDate->diff($birthdate)->y;
+
+            $data['age'] = $age;
+            unset($data['birthday']);
         }
 
         return $data;
