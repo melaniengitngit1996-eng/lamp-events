@@ -76,8 +76,6 @@
 
 <style>
 .waiver-box {
-  max-height: 220px;
-  overflow-y: scroll;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
