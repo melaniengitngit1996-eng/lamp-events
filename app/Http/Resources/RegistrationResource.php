@@ -76,6 +76,12 @@ class RegistrationResource extends JsonResource
 
             $data['age'] = $age;
             unset($data['birthday']);
+
+            $latest_payment = $this->payments()->latest()->first();
+
+            if ($latest_payment) {
+                $data['reg_team'] = $latest_payment->username;
+            }
         }
 
         return $data;
