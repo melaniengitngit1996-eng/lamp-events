@@ -67,7 +67,6 @@
                 countries: this.$allCountries,
                 data: {
                     step_1: {},
-                    // step_1: {"registrationType":"Guest","withAwtaCard":"","attendingOption":"Physical","reasonForOnlineAttendance":"","zoomAccessEmail":"","lampIDNumber":"","clusterGroup":"","bookingCode":"","email":"","specificMedicalAssistance":"","canBookDays":0,"found":{},"birthday":null,"camper_category":null,"holy_ghost_seeker":"","inviter_complete_name":"","transportation":"","tshirt_size":""},
                     step_2: {},
                     step_3: {}
                 },

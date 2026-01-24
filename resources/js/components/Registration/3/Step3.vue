@@ -33,10 +33,10 @@
                         <el-form-item 
                             v-else 
                             class="check-dates" 
-                            :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" 
+                            :label="`Choose the dates you would like to attend physically. Please select at least 2 days.`" 
                             :prop="'booked'"
                             :rules="[
-                                { required: true, message: `Please select atleast one day`, trigger: ['blur', 'change'] }
+                                { type: 'array', required: true, min: 2, message: `Please select atleast two days`, trigger: ['blur', 'change'] }
                             ]"
                             required>
                             <el-checkbox-group v-model="ruleForm.booked" size="small">

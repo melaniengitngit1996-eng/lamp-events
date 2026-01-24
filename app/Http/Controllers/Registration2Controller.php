@@ -798,6 +798,10 @@ class Registration2Controller extends Controller
             if (!$value->tshirt_size) {
                 $errors[$key]['tshirt_size'] = 'Select t-shirt size.';
             }
+
+            if (count($value->booked) < 2 && 'Online' != $value->attendingOption) {
+                $errors[$key]['booked'] = 'Select at least two days.';
+            }
         }
     }
 }

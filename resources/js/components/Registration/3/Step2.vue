@@ -243,7 +243,7 @@
                                                         :key="date.id" 
                                                         @change="onChangeProcessed($event, date.id)"
                                                         :disabled="(!guest.booked?.includes(date.id) && guest.booked.length === guest_booking_limit) || (date.available === 0 && !guest.booked.includes(date.id))">
-                                                            <label class="mb-1">{{ date.event_date }}</label> <br> 
+                                                            <label>{{ date.event_date }}</label>
                                                             <!-- <span>{{ date.available }} left!</span> -->
                                                     </el-checkbox-button>
                                                 </el-checkbox-group>
@@ -658,7 +658,7 @@
                         inviter: '',
                         transportation: '',
                         tshirt_size: '',
-
+                        inviter_complete_name: '',
                         attendingOption: this.data.step_1.attendingOption
                     }]
                 },
