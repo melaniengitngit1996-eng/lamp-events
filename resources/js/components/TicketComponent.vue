@@ -225,7 +225,7 @@ export default {
             const printCanvas = await html2canvas(document.querySelector("#" + id), options);
 
             const link = document.createElement("a");
-            link.setAttribute("download", "awta-ticket.png");
+            link.setAttribute("download", this.event.ticket_file_name + ".png");
             link.setAttribute(
                 "href",
                 printCanvas
