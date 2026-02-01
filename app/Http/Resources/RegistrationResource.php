@@ -40,7 +40,7 @@ class RegistrationResource extends JsonResource
         }, $attendances);
 
         $data = [
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->timezone('Asia/Manila')->format('Y-m-d h:i:s A'),
             'uuid' => $this->uuid,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
