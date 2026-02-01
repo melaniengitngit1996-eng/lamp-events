@@ -51,6 +51,7 @@ class Registration extends MyModel
         'is_received_hg' => 'date:M d, Y',
         'event' => 'object',
         'custom_fields' => 'array',
+        'created_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     protected $appends = [
