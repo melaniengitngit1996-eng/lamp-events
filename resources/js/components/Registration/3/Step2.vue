@@ -243,7 +243,7 @@
                                                         :key="date.id" 
                                                         @change="onChangeProcessed($event, date.id)"
                                                         :disabled="(!guest.booked?.includes(date.id) && guest.booked.length === guest_booking_limit) || (date.available === 0 && !guest.booked.includes(date.id))">
-                                                            <label>{{ date.event_date }}</label>
+                                                            {{ date.event_date }}
                                                             <!-- <span>{{ date.available }} left!</span> -->
                                                     </el-checkbox-button>
                                                 </el-checkbox-group>
