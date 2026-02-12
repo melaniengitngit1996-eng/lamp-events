@@ -16,7 +16,7 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Event $event, Registration $registration) {
+    public function create(Event $event, Registration $registration, Request $request) {
         $balance = floatval($registration->rate);
         $balance-= floatval(array_sum(array_column($registration->payments->toArray(), 'amount')));
         
@@ -24,7 +24,8 @@ class PaymentController extends Controller
             'registration' => $registration,
             'balance' => $balance,
             'user' => Auth::user(),
-            'event' => $event
+            'event' => $event,
+            'search' => $request->search ?? ''
         ]);
     }
 

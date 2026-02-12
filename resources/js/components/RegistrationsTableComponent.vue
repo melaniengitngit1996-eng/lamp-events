@@ -202,7 +202,9 @@
             align="center"
             width="110">
             <template slot-scope="scope">
-              <a :href="`/${event.slug}/registration/${scope.row.id}/edit`"><el-button type="text" size="small">View Details</el-button></a>
+              <a :href="`/${event.slug}/registration/${scope.row.id}/edit${search.last_search ? `?search=${search.last_search}` : ''}`">
+                <el-button type="text" size="small">View Details</el-button>
+              </a>
               <el-button v-if="scope.row.email" type="text" size="small" @click="resendMail(scope.row.id)">Resend Mail</el-button>
               <el-button v-if="permissions.can_delete_delegate" class="text-danger" type="text" size="small" @click="deleteRegistration(scope.row.id)">Delete</el-button>
             </template>
@@ -237,7 +239,8 @@
           registration_type: '',
           attending_option: '',
           category: '',
-          local_church: ''
+          local_church: '',
+          last_search: ''
         },
         tableData: {
           total: 0,
@@ -253,6 +256,11 @@
       }
     },
     mounted() {
+      const params = new URLSearchParams(window.location.search)
+      const search = params.get('search')
+
+      this.search.keyword = search || '';
+      this.search.last_search = search || '';
       this.fetchRegistrations();
       this.fetchHistory();
     },
@@ -260,6 +268,7 @@
       fetchRegistrations(ignore_page = true) {
         if ((this.search.keyword != '' || this.search.payment_status != '' || this.search.booking_status != '' || this.search.registration_type != '' || this.search.attending_option != '' || this.search.category != '' || this.search.local_church != '') && ignore_page)
           this.tableData.current_page = 1;
+          this.search.last_search = this.search.keyword;
           
         const loading = this.$loading({
           lock: true,

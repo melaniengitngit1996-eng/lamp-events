@@ -32,7 +32,7 @@ class BookingController extends Controller
         ]);
     }
 
-    public function edit(Event $event, Registration $registration)
+    public function edit(Event $event, Registration $registration, Request $request)
     {
         $event = Event::with(['custom_fields', 'venues'])->find($event->id);
 
@@ -40,7 +40,8 @@ class BookingController extends Controller
             'booked_dates' => $registration->bookings()->with(['slot'])->where('status', '!=', BookingStatus::Cancelled)->get(),
             'slots' => Slots::where('event_id', $registration->event_id)->where('registration_type', $registration->registration_type)->get(),
             'registration' => $registration,
-            'event' => $event
+            'event' => $event,
+            'search' => $request->search ?? ''
         ]);
     }
 

@@ -9,7 +9,11 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <el-breadcrumb class="mb-4 mx-2" separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item><a href="/{{ $event->slug }}/home">All Registrations</a></el-breadcrumb-item>
+                <el-breadcrumb-item>
+                    <a href="/{{ $event->slug }}/home{{ $search ? '?search=' . urlencode($search) : '' }}">
+                        Back
+                    </a>
+                </el-breadcrumb-item>
                 <el-breadcrumb-item class="text-highlight">View Details</el-breadcrumb-item>
             </el-breadcrumb>
 
@@ -19,18 +23,18 @@
                         <div class="el-tabs__nav-scroll">
                             <div role="tablist" class="el-tabs__nav is-top" style="transform: translateX(0px);">
                                 <div id="tab-0" aria-controls="pane-0" role="tab" tabindex="0" class="el-tabs__item is-top">
-                                    <el-link :underline="false" href="/{{ $event->slug }}/registration/{{ $registration->id }}/edit">Registration Details</el-link>
+                                    <el-link :underline="false" href="/{{ $event->slug }}/registration/{{ $registration->id }}/edit{{ $search ? '?search=' . urlencode($search) : '' }}">Registration Details</el-link>
                                 </div>
                                 <div id="tab-1" aria-controls="pane-1" role="tab" tabindex="-1" class="el-tabs__item is-top">
-                                    <el-link :underline="false" href="/{{ $event->slug }}/payments/{{ $registration->id }}/create">Payments</el-link>
+                                    <el-link :underline="false" href="/{{ $event->slug }}/payments/{{ $registration->id }}/create{{ $search ? '?search=' . urlencode($search) : '' }}">Payments</el-link>
                                 </div>
                                 @if (auth()->user()->permissions->can_edit_delegate && $registration->attending_option != 'Online')
                                 <div id="tab-2" aria-controls="pane-2" role="tab" tabindex="-1" class="el-tabs__item is-top is-active">
-                                    <el-link :underline="false" href="/{{ $event->slug }}/booking/{{ $registration->id }}/edit">Booking</el-link>
+                                    <el-link :underline="false" href="/{{ $event->slug }}/booking/{{ $registration->id }}/edit{{ $search ? '?search=' . urlencode($search) : '' }}">Booking</el-link>
                                 </div>
                                 @endif
                                 <div id="tab-3" aria-controls="pane-3" role="tab" tabindex="-1" class="el-tabs__item is-top">
-                                    <el-link :underline="false" href="/{{ $event->slug }}/ticket/{{ $registration->id }}/edit">Ticket</el-link>
+                                    <el-link :underline="false" href="/{{ $event->slug }}/ticket/{{ $registration->id }}/edit{{ $search ? '?search=' . urlencode($search) : '' }}">Ticket</el-link>
                                 </div>
                             </div>
                         </div>

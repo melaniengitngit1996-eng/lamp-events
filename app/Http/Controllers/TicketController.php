@@ -34,7 +34,7 @@ class TicketController extends Controller
         ]);
     }
 
-    public function edit(Event $event, $id)
+    public function edit(Event $event, $id, Request $request)
     {
         $registration = Registration::with('bookings', 'bookings.slot', 'event')->find($id);
 
@@ -51,7 +51,8 @@ class TicketController extends Controller
 
         return view('ticket.edit', [
             'registration' => $registration,
-            'event' => $event
+            'event' => $event,
+            'search' => $request->search ?? ''
         ]);
     }
 }

@@ -485,13 +485,14 @@ class Registration2Controller extends Controller
      *
      * @param $registration_id
      */
-    public function edit(Event $event, $registration_id)
+    public function edit(Event $event, $registration_id, Request $request)
     {
         $event = Event::with('custom_fields')->find($event->id);
 
         return view('registration.edit', [
             'registration' => Registration::with('lookup')->where('id', $registration_id)->first(),
-            'event' => $event
+            'event' => $event,
+            'search' => $request->search ?? ''
         ]);
     }
 
