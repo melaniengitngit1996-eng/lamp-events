@@ -1,5 +1,7 @@
 #! /bin/bash
 
+ssh -p 65002 u461985848@46.202.139.141
+
 git pull origin version/2025.1
 
 nvm install 16.15.1
