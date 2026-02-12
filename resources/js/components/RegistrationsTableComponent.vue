@@ -321,7 +321,12 @@
                   center: true,
                   type: 'success',
                   callback: action => {
-                      window.location.reload();
+                    let url = window.location.pathname;
+                    if (this.search.last_search) {
+                      url += `?search=${this.search.last_search}`;
+                    }
+
+                    window.location.href = url;
                   }
               });
             })
