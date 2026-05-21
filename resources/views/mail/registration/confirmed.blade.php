@@ -16,7 +16,9 @@ Congratulations, your booking is already confirmed!
 @component('mail::panel')
 <b>Event:</b> {{ $event_name }} <br />
 <b>Booked Dates:</b> {{ $booked_dates }}<br />
+@if ($event_slug != 7382159777)
 <b>Location:</b> {{ $venue }}  <a href="{{ $map }}">View Location</a> <br />
+@endif
 <b>Event Time:</b> {{ $event_timing }} <br />
 <b>Theme:</b> {{ $theme }}<br />
 @endcomponent
