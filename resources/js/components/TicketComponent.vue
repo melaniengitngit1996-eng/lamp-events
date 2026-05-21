@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                    <div v-if="registration.attending_option != 'Online'" class="row mb-3">
+                    <div v-if="registration.attending_option != 'Online' && event.with_booking" class="row mb-3">
                         <div class="col-md-12">
                             <small class="d-block" style="margin-bottom: 5px">Booked Dates</small>
                             <span class="text-md font-bold" v-if="registration.booked_dates.length > 0 && !event.has_multiple_venues" v-html="registration.booked_dates.join([separator = ',  '])"></span>
@@ -165,11 +165,21 @@ export default {
                     msg += '<br /><br /><small style="line-height: 0px;">To confirm your registration, please settle your balance on or before the deadline. Unconfirmed registrations will automatically expire after this period.<br /><br />Deadline for full payment: ' + payment_due_date + '<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
                 } else if (this.event.slug == 7382159075)
                     msg += '<br /><br /><small style="line-height: 0px;">To confirm your registration, please settle at least 50% of the registration fee on or before March 1, 2026.<br /><br />Deadline for full payment: ' + this.event.payment_due_date + '<br /><br />For payments or cancellations, <br />please contact camp registration team.</small>';
-                else
+                else if (this.event.slug == 7382159777) {
+                    var payment_due_date = this.event.payment_due_date;
+                    if (this.registrations[0].attending_option  == 'Local Church Satellite' || this.registrations[0].attending_option  == 'Cluster Based Satellite') {
+                        payment_due_date = 'June 28, 2026';
+                    } 
+
+                    msg += '<br /><br /><small style="line-height: 0px;">To confirm your registration, please settle your balance on or before the deadline. <br /><br />Deadline for full payment: ' + payment_due_date + '<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
+                } else
                     msg += '<br /><br /><small style="line-height: 0px;">To confirm your booking, please settle at least 50% of the registration fee within 7 days. Unconfirmed bookings will automatically expire after this period.<br /><br />Deadline for full payment: ' + this.event.payment_due_date + '<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
             }
             
             if (this.registrations[0].attending_option === 'Online') {
+                if (this.registrations[0].rate > 0) {
+                    msg += '<br /><br /><small style="line-height: 0px;">To confirm your registration, please settle your balance on or before the deadline. <br /><br />Deadline for full payment: June 28,2026<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
+                }
                 if (this.event.enable_zoom_registration) {
                     msg += '<br /><br /><u>We will send you the Zoom details soon.</u>';
                 } else {

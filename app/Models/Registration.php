@@ -86,7 +86,6 @@ class Registration extends MyModel
             //         }
             //     }
             // }
-
             $payment_config = Rates::where('event_id', $model->event_id)
                 ->where('category', $model->category)
                 ->where('attending_option', $model->attending_option)
@@ -112,8 +111,8 @@ class Registration extends MyModel
             if (!empty($changes)) {
                 Model::withoutEvents(function () use ($model, $changes) {
                     $model->updateActivities(
-                        $model, 
-                        $model->activities, 
+                        $model,
+                        $model->activities,
                         ['updated ' . implode(', ', $changes)]
                     );
                 });
@@ -145,7 +144,8 @@ class Registration extends MyModel
         return $this->hasOne(RegistrationAdditionalData::class);
     }
 
-    public function available_bookings($id) {
+    public function available_bookings($id)
+    {
         return $this->bookings()->where('id', $id);
     }
 
@@ -183,7 +183,7 @@ class Registration extends MyModel
     public function getFillableChanges(): array
     {
         $array = array_intersect_key($this->getChanges(), array_flip($this->getTrackable()));
-        
+
         $array = array_keys($array);
 
         $array = array_map(function ($x) {
