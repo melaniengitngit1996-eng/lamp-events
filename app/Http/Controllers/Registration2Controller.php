@@ -26,14 +26,15 @@ class Registration2Controller extends Controller
     public function __construct()
     {
         $auth_exeptions = ['validation', 'store', 'show', 'update', 'create'];
-        
+
         $this->middleware('auth', ['except' => $auth_exeptions]);
     }
 
     /**
      * list all registrations
      *
-     * @param  String $slug
+     * @param Event $event
+     * @param Request $request
      */
     public function index(Event $event, Request $request)
     {
@@ -93,9 +94,11 @@ class Registration2Controller extends Controller
     /**
      * show dynamic registration form
      *
-     * @param  String $slug
+     * @param Event $event
+     * @param Request $request
      */
-    public function create(Event $event, Request $request) {
+    public function create(Event $event, Request $request)
+    {
         if (empty($event)) {
             abort(404);
         }
@@ -129,7 +132,8 @@ class Registration2Controller extends Controller
     /**
      * show registration ticket
      *
-     * @param String $slug
+     * @param Event $event
+     * @param Request $request
      */
     public function show(Event $event, Request $request)
     {
@@ -158,7 +162,7 @@ class Registration2Controller extends Controller
 
             return $data;
         }, $registration);
-        
+
         return view('registration.show', [
             'registration' => $registration,
             'event' => $event
@@ -168,7 +172,8 @@ class Registration2Controller extends Controller
     /**
      * Store a newly created registration in storage.
      *
-     * @param \Illuminate\Http\Request  $request
+     * @param Event $event
+     * @param Request $request
      */
     public function store(Event $event, Request $request)
     {
@@ -332,24 +337,26 @@ class Registration2Controller extends Controller
                 ]);
             }
 
-            if (in_array($attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
+            if ($attending_option != AttendingOption::Online) {
                 $booked = $request->step_3['booked'] ?? null;
 
                 if (
-                    $event->slug == 7382159074 && 
-                    AttendingOption::Physical === $registration->attending_option && 
+                    $event->slug == 7382159074 &&
+                    AttendingOption::Physical === $registration->attending_option &&
                     RegistrationType::Member === $registration->registration_type
                 ) {
                     $slots = Slots::where('event_id', $event->id)->where('registration_type', $registration->registration_type)->get();
-         
+
                     $booked = [];
-         
+
                     foreach ($slots as $slot) {
                         $booked[$slot->id] = $custom_fields_value['venue'];
                     }
                 }
 
-                $this->book($event, $registration, $booked);
+                if ($booked != null) {
+                    $this->book($event, $registration, $booked);
+                }
             }
 
             $registration = $this->updatePaymentStatus($registration->id, true);
@@ -377,7 +384,7 @@ class Registration2Controller extends Controller
                     // Auto-book even if event booking is disabled
                     // Ensures a booking record exists for proper attendance tracking
                     if (
-                        !$event->with_booking && 
+                        !$event->with_booking &&
                         AttendingOption::Online != $request->step_1['attendingOption']
                     ) {
                         $book = $request->step_3['booked'];
@@ -398,7 +405,7 @@ class Registration2Controller extends Controller
                     $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $value);
 
                     $category = 'Adult';
-                    
+
                     // ------------------------- custom blocks -------------------------------
                     $this->addCampingData($category, null, $value, $event, 'Guest');
                     // ------------------------- custom block ends here ----------------------
@@ -466,7 +473,14 @@ class Registration2Controller extends Controller
         }
     }
 
-    private function getCustomFieldsValue($custom_fields, $values) {
+    /**
+     * Get all custome fields for an event registration
+     *
+     * @param $custom_fields
+     * @param array $values
+     */
+    private function getCustomFieldsValue($custom_fields, $values)
+    {
         if (!empty($custom_fields)) {
             $custom_fields_value = [];
 
@@ -483,7 +497,9 @@ class Registration2Controller extends Controller
     /**
      * View edit page for registration
      *
-     * @param $registration_id
+     * @param Event $event
+     * @param int $registration_id
+     * @param Request $request
      */
     public function edit(Event $event, $registration_id, Request $request)
     {
@@ -499,7 +515,8 @@ class Registration2Controller extends Controller
     /**
      * Delete registration
      *
-     * @param  Registration $registration
+     * @param Event $event
+     * @param Registration $registration
      */
     public function destroy(Event $event, Registration $registration)
     {
@@ -515,6 +532,7 @@ class Registration2Controller extends Controller
     /**
      * Update registration
      *
+     * @param Event $event
      * @param Registration $registration
      * @param Request $request
      */
@@ -531,12 +549,12 @@ class Registration2Controller extends Controller
             ]);
         } elseif (isset($request->mark_as_viewed)) { // mark as viewed for guests
             $registration->additional_data()->updateOrCreate(
-                [ 'registration_id' => $registration->id ],
-                [ 'has_viewed_ticket' => now() ]  
+                ['registration_id' => $registration->id],
+                ['has_viewed_ticket' => now()]
             );
         } else {
             $event = Event::with('custom_fields')->find($event->id);
-            
+
             $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $request->all());
 
             $registration->update([
@@ -560,7 +578,7 @@ class Registration2Controller extends Controller
             ]);
 
             $lookup = LookUp::where('lamp_id',  $registration->uuid)->first();
-            
+
             if ($lookup) {
                 $lookup->update([
                     'email' => $request->email,
@@ -576,7 +594,7 @@ class Registration2Controller extends Controller
             }
 
             // if has booking
-            Booking::where('registration_id',$registration->id)->update([
+            Booking::where('registration_id', $registration->id)->update([
                 'local_church' => $request->localChurch,
             ]);
 
@@ -598,7 +616,8 @@ class Registration2Controller extends Controller
     /**
      * Resend email notification
      *
-     * @param $id
+     * @param Event $event
+     * @param int $id
      */
     public function resend_mail(Event $event, $id)
     {
@@ -614,6 +633,7 @@ class Registration2Controller extends Controller
     /**
      * Validation if already registered
      *
+     * @param Event $event
      * @param Request $request
      */
     public function validation(Event $event, Request $request)
@@ -639,11 +659,12 @@ class Registration2Controller extends Controller
                 }
 
                 if (
-                    !$value->email && 
-                    $value->attendingOption == AttendingOption::Online && 
-                    $event->enable_zoom_registration) {
+                    !$value->email &&
+                    $value->attendingOption == AttendingOption::Online &&
+                    $event->enable_zoom_registration
+                ) {
                     $errors[$key]['email'] = 'Email is required for online attendee.';
-                }  elseif ($value->email) {
+                } elseif ($value->email) {
                     if (!filter_var($value->email, FILTER_VALIDATE_EMAIL)) {
                         $errors[$key]['email'] = 'Email address is invalid.';
                     }
@@ -669,7 +690,7 @@ class Registration2Controller extends Controller
                             $allEmpty = false; // at least one value found
                             break;
                         }
-                    }                    
+                    }
 
                     if ($allEmpty && 'Online' != $value->attendingOption && $event->with_booking && $event->slug != 7382159074) {
                         if ($event->slug == 7382159074) {
@@ -716,14 +737,14 @@ class Registration2Controller extends Controller
             $availability = [];
             foreach ($booked as $slot_id) {
                 $slot = Slots::where('id', $slot_id)->first();
-                
+
                 if ($slot->available <= 0) {
                     $booking_error[] = $slot_id;
                 }
 
                 $availability[] = $slot->available;
             }
-            
+
             // loop on all reg if has error with slot availability
             foreach ($request->data as $key => $value) {
                 $value = json_decode($value);
@@ -752,9 +773,10 @@ class Registration2Controller extends Controller
     /**
      * Form for guests after registration is closed
      *
-     * @param Request $request
+     * @return blade
      */
-    public function new() {
+    public function new()
+    {
         return view('registration.create', [
             'slots' => [
                 'member' => Slots::where('registration_type', RegistrationType::Member)->get(),
@@ -763,18 +785,42 @@ class Registration2Controller extends Controller
         ]);
     }
 
+    /**
+     * Export all registration in a specific event - excel file
+     *
+     * @param Event $event
+     */
     public function export(Event $event)
     {
         return Excel::download(new ExportRegistration($event), 'registrations_' . TIME() . '.csv');
     }
 
-    private function addCampingData(&$category, $with_awta_card, $details, $event, $registration_type) {
+    /**
+     * Custom data for camping
+     *
+     * @param string $category
+     * @param boolean $with_awta_card
+     * @param array $details
+     * @param Event $event
+     * @param string $registration_type
+     */
+    private function addCampingData(&$category, $with_awta_card, $details, $event, $registration_type)
+    {
         if ($event->slug == 7382159075) {
             $category = $details['camper_category'];
         }
     }
 
-    private function addCampingValidations(&$errors, $key, $value, $event) {
+    /**
+     * Custom validation for camping registration
+     *
+     * @param array $errors
+     * @param int $key
+     * @param object $value
+     * @param Event $event
+     */
+    private function addCampingValidations(&$errors, $key, $value, $event)
+    {
         if ($event->slug == 7382159075) {
             if (!$value->birthday) {
                 $errors[$key]['birthday'] = 'Birth date is required.';

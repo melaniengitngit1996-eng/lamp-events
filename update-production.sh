@@ -1,6 +1,6 @@
 #! /bin/bash
 
-ssh -p 65002 u461985848@46.202.139.141
+ssh -p 65002 u461985848@178.16.135.135
 
 git pull origin version/2025.1
 
