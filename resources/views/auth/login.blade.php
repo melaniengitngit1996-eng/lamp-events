@@ -95,17 +95,17 @@
                     <label class="text-sm font-medium" for="email">Email</label>
                     <input id="email" class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                        <span class="invalid-feedback text-destructive text-xs" role="alert">
+                            {{ $message }}
                         </span>
                     @enderror
                 </div>
                 <div class="space-y-1.5">
                     <label class="text-sm font-medium" for="password">Password</label>
-                    <input id="password" class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                    <input id="password" class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring form-control @error('password') is-invalid @enderror" type="password" name="password" required autocomplete="current-password">
                     @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
+                        <span class="invalid-feedback text-destructive text-xs" role="alert">
+                            {{ $message }}
                         </span>
                     @enderror
                 </div>
