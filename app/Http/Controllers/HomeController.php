@@ -16,7 +16,7 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('index');
     }
 
     /**
@@ -24,15 +24,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index($event = null) {
-        if (empty($event)) {
-            return redirect()->route('events.index');
-        }
-
-        return redirect()->route('home.index', ['event' => $event]);
+    public function index($event = null)
+    {
+        return view('site');
     }
 
-    public function show(Event $event, Request $request) {
+    public function show(Event $event, Request $request)
+    {
         $slots_members = Slots::where('registration_type', 'Member')
             ->where('event_id', $event->id)
             ->with('bookings')

@@ -18,7 +18,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/registration', function() {
+Route::get('/registration', function () {
     if (env('ACTIVE_REGISTRATION', false)) {
         return redirect('/' . env('ACTIVE_REGISTRATION') . '/registration');
     }
@@ -26,7 +26,7 @@ Route::get('/registration', function() {
     abort(404);
 })->name('registration');
 
-Route::get('/ticket/{id}', function($id) {
+Route::get('/ticket/{id}', function ($id) {
     if (env('ACTIVE_REGISTRATION', false)) {
         return redirect('/' . env('ACTIVE_REGISTRATION') . '/ticket' . '/' . $id);
     }
