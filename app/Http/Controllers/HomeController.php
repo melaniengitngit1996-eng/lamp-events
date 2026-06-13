@@ -16,7 +16,7 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth')->except('index', 'events');
     }
 
     /**
@@ -24,9 +24,19 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index($event = null)
+    public function index()
     {
-        return view('site');
+        return view('site.landing');
+    }
+
+    /**
+     * Show the registration dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function events()
+    {
+        return view('site.events');
     }
 
     public function show(Event $event, Request $request)

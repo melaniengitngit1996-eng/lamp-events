@@ -52,6 +52,12 @@
         .text-gold {
             color: oklch(78% .15 78);
         }
+
+        .disabled-link {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -70,15 +76,12 @@
                             </path>
                         </svg></span><span class="font-display text-xl font-semibold tracking-tight">Lamp
                         Church Events</span></a>
-                {{-- <nav class="hidden items-center gap-7 md:flex"><a
-                        class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground text-foreground"
-                        href="/" data-status="active" aria-current="page">Home</a><a href="/events"
-                        class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Events</a><a
-                        href="/past"
-                        class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Past
-                        Events</a><a href="/about"
-                        class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Our
-                        Story</a></nav> --}}
+                <nav class="hidden items-center gap-7 md:flex">
+                    <a class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground text-foreground" href="/" data-status="active" aria-current="page">Home</a>
+                    <a href="/upcoming-events" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Events</a>
+                    {{-- <a href="/upcoming-events" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">PastEvents</a>
+                    <a href="/about" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">OurStory</a> --}}
+                </nav>
                 <div class="hidden items-center gap-3 md:flex"><a href="/login"
                         class="text-sm font-medium text-muted-foreground hover:text-foreground">Admin login</a></div>
                 <button class="md:hidden" aria-label="Toggle menu"><svg xmlns="http://www.w3.org/2000/svg" width="24"
