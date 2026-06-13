@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/upcoming-events', [App\Http\Controllers\HomeController::class, 'events'])->name('home.events');
+Route::get('/upcoming-events', [App\Http\Controllers\HomeController::class, 'events'])->name('home.upcoming.events');
+Route::get('/past-events', [App\Http\Controllers\HomeController::class, 'past'])->name('home.past.events');
+Route::get('/about-us', [App\Http\Controllers\HomeController::class, 'about'])->name('home.about.us');
 
 Auth::routes();
 

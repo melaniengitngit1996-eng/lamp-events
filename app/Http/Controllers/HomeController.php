@@ -16,7 +16,7 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except('index', 'events');
+        $this->middleware('auth')->except('index', 'events', 'past', 'about');
     }
 
     /**
@@ -37,6 +37,26 @@ class HomeController extends Controller
     public function events()
     {
         return view('site.events');
+    }
+
+    /**
+     * Show the registration dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function past()
+    {
+        return view('site.past');
+    }
+
+    /**
+     * Show the registration dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function about()
+    {
+        return view('site.about');
     }
 
     public function show(Event $event, Request $request)
