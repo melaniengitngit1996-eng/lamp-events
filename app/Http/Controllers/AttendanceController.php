@@ -24,7 +24,8 @@ class AttendanceController extends Controller
         $this->middleware('auth', ['except' => ['index', 'show', 'store']]);
     }
 
-    public function all(Event $event, Request $request) {
+    public function all(Event $event, Request $request)
+    {
         $search = json_decode($request->search);
 
         $attendances = Attendance::with('registration', 'slot')->where('event_id', $event->id);
@@ -71,6 +72,10 @@ class AttendanceController extends Controller
             die('A problem occured, please contact the administration. (Error 404: Event venue not found.)');
         }
 
+        if ($venue == 'NULL') {
+            $venue = NULL;
+        }
+
         $slots = Slots::where('registration_type', 'Member')->where('id', $event->active_member_slot_id)->get();
         $attendance_count = [];
 
@@ -85,6 +90,7 @@ class AttendanceController extends Controller
                 $array = [];
 
                 $array['local_church'] = $local_church;
+
                 $array['count'] = array(
                     'member' => array(
                         'total' => DB::table('bookings')
@@ -157,7 +163,7 @@ class AttendanceController extends Controller
         $allowed = array_filter(explode(',', $request->allowed), fn($v) => $v !== '');
 
         if (!in_array($registration->attending_option, $allowed)) {
-            return response()->json(['error' => 'This delegate is not registered for '. $request->allowed .'.'], 500);
+            return response()->json(['error' => 'This delegate is not registered for ' . $request->allowed . '.'], 500);
         }
 
         if (!$request->venue) {
@@ -165,9 +171,9 @@ class AttendanceController extends Controller
         }
 
         if ($booking->venue != $request->venue) {
-            return response()->json(['error' => 'This delegate is not registered for '. $request->venue .'.'], 500);
+            return response()->json(['error' => 'This delegate is not registered for ' . $request->venue . '.'], 500);
         }
-        
+
         if ($registration->payment_status != PaymentStatus::Paid && $registration->payment_status != PaymentStatus::Free) {
             return response()->json(['error' => 'This delegate has remaining balance. Please reach out to your local coordinator.'], 500);
         }
@@ -207,7 +213,8 @@ class AttendanceController extends Controller
         );
     }
 
-    public function export(Event $event) {
+    public function export(Event $event)
+    {
         return Excel::download(new ExportAttendance($event), 'attendance_' . TIME() . '.csv');
     }
 }
