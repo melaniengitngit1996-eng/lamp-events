@@ -166,9 +166,9 @@ class AttendanceController extends Controller
             return response()->json(['error' => 'This delegate is not registered for ' . $request->allowed . '.'], 500);
         }
 
-        if (!$request->venue) {
-            return response()->json(['error' => 'Attendance link is invalid, please reach out to the administrator.'], 500);
-        }
+        // if (!$request->venue) {
+        //     return response()->json(['error' => 'Attendance link is invalid, please reach out to the administrator.'], 500);
+        // }
 
         if ($booking->venue != $request->venue) {
             return response()->json(['error' => 'This delegate is not registered for ' . $request->venue . '.'], 500);
