@@ -30,7 +30,8 @@ class LookUp extends Model
         'local_church',
         'can_book_days',
         'avail_new_lamp_id',
-        'cluster_group'
+        'cluster_group',
+        'birthdate'
     ];
 
     /**

@@ -32,9 +32,12 @@ class Slots extends Model
         $taken = Booking::whereIn('status', [
             BookingStatus::Confirmed,
             BookingStatus::Pending
-        ])->where('slot_id', $this->id)->where('venue', 'Calamba Tent')->count(); // temporary only for Calamba Tent
+        ])
+            ->where('slot_id', $this->id)
+            ->where('venue', 'Calamba Tent')
+            ->count(); // temporary only for Calamba Tent
 
-        return $this->seat_count - $taken;
+        return max(0, $this->seat_count - $taken);
     }
 
     public function getTakenAttribute()
@@ -53,7 +56,7 @@ class Slots extends Model
             BookingStatus::Confirmed,
             BookingStatus::Pending
         ])->where('slot_id', $this->id)->where('venue', 'Calamba Tent')->count();
-        
+
         return number_format(($taken / $this->seat_count) * 100, 2, '.', '');
     }
 
@@ -62,7 +65,13 @@ class Slots extends Model
         return $this->hasMany(Booking::class, 'slot_id', 'id')->where('venue', 'Calamba Tent');
     }
 
-    public function received_hg() {
+    public function received_hg()
+    {
         return $this->hasMany(Attendance::class, 'slot_id', 'id');
+    }
+
+    public function localChurchSlots()
+    {
+        return $this->hasMany(SlotLocalChurch::class, 'slot_id');
     }
 }

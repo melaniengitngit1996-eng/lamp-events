@@ -9,6 +9,8 @@ class Rates extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'category',
         'attending_option',

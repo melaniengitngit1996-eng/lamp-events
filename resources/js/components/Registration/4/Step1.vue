@@ -1,317 +1,183 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <el-form
-                :model="ruleForm"
-                :rules="rules"
-                ref="ruleForm"
-                label-width="120px"
-                class="demo-ruleForm"
-            >
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
                 <el-card shadow="always" class="mb-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <el-form-item
-                                label="Are you a guest or a member?"
-                                prop="registrationType"
-                                required
-                            >
-                                <el-select
-                                    v-model="ruleForm.registrationType"
-                                    placeholder="Choose"
-                                >
-                                    <el-option
-                                        label="Member"
-                                        value="Member"
-                                    ></el-option>
-                                    <el-option
-                                        label="Guest"
-                                        value="Guest"
-                                    ></el-option>
+                            <el-form-item label="Are you a guest or a member?" prop="registrationType" required>
+                                <el-select v-model="ruleForm.registrationType" placeholder="Choose">
+                                    <el-option label="Member" value="Member"></el-option>
+                                    <el-option label="Guest" value="Guest"></el-option>
                                 </el-select>
                             </el-form-item>
                         </div>
-                        <div
-                            v-if="ruleForm.registrationType === 'Member'"
-                            class="col-md-6"
-                        >
-                            <el-form-item
-                                label="Do you have LAMP ID?"
-                                prop="withAwtaCard"
-                                required
-                            >
-                                <el-select
-                                    v-model="ruleForm.withAwtaCard"
-                                    placeholder="Choose"
-                                >
-                                    <el-option
-                                        label="None, I have never been issued one."
-                                        value="none"
-                                    ></el-option>
-                                    <el-option
-                                        label="Yes, but I lost it."
-                                        value="lost"
-                                    ></el-option>
-                                    <el-option
-                                        label="Yes, but I don't have it at the moment."
-                                        value="mislaid"
-                                    ></el-option>
-                                    <el-option
-                                        label="Yes, I still have it."
-                                        value="yes"
-                                    ></el-option>
+                        <div v-if="ruleForm.registrationType === 'Member'" class="col-md-6">
+                            <el-form-item label="Do you have LAMP ID?" prop="withAwtaCard" required>
+                                <el-select v-model="ruleForm.withAwtaCard" placeholder="Choose">
+                                    <el-option label="None, I have never been issued one." value="none"></el-option>
+                                    <el-option label="Yes, but I lost it." value="lost"></el-option>
+                                    <el-option label="Yes, but I don't have it at the moment."
+                                        value="mislaid"></el-option>
+                                    <el-option label="Yes, I still have it." value="yes"></el-option>
                                 </el-select>
                             </el-form-item>
                         </div>
                     </div>
                 </el-card>
 
-                <el-card
-                    v-if="ruleForm.registrationType != '' && event.show_attending_option"
-                    shadow="always"
-                    class="mb-3"
-                >
+                <el-card v-if="ruleForm.registrationType != '' && event.show_attending_option" shadow="always"
+                    class="mb-3">
                     <div class="px-2 row">
-                        <el-alert
-                            v-if="event.slug == 7382159074"
+                        <el-alert v-if="event.slug == 7382159074"
                             title="All slots for Calamba tent are now taken. Registration for satellite and online participants will open on November 1, 2025. For further inquiries, please reach out to your local Registrars."
-                            type="warning"
-                            show-icon
-                        >
+                            type="warning" show-icon>
                         </el-alert>
-                        <el-alert
-                            v-else
+                        <el-alert v-else
                             :title="`All registration after ${event.hybrid_registration_deadline} is considered online. For further inquiries, please reach out to your local Registrars.`"
-                            type="warning"
-                            show-icon
-                        >
+                            type="warning" show-icon>
                         </el-alert>
                     </div>
                     <div class="row">
                         <div v-if="event.show_attending_option" class="col-md-6">
-                            <el-form-item
-                                label="How will you attend the event?"
-                                prop="attendingOption"
-                                required
-                            >
-                                <el-select
-                                    v-model="ruleForm.attendingOption"
-                                    placeholder="Choose"
-                                >
-                                    <el-option
-                                        v-for="option in event.attending_options"
-                                        :key="option.label"
-                                        :disabled="evaluateRule(option.disable_if)"
-                                        :value="option.label"
-                                        :label="option.label"
-                                    ></el-option>
+                            <el-form-item label="How will you attend the event?" prop="attendingOption" required>
+                                <el-select v-model="ruleForm.attendingOption" placeholder="Choose">
+                                    <el-option v-for="option in event.attending_options" :key="option.label"
+                                        :disabled="evaluateRule(option.disable_if)" :value="option.label"
+                                        :label="option.label"></el-option>
                                 </el-select>
                             </el-form-item>
                         </div>
-                        <div
-                            class="col-md-6"
-                            v-if="
-                                ruleForm.attendingOption != 'Online' &&
+                        <div class="col-md-6" v-if="
+                            ruleForm.attendingOption != 'Online' &&
+                            ruleForm.registrationType === 'Guest' &&
+                            event.with_guest_booking_code &&
+                            event.with_booking
+                        ">
+                            <el-form-item class="transform-uppercase" label="Booking Code" prop="bookingCode" :required="ruleForm.attendingOption != 'Online' &&
                                 ruleForm.registrationType === 'Guest' &&
-                                event.with_guest_booking_code &&
                                 event.with_booking
-                            "
-                        >
-                            <el-form-item
-                                class="transform-uppercase"
-                                label="Booking Code"
-                                prop="bookingCode"
-                                :required="
-                                    ruleForm.attendingOption != 'Online' &&
-                                    ruleForm.registrationType === 'Guest' &&
-                                    event.with_booking
-                                "
-                            >
-                                <el-input
-                                    v-model="ruleForm.bookingCode"
-                                    :clearable="true"
-                                ></el-input>
+                                ">
+                                <el-input v-model="ruleForm.bookingCode" :clearable="true"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-card>
 
-                <el-card
-                    v-if="event.custom_fields.length > 0 && hasVisibleCustomFields"
-                    shadow="always"
-                    class="mb-3"
-                >
+                <el-card v-if="event.custom_fields.length > 0 && hasVisibleCustomFields" shadow="always" class="mb-3">
+                    <!-- hard coded -->
+                    <el-alert
+                        v-if="slots?.member[0]?.available > 0 && ruleForm.registrationType === 'Member' && ruleForm.attendingOption != 'Online'"
+                        :title="`Calamba Tent: ${slots?.member[0]?.available} slots remaining`" type="success"
+                        description="Please select your preferred venue." :closable="false">
+                    </el-alert>
+                    <el-alert v-else-if="ruleForm.registrationType === 'Member' && ruleForm.attendingOption != 'Online'"
+                        title="Calamba Tent is fully booked." type="warning"
+                        description="Please select another venue to continue." :closable="false">
+                    </el-alert>
                     <div class="row">
-                        <div v-for="field in event.custom_fields" :class="field.type === 'select' ? 'col-md-6 col-12' : 'col-md-12'" v-if="evaluateRule(field.visibility_rule)">
-                            <el-form-item
-                                :label="field.label"
-                                :prop="field.name"
+                        <div v-for="field in event.custom_fields"
+                            :class="field.type === 'select' ? 'col-md-6 col-12' : 'col-md-12'"
+                            v-if="evaluateRule(field.visibility_rule)">
+                            <el-form-item :label="field.label" :prop="field.name"
                                 :class="field.description ? 'rm-margin' : ''"
-                                :required="evaluateRule(field.mandatory_rule)"
-                            >
+                                :required="evaluateRule(field.mandatory_rule)">
                                 <small v-if="field.description" class="text-sm">{{ field.description }}</small>
-                                <el-select
-                                    v-if="field.type === 'select'"
-                                    v-model="ruleForm[field.name]"
-                                    placeholder="Choose"
-                                >
-                                    <el-option
-                                        v-for="option in field.options.split(',')"
-                                        :key="option"
-                                        :value="option"
+                                <el-select v-if="field.type === 'select'" v-model="ruleForm[field.name]"
+                                    placeholder="Choose">
+                                    <el-option v-for="option in field.options.split(',')" :key="option" :value="option"
                                         :label="option"
-                                    ></el-option>
+                                        :disabled="option == 'Calamba Tent' && slots?.member[0]?.available <= 0 && ruleForm.registrationType === 'Member'"></el-option>
                                 </el-select>
 
-                                <el-input
-                                    v-if="field.type === 'text'"
-                                    v-model="ruleForm[field.name]"
-                                    :clearable="true"
-                                ></el-input>
+                                <el-input v-if="field.type === 'text'" v-model="ruleForm[field.name]"
+                                    :clearable="true"></el-input>
 
-                                <el-date-picker
-                                    v-if="field.type === 'datepicker'"
-                                    v-model="ruleForm[field.name]"
-                                    type="date"
-                                    placeholder="Pick a day">
+                                <el-date-picker v-if="field.type === 'datepicker'" v-model="ruleForm[field.name]"
+                                    type="date" placeholder="Pick a day">
                                 </el-date-picker>
                             </el-form-item>
                         </div>
                     </div>
                 </el-card>
 
-                <el-card
-                    v-if="
-                        ruleForm.registrationType === 'Member' &&
-                        (ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')
-                    "
-                    shadow="always"
-                    class="mb-3"
-                >
+                <el-card v-if="
+                    ruleForm.registrationType === 'Member' &&
+                    (ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')
+                " shadow="always" class="mb-3">
                     <div class="row">
-                        <div
-                            class="col-md-6"
-                            v-if="(ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')"
-                        >
-                            <el-form-item
-                                class="transform-uppercase"
-                                label="What is your LAMP ID number?"
+                        <div class="col-md-6"
+                            v-if="(ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')">
+                            <el-form-item class="transform-uppercase" label="What is your LAMP ID number?"
                                 prop="lampIDNumber"
-                                :required="(ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')"
-                            >
-                                <el-input
-                                    v-model="ruleForm.lampIDNumber"
-                                    @clear="resetData('awta-card')"
-                                    :clearable="true"
-                                ></el-input>
+                                :required="(ruleForm.withAwtaCard === 'yes' || ruleForm.withAwtaCard === 'old')">
+                                <el-input v-model="ruleForm.lampIDNumber" @clear="resetData('awta-card')"
+                                    :clearable="true"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-card>
 
-                <el-card
-                    v-if="
-                        ruleForm.registrationType === 'Member' &&
-                        ruleForm.withAwtaCard === 'yes'
-                    "
-                    shadow="always"
-                    class="mb-3"
-                >
+                <el-card v-if="
+                    ruleForm.registrationType === 'Member' &&
+                    ruleForm.withAwtaCard === 'yes'
+                " shadow="always" class="mb-3">
                     <div class="row">
-                        <el-form-item
-                            label="Cluster Group"
-                            prop="clusterGroup"
-                            class="rm-margin"
-                            required
-                        >
-                            <small class="text-sm"
-                                >Please update if this is not your your active cluster.</small
-                            >
-                            <el-select
-                                v-model="ruleForm.clusterGroup"
-                                placeholder="Select"
-                            >
-                                <el-option
-                                    v-if="options.length > 0"
-                                    label="No Cluster Group"
-                                    value="No Cluster"
-                                >
+                        <el-form-item label="Cluster Group" prop="clusterGroup" class="rm-margin" required>
+                            <small class="text-sm">Please update if this is not your your active cluster.</small>
+                            <el-select v-model="ruleForm.clusterGroup" placeholder="Select">
+                                <el-option v-if="options.length > 0" label="No Cluster Group" value="No Cluster">
                                 </el-option>
-                                <el-option-group
-                                    v-for="group in options"
-                                    :key="group.label"
-                                    :label="group.label"
-                                >
-                                    <el-option
-                                        v-for="item in group.options"
-                                        :key="item"
-                                        :label="item"
-                                        :value="item"
-                                    >
+                                <el-option-group v-for="group in options" :key="group.label" :label="group.label">
+                                    <el-option v-for="item in group.options" :key="item" :label="item" :value="item">
                                     </el-option>
                                 </el-option-group>
                             </el-select>
                         </el-form-item>
+
+                        <el-form-item label="Birth Date" prop="birthdate">
+                            <el-date-picker v-model="ruleForm.birthdate" type="date" format="MMM dd, yyyy"
+                                value-format="yyyy-MM-dd" placeholder="Pick a day"></el-date-picker>
+                        </el-form-item>
                     </div>
                 </el-card>
 
-                <el-card
-                    v-if="
-                        ruleForm.registrationType === 'Member' &&
-                        ruleForm.withAwtaCard === 'yes'
-                    "
-                    shadow="always"
-                    class="mb-3"
-                >
+                <el-card v-if="
+                    ruleForm.registrationType === 'Member' &&
+                    ruleForm.withAwtaCard === 'yes'
+                " shadow="always" class="mb-3">
                     <div class="row">
-                        <div
-                            class="col-md-12"
-                            v-if="ruleForm.withAwtaCard === 'yes'"
-                        >
+                        <div class="col-md-12" v-if="ruleForm.withAwtaCard === 'yes'">
                             <el-form-item
                                 :label="event.enable_zoom_registration && 'Online' === ruleForm.attendingOption ? 'Email Address' : 'Email Address (Optional)'"
-                                class="rm-margin"
-                                prop="email"
-                                :rules="[
+                                class="rm-margin" prop="email" :rules="[
                                     {
                                         required: event.enable_zoom_registration && ruleForm.attendingOption === 'Online',
                                         message: 'Email is required for online attendee.',
                                         trigger: 'blur'
                                     }
-                                ]"
-                            >
-                                <small class="text-sm" v-if="event.enable_zoom_registration && 'Online' === ruleForm.attendingOption">Please provide the email address where you would like to receive the zoom details and confirmation email.</small>
-                                <small class="text-sm" v-else>Please provide the email address where you would like to receive the confirmation email.</small>
-                                <el-input
-                                    v-model="ruleForm.email"
-                                    :clearable="true"
-                                ></el-input>
+                                ]">
+                                <small class="text-sm"
+                                    v-if="event.enable_zoom_registration && 'Online' === ruleForm.attendingOption">Please
+                                    provide the email address where you would like to receive the zoom details and
+                                    confirmation email.</small>
+                                <small class="text-sm" v-else>Please provide the email address where you would like to
+                                    receive the confirmation email.</small>
+                                <el-input v-model="ruleForm.email" :clearable="true"></el-input>
                             </el-form-item>
                         </div>
                     </div>
                 </el-card>
 
-                <el-card
-                    v-if="
-                        ruleForm.registrationType === 'Member' &&
-                        ruleForm.withAwtaCard === 'yes' &&
-                        ruleForm.attendingOption != 'Online'
-                    "
-                    shadow="always"
-                    class="mb-3"
-                >
-                    <el-form-item
-                        label="Do you need any medical assistance during the event?"
-                        class="rm-margin"
-                    >
-                        <small class="text-sm"
-                            >If YES, kindly specify below. If NO, leave it empty.</small
-                        >
-                        <el-input
-                            v-model="ruleForm.specificMedicalAssistance"
-                            placeholder="Please specify..."
-                            :clearable="true"
-                        ></el-input>
+                <el-card v-if="
+                    ruleForm.registrationType === 'Member' &&
+                    ruleForm.withAwtaCard === 'yes' &&
+                    ruleForm.attendingOption != 'Online'
+                " shadow="always" class="mb-3">
+                    <el-form-item label="Do you need any medical assistance during the event?" class="rm-margin">
+                        <small class="text-sm">If YES, kindly specify below. If NO, leave it empty.</small>
+                        <el-input v-model="ruleForm.specificMedicalAssistance" placeholder="Please specify..."
+                            :clearable="true"></el-input>
                     </el-form-item>
                 </el-card>
             </el-form>
@@ -329,6 +195,9 @@ export default {
         event: {
             required: true
         },
+        slots: {
+            required: true
+        }
     },
     data() {
         var checklampIDNumber = async (rule, value, callback) => {
@@ -358,6 +227,20 @@ export default {
             }
         };
         return {
+            // ruleForm: {
+            //     registrationType: "",
+            //     withAwtaCard: "",
+            //     attendingOption: this.event.with_booking ? "" : "Physical", // set default as physical if booking id disabled
+            //     reasonForOnlineAttendance: "",
+            //     zoomAccessEmail: "",
+            //     lampIDNumber: "",
+            //     clusterGroup: "",
+            //     bookingCode: "",
+            //     email: "",
+            //     specificMedicalAssistance: "",
+            //     canBookDays: parseInt(this.event.member_booking_limit || 0),
+            //     found: {},
+            // },
             ruleForm: {
                 registrationType: "",
                 withAwtaCard: "",
@@ -371,6 +254,7 @@ export default {
                 specificMedicalAssistance: "",
                 canBookDays: parseInt(this.event.member_booking_limit || 0),
                 found: {},
+                birthdate: ""
             },
             rules: {
                 registrationType: [
@@ -446,6 +330,13 @@ export default {
                         trigger: ["blur", "change"],
                     },
                 ],
+                birthdate: [
+                    {
+                        required: true,
+                        message: "Please select your Birth Date",
+                        trigger: ["blur", "change"],
+                    },
+                ]
             },
             guest_booking_code: this.event.booking_code,
             assignments: window.env.cluster_groups,
@@ -475,40 +366,42 @@ export default {
                     this.resetData("awta-card");
 
                     this.isLoading = true;
-                    
+
                     axios
-                    .get(`/lookup/${this.event.slug}/${this.ruleForm.lampIDNumber}/find`)
-                    .then(async (response) => {
-                        this.ruleForm.found.email = response.data.email;
-                        this.ruleForm.found.firstName = response.data.firstname;
-                        this.ruleForm.found.lastName = response.data.lastname;
-                        this.ruleForm.found.facebookName = response.data.facebook_name;
-                        this.ruleForm.found.registrationType = response.data.registration_type;
-                        this.ruleForm.found.country = response.data.country;
-                        this.ruleForm.found.lampIDNumber = response.data.lamp_id;
-                        this.ruleForm.found.oldlampIDNumber = response.data.old_lamp_card_number;
-                        this.ruleForm.found.category = response.data.category;
-                        this.ruleForm.found.attendingOption = this.ruleForm.attendingOption;
-                        this.ruleForm.found.withAwtaCard = "yes";
-                        this.ruleForm.found.localChurch = response.data.local_church;
-                        this.ruleForm.found.canBookDays = response.data.can_book_days;
-                        this.ruleForm.found.clusterGroup = response.data.cluster_group;
-                        
-                        this.ruleForm.email = response.data.email;
-                        this.ruleForm.clusterGroup = response.data.cluster_group;  
-                        this.options = this.assignments[response.data.local_church];
+                        .get(`/lookup/${this.event.slug}/${this.ruleForm.lampIDNumber}/find`)
+                        .then(async (response) => {
+                            this.ruleForm.found.email = response.data.email;
+                            this.ruleForm.found.firstName = response.data.firstname;
+                            this.ruleForm.found.lastName = response.data.lastname;
+                            this.ruleForm.found.facebookName = response.data.facebook_name;
+                            this.ruleForm.found.registrationType = response.data.registration_type;
+                            this.ruleForm.found.country = response.data.country;
+                            this.ruleForm.found.lampIDNumber = response.data.lamp_id;
+                            this.ruleForm.found.oldlampIDNumber = response.data.old_lamp_card_number;
+                            this.ruleForm.found.category = response.data.category;
+                            this.ruleForm.found.attendingOption = this.ruleForm.attendingOption;
+                            this.ruleForm.found.withAwtaCard = "yes";
+                            this.ruleForm.found.localChurch = response.data.local_church;
+                            this.ruleForm.found.canBookDays = response.data.can_book_days;
+                            this.ruleForm.found.clusterGroup = response.data.cluster_group;
+                            this.ruleForm.found.birthdate = response.data.birthdate
 
-                        if (this.ruleForm.found.localChurch === 'Valenzuela') {
-                            this.ruleForm.clusterGroup = '';  
-                            this.options = this.assignments['Muntinlupa'];
-                        }
+                            this.ruleForm.email = response.data.email;
+                            this.ruleForm.clusterGroup = response.data.cluster_group;
+                            this.ruleForm.birthdate = response.data.birthdate;
+                            this.options = this.assignments[response.data.local_church];
 
-                        this.isLoading = false;
-                    })
-                    .catch((error) => {
-                        this.resetData("awta-card");
-                        this.isLoading = false;
-                    });
+                            if (this.ruleForm.found.localChurch === 'Valenzuela') {
+                                this.ruleForm.clusterGroup = '';
+                                this.options = this.assignments['Muntinlupa'];
+                            }
+
+                            this.isLoading = false;
+                        })
+                        .catch((error) => {
+                            this.resetData("awta-card");
+                            this.isLoading = false;
+                        });
                 }
             }
         }
@@ -517,8 +410,6 @@ export default {
         if (Object.keys(this.data.step_1).length != 0) {
             this.ruleForm = this.data.step_1;
         }
-
-        
     },
     created() {
         this.event.custom_fields.forEach(element => {
@@ -604,6 +495,7 @@ export default {
                 this.$emit("reset");
                 this.ruleForm.bookingCode = "";
                 this.ruleForm.found = {};
+                this.resetCustomFields();
             } else if (scope === "awta-card") {
                 this.$emit("reset");
                 this.ruleForm.email = "";
@@ -612,6 +504,11 @@ export default {
                 this.options = [];
                 this.ruleForm.clusterGroup = "";
             }
+        },
+        resetCustomFields() {
+            this.event.custom_fields.forEach(field => {
+                this.$set(this.ruleForm, field.name, field.default ?? "");
+            });
         },
         evaluateRule(rule) {
             if (typeof rule === 'boolean') return rule;
@@ -623,7 +520,7 @@ export default {
             } catch (e) {
                 console.warn('Invalid mandatory_rule condition:', rule);
                 return false;
-         }
+            }
         }
     },
 };

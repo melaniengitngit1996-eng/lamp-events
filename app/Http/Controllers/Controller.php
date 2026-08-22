@@ -55,6 +55,10 @@ class Controller extends BaseController
             'booked_date' => now()
         ]);
 
+        if ($registration->custom_fields['venue'] != 'Calamba Tent' && $event->slug == 1226292026) {
+            $bookings = [];
+        }
+
         foreach ($bookings as $key => $booking) {
             $book = [
                 'event_id' => $registration->event_id,
@@ -65,14 +69,19 @@ class Controller extends BaseController
                 'venue' => $event->main_venue
             ];
 
-            if ($event->has_multiple_venues && $event->slug != 7382159074) {
+            if ($event->has_multiple_venues && $event->slug != 1226292026) {
                 $book['slot_id'] = $key;
                 $book['venue'] = $booking;
             }
 
-            if ($event->slug == 7382159074 && $registration->attending_option === 'Physical') {
+            if ($event->slug == 1226292026 && $registration->attending_option === 'Physical' && $registration->registration_type == 'Member') {
                 $book['slot_id'] = $key;
-                $book['venue'] = $booking;
+                $book['venue'] = $event->main_venue;
+            }
+
+            if ($event->slug == 1226292026 && $registration->attending_option === 'Physical' && $registration->registration_type == 'Guest') {
+                $book['slot_id'] = $booking;
+                $book['venue'] = $event->main_venue;
             }
 
             Booking::create($book);
@@ -163,7 +172,8 @@ class Controller extends BaseController
         }
     }
 
-    function remind($id) {
+    function remind($id)
+    {
         $registration = Registration::with('bookings', 'bookings.slot')->withSum('payments', 'amount')->find($id);
 
         if ($registration->email) {

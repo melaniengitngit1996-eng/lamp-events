@@ -20,6 +20,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\AvailableUuid;
+use App\Models\Category;
 
 class Registration2Controller extends Controller
 {
@@ -120,11 +121,19 @@ class Registration2Controller extends Controller
 
         $directory = "registration.{$event->template_id}.create";
         $event = Event::with(['custom_fields', 'venues'])->find($event->id);
+
         return view($directory, [
             'event' => $event,
             'slots' => [
-                'member' => $event->slots()->where('registration_type', RegistrationType::Member)->get(),
-                'guest' => $event->slots()->where('registration_type', RegistrationType::Guest)->get()
+                'member' => $event->slots()
+                    ->with('localChurchSlots')
+                    ->where('registration_type', RegistrationType::Member)
+                    ->get(),
+
+                'guest' => $event->slots()
+                    ->with('localChurchSlots')
+                    ->where('registration_type', RegistrationType::Guest)
+                    ->get(),
             ]
         ]);
     }
@@ -177,7 +186,7 @@ class Registration2Controller extends Controller
      */
     public function store(Event $event, Request $request)
     {
-        $event = Event::with('custom_fields')->find($event->id);
+        $event = Event::with(['custom_fields', 'slots'])->find($event->id);
 
         // member registration
         if ($request->step_1['registrationType'] === 'Member') {
@@ -186,6 +195,15 @@ class Registration2Controller extends Controller
             $details = array_merge($request->step_1, $request->step_2, $request->step_3);
 
             $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $details);
+
+            // hard coded
+            if ($event->slug == 1226292026 && $custom_fields_value['venue'] == 'Calamba Tent') {
+                $remaining = $event->slots->where('registration_type', 'Member')->first()->available ?? 0;
+
+                if ($remaining <= 0) {
+                    return response()->json(['error' => 'Sorry, there are no remaining slots for Calamba Tent. Please select another venue to continue.'], 500);
+                }
+            }
 
             switch ($request->step_1['withAwtaCard']) {
                 case 'none': // None
@@ -198,13 +216,14 @@ class Registration2Controller extends Controller
                     $registration_type = $details['registrationType'];
                     $local_church = $details['localChurch'];
                     $country = $details['country'];
-                    $category = $details['category'];
+                    $category = Category::getByBirthdate($details['birthdate'])?->name;
                     $attending_option = $details['attendingOption'];
                     $with_awta_card = $details['withAwtaCard'];
                     $cluster_group = $details['clusterGroup'];
                     $assistance = $details['specificMedicalAssistance'];
                     $can_book_days = $event->member_booking_limit;
                     $awta_card_number = '--';
+                    $birthdate = $details['birthdate'];
                     break;
 
                 case 'lost': // Yes, but I don’t have it.
@@ -219,13 +238,14 @@ class Registration2Controller extends Controller
                     $registration_type = $details['registrationType'];
                     $local_church = $details['localChurch'];
                     $country = $details['country'];
-                    $category = $details['category'];
+                    $category = Category::getByBirthdate($details['birthdate'])?->name;
                     $attending_option = $details['attendingOption'];
                     $with_awta_card = $details['withAwtaCard'];
                     $cluster_group = $details['clusterGroup'];
                     $awta_card_number = $details['selected'];
                     $assistance = $details['specificMedicalAssistance'];
                     $can_book_days = $lookup['can_book_days'];
+                    $birthdate = $details['birthdate'];
                     break;
 
                 case 'mislaid': // Yes, but I don’t have it.    
@@ -240,13 +260,14 @@ class Registration2Controller extends Controller
                     $registration_type = $details['registrationType'];
                     $local_church = $details['localChurch'];
                     $country = $details['country'];
-                    $category = $details['category'];
+                    $category = Category::getByBirthdate($details['birthdate'])?->name;
                     $attending_option = $details['attendingOption'];
                     $with_awta_card = $details['withAwtaCard'];
                     $cluster_group = $details['clusterGroup'];
                     $awta_card_number = $details['selected'];
                     $assistance = $details['specificMedicalAssistance'];
                     $can_book_days = $lookup['can_book_days'];
+                    $birthdate = $details['birthdate'];
                     break;
 
                 case 'yes': // Yes, I still have it.
@@ -259,13 +280,14 @@ class Registration2Controller extends Controller
                     $registration_type = $details['registrationType'];
                     $local_church = $details['found']['localChurch'];
                     $country = $details['found']['country'];
-                    $category = $details['found']['category'];
+                    $category = Category::getByBirthdate($details['birthdate'])?->name;
                     $attending_option = $details['attendingOption'];
                     $with_awta_card = $details['withAwtaCard'];
                     $cluster_group = $details['clusterGroup'];
                     $awta_card_number = $details['lampIDNumber'];
                     $assistance = $details['specificMedicalAssistance'];
                     $can_book_days = $details['found']['canBookDays'];
+                    $birthdate = $details['birthdate'];
                     break;
             }
 
@@ -310,6 +332,8 @@ class Registration2Controller extends Controller
                 $update = [
                     'cluster_group' => $cluster_group,
                     'email' => $email,
+                    'birthdate' => $birthdate,
+                    'category' => $category
                 ];
 
                 if (is_null($lookup['old_lamp_card_number'])) {
@@ -333,7 +357,8 @@ class Registration2Controller extends Controller
                     'local_church' => $local_church,
                     'country' => $country,
                     'can_book_days' => $event->member_booking_limit,
-                    'cluster_group' => $cluster_group
+                    'cluster_group' => $cluster_group,
+                    'birthdate' => $birthdate
                 ]);
             }
 
@@ -341,7 +366,7 @@ class Registration2Controller extends Controller
                 $booked = $request->step_3['booked'] ?? null;
 
                 if (
-                    $event->slug == 7382159074 &&
+                    $event->slug == 1226292026 &&
                     AttendingOption::Physical === $registration->attending_option &&
                     RegistrationType::Member === $registration->registration_type
                 ) {
@@ -362,7 +387,7 @@ class Registration2Controller extends Controller
             $registration = $this->updatePaymentStatus($registration->id, true);
 
             // if (in_array($attending_option, [AttendingOption::Hybrid, AttendingOption::Physical])) {
-            $this->notify($registration->id);
+            // $this->notify($registration->id);
             // }
 
             return $registration->uuid;
@@ -390,18 +415,26 @@ class Registration2Controller extends Controller
                         $book = $request->step_3['booked'];
                     }
 
-                    if ($event->has_multiple_venues && $event->slug == 7382159074 && AttendingOption::Online != $request->step_1['attendingOption']) {
+                    if ($event->has_multiple_venues && $event->slug == 1226292026 && AttendingOption::Online != $request->step_1['attendingOption']) {
                         $book = array_combine($book, array_fill(0, count($book), $request->step_1['venue']));
+                    }
+
+                    if ($event->slug == 1226292026 && AttendingOption::Online != $request->step_1['attendingOption']) {
+                        $book = $details->booked;
                     }
 
                     // Remove bookings without selected venue
                     // Bookings without venue means not booked
-                    if ($event->has_multiple_venues && $event->slug != 7382159074) {
+                    if ($event->has_multiple_venues && $event->slug != 1226292026) {
                         $book = array_filter($value['booked'], function ($venue) {
                             return !empty(trim((string)$venue));
                         });
                     }
-                    // dd($details);
+
+                    if ($event->slug == 1226292026) {
+                        $value['venue'] = $request->step_1['venue'];
+                    }
+
                     $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $value);
 
                     $category = 'Adult';
@@ -692,8 +725,8 @@ class Registration2Controller extends Controller
                         }
                     }
 
-                    if ($allEmpty && 'Online' != $value->attendingOption && $event->with_booking && $event->slug != 7382159074) {
-                        if ($event->slug == 7382159074) {
+                    if ($allEmpty && 'Online' != $value->attendingOption && $event->with_booking && $event->slug != 1226292026) {
+                        if ($event->slug == 1226292026) {
                             $errors[$key]['booked'] = 'Please select your preferred dates.';
                         } else {
                             $errors[$key]['booked'] = 'Please select a venue for your preferred dates.';
@@ -721,7 +754,7 @@ class Registration2Controller extends Controller
                     }
                 }
 
-                if ($event->has_multiple_venues && $event->slug != 7382159074) {
+                if ($event->has_multiple_venues && $event->slug != 1226292026) {
                     $multi_venue_booked = array_keys(array_filter((array) $value->booked, function ($venue) {
                         return !empty(trim($venue));
                     }));

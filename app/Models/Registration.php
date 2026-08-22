@@ -86,6 +86,7 @@ class Registration extends MyModel
             //         }
             //     }
             // }
+
             $payment_config = Rates::where('event_id', $model->event_id)
                 ->where('category', $model->category)
                 ->where('attending_option', $model->attending_option)
