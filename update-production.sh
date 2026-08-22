@@ -4,7 +4,9 @@ ssh -p 65002 u461985848@178.16.135.135
 
 cd domains/lampchurchevents.com
 
-git pull origin version/2025.1
+git checkout awta-2026
+
+git pull origin awta-2026
 
 chmod -R 755 node_modules
 

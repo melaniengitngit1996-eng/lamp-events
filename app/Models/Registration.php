@@ -76,17 +76,16 @@ class Registration extends MyModel
 
             if ($model->attending_option == AttendingOption::Online) {
                 $venue = AttendingOption::Online;
+            } else {
+                if ($event->slug == 1226292026) { // temporary: remove this entire block, this is just a band aid fix :)
+                    $venue = $model->custom_fields['venue'];
+
+                    if (empty($venue)) {
+                        $venue = $event->main_venue;
+                    }
+                }
             }
-            //  else {
-            //     if ($event->slug == 7382159074) { // temporary: remove this entire block, this is just a band aid fix :)
-            //         $venue = $model->custom_fields['venue'];
-
-            //         if (empty($venue)) {
-            //             $venue = $event->main_venue;
-            //         }
-            //     }
-            // }
-
+            dd($model->category, $model->attending_option, $model->registration_type, $venue);
             $payment_config = Rates::where('event_id', $model->event_id)
                 ->where('category', $model->category)
                 ->where('attending_option', $model->attending_option)
