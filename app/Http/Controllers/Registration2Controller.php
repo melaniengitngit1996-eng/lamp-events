@@ -281,7 +281,6 @@ class Registration2Controller extends Controller
                     $local_church = $details['found']['localChurch'];
                     $country = $details['found']['country'];
                     $category = Category::getByBirthdate($details['birthdate'])?->name;
-                    dd($details['birthdate'], $category);
                     $attending_option = $details['attendingOption'];
                     $with_awta_card = $details['withAwtaCard'];
                     $cluster_group = $details['clusterGroup'];
