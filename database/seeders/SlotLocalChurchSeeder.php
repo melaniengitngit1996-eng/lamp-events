@@ -22,7 +22,7 @@ class SlotLocalChurchSeeder extends Seeder
             'Tarlac',
         ];
 
-        $slots = [61, 62, 63, 64];
+        $slots = [31, 32, 33, 34];
 
         foreach ($slots as $slotId) {
             foreach ($churches as $church) {
