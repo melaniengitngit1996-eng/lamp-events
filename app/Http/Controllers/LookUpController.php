@@ -176,7 +176,8 @@ class LookUpController extends Controller
             'country' => $request->country,
             'category' => $request->category,
             'can_book_days' => $request->canBookDays,
-            'cluster_group' => $request->clusterGroup
+            'cluster_group' => $request->clusterGroup,
+            'birthdate' => $request->birthdate
         ]);
 
         $registration = Registration::where('uuid', $awtaNumber)->first();

@@ -57,10 +57,25 @@
                 <div class="col-md-3">
                     <el-form-item label="Rate Category" prop="category" required>
                         <el-select v-model="ruleForm.category" placeholder="Choose">
-                            <el-option label="Adult" value="Adult"></el-option>
+                            <el-option label="Infant" value="Infant"></el-option>
                             <el-option label="Kids" value="Kids"></el-option>
+                            <el-option label="Adult" value="Adult"></el-option>
+                            <el-option label="Senior" value="Senior"></el-option>
                             <el-option label="Free" value="Free"></el-option>
                         </el-select>
+                    </el-form-item>
+                </div>
+                <div class="col-md-3">
+                    <el-form-item label="Birth Date" prop="birthdate">
+                        <el-date-picker v-model="ruleForm.birthdate" type="date" format="MMM dd, yyyy"
+                            value-format="yyyy-MM-dd" placeholder="Pick a day">
+                        </el-date-picker>
+                    </el-form-item>
+                </div>
+
+                <div class="col-md-3">
+                    <el-form-item label="Age">
+                        <el-input :value="age" readonly></el-input>
                     </el-form-item>
                 </div>
             </div>
@@ -109,6 +124,7 @@ export default {
                 lampIDNumber: '',
                 category: 'Adult',
                 canBookDays: parseInt(this.event.member_booking_limit || 0),
+                birthdate: '',
                 clusterGroup: ''
             },
             rules: {
@@ -132,7 +148,7 @@ export default {
                 ],
                 canBookDays: [
                     { required: true, message: 'Please input number of days can book', trigger: ['blur', 'change'] },
-                ]
+                ],
             },
             countries: this.$allCountries,
             permissions: window.auth_user.permissions,
@@ -151,7 +167,31 @@ export default {
             lampIDNumber: this.lookup.lamp_id,
             category: this.lookup.category,
             canBookDays: this.lookup.can_book_days,
-            clusterGroup: this.lookup.cluster_group
+            clusterGroup: this.lookup.cluster_group,
+            birthdate: this.lookup.birthdate
+        }
+    },
+    computed: {
+        age() {
+            if (!this.ruleForm.birthdate) {
+                return '';
+            }
+
+            const birthDate = new Date(this.ruleForm.birthdate);
+            const today = new Date();
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+
+            if (
+                monthDifference < 0 ||
+                (monthDifference === 0 && today.getDate() < birthDate.getDate())
+            ) {
+                age--;
+            }
+
+            return age >= 0 ? age : '';
         }
     },
     watch: {

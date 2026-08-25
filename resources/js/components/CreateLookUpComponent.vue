@@ -26,35 +26,40 @@
                 </div>
                 <div class="col-md-6">
                     <el-form-item label="Facebook Name" prop="facebookName">
-                        <el-input v-model="ruleForm.facebookName" placeholder="If none, kindly type in the Facebook name of your event companion"></el-input>
+                        <el-input v-model="ruleForm.facebookName"
+                            placeholder="If none, kindly type in the Facebook name of your event companion"></el-input>
                     </el-form-item>
                 </div>
 
                 <div class="col-md-3">
                     <el-form-item label="Local Church" prop="localChurch" required>
                         <el-select v-model="ruleForm.localChurch" placeholder="Choose">
-                            <el-option v-for="(value, local_church) in assignments" :key="local_church" :label="local_church" :value="local_church"></el-option>
+                            <el-option v-for="(value, local_church) in assignments" :key="local_church"
+                                :label="local_church" :value="local_church"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="col-md-3">
                     <el-form-item label="Country" prop="country" required>
                         <el-select v-model="ruleForm.country" placeholder="Choose">
-                            <el-option v-for="country in countries" v-bind:key="country" :label="country" :value="country"></el-option>
+                            <el-option v-for="country in countries" v-bind:key="country" :label="country"
+                                :value="country"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="col-md-3">
                     <el-form-item label="Rate Category" prop="category" required>
                         <el-select v-model="ruleForm.category" placeholder="Choose">
-                            <el-option label="Adult" value="Adult"></el-option>
+                            <el-option label="Infant" value="Infant"></el-option>
                             <el-option label="Kids" value="Kids"></el-option>
+                            <el-option label="Adult" value="Adult"></el-option>
+                            <el-option label="Senior" value="Senior"></el-option>
                             <el-option label="Free" value="Free"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
             </div>
-        </el-card> 
+        </el-card>
 
         <el-card shadow="hover" class="mb-3">
             <div class="row">
@@ -97,26 +102,26 @@ export default {
             },
             rules: {
                 firstName: [
-                    { required: true, message: 'Please input First Name', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please input First Name', trigger: ['blur', 'change'] }
                 ],
                 lastName: [
-                    { required: true, message: 'Please input Last Name', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please input Last Name', trigger: ['blur', 'change'] }
                 ],
                 localChurch: [
-                    { required: true, message: 'Please select Local Church', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please select Local Church', trigger: ['blur', 'change'] }
                 ],
                 country: [
-                    { required: true, message: 'Please select Country', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please select Country', trigger: ['blur', 'change'] }
                 ],
                 category: [
-                    { required: true, message: 'Please select Category', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please select Category', trigger: ['blur', 'change'] }
                 ],
                 lampIDNumber: [
-                    { required: true, message: 'Please input LAMP ID Number', trigger: ['blur', 'change']},
-                    { min: 9, max: 9, message: 'Length should be 9 characters', trigger: 'blur'}
+                    { required: true, message: 'Please input LAMP ID Number', trigger: ['blur', 'change'] },
+                    { min: 9, max: 9, message: 'Length should be 9 characters', trigger: 'blur' }
                 ],
                 rate: [
-                    { required: true, message: 'Please input rate', trigger: ['blur', 'change']},
+                    { required: true, message: 'Please input rate', trigger: ['blur', 'change'] },
                 ]
             },
             countries: this.$allCountries,
@@ -137,27 +142,27 @@ export default {
 
                     setTimeout(async () => {
                         await axios.post(`/lookup`, this.ruleForm)
-                        .then(async (response) => {
-                            loading.close()
+                            .then(async (response) => {
+                                loading.close()
 
-                            this.$alert('', 'Details Successfully Created!', {
-                                confirmButtonText: 'OK',
-                                showCancelButton: false,
-                                closeOnPressEscape: false,
-                                closeOnClickModal: false,
-                                showClose: false,
-                                center: true,
-                                type: 'success',
-                                callback: action => {
-                                    window.location.reload();
-                                }
+                                this.$alert('', 'Details Successfully Created!', {
+                                    confirmButtonText: 'OK',
+                                    showCancelButton: false,
+                                    closeOnPressEscape: false,
+                                    closeOnClickModal: false,
+                                    showClose: false,
+                                    center: true,
+                                    type: 'success',
+                                    callback: action => {
+                                        window.location.reload();
+                                    }
+                                });
+                            })
+                            .catch((error) => {
+                                loading.close()
+
+                                this.$message.error(error.response.data.error);
                             });
-                        })
-                        .catch((error) => {
-                            loading.close()
-
-                            this.$message.error(error.response.data.error);
-                        });
                     }, 1000);
                 } else {
                     return false;
