@@ -201,7 +201,7 @@ class Registration2Controller extends Controller
                 $remaining = $event->slots->where('registration_type', 'Member')->first()->available ?? 0;
 
                 if ($remaining <= 0) {
-                    return response()->json(['error' => 'Sorry, there are no remaining slots for Calamba Tent. Please select another venue to continue.'], 500);
+                    return response()->json(['error' => 'Sorry, there are no remaining slots for Calamba Tent. Please select another venue to continue.'], 422);
                 }
             }
 
@@ -295,33 +295,39 @@ class Registration2Controller extends Controller
             $this->addCampingData($category, $request->step_1['withAwtaCard'], $details, $event, 'Member');
             // ------------------------- custom block ends here ----------------------
 
-            $registration = Registration::create([
-                'uuid' => strtoupper($uuid),
-                'event_id' => $event->id,
-                'email' => $email,
-                'firstname' => $firstname,
-                'lastname' => $lastname,
-                'fullname' => $fullname,
-                'facebook_name' => $facebook,
-                'registration_type' => $registration_type,
-                'local_church' => $local_church,
-                'cluster_group' => $cluster_group,
-                'country' => $country,
-                'category' => $category,
-                'attending_option' => $attending_option,
-                'with_awta_card' => $with_awta_card,
-                'medical_assistance_needed' => $assistance,
-                'can_book_days' => $can_book_days,
-                'notes' => [],
-                'activities' => [],
-                'booking_activities' => [],
-                'custom_fields' => $custom_fields_value
-            ]);
+            try {
+                $registration = Registration::create([
+                    'uuid' => strtoupper($uuid),
+                    'event_id' => $event->id,
+                    'email' => $email,
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'fullname' => $fullname,
+                    'facebook_name' => $facebook,
+                    'registration_type' => $registration_type,
+                    'local_church' => $local_church,
+                    'cluster_group' => $cluster_group,
+                    'country' => $country,
+                    'category' => $category,
+                    'attending_option' => $attending_option,
+                    'with_awta_card' => $with_awta_card,
+                    'medical_assistance_needed' => $assistance,
+                    'can_book_days' => $can_book_days,
+                    'notes' => [],
+                    'activities' => [],
+                    'booking_activities' => [],
+                    'custom_fields' => $custom_fields_value
+                ]);
 
-            $registration->additional_data()->create([
-                'registration_id' => $registration->id,
-                'has_viewed_ticket' => NULL
-            ]);
+                $registration->additional_data()->create([
+                    'registration_id' => $registration->id,
+                    'has_viewed_ticket' => NULL
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'error' => $e->getMessage(),
+                ], 422);
+            }
 
             // $registration = Registration::where('uuid', $awta_card_number)->first();
 
@@ -443,27 +449,33 @@ class Registration2Controller extends Controller
                     $this->addCampingData($category, null, $value, $event, 'Guest');
                     // ------------------------- custom block ends here ----------------------
 
-                    $registration = Registration::create([
-                        'uuid' => $uuid,
-                        'event_id' => $event->id,
-                        'email' => $details->email,
-                        'firstname' => $details->firstName,
-                        'lastname' => $details->lastName,
-                        'fullname' => $details->firstName . ' ' . $details->lastName,
-                        'facebook_name' => $details->facebookName,
-                        'registration_type' => 'Guest',
-                        'local_church' => $details->localChurch,
-                        'cluster_group' => $details->clusterGroup,
-                        'country' => $details->country,
-                        'category' => $category,
-                        'attending_option' => $request->step_1['attendingOption'],
-                        'medical_assistance_needed' => $details->specificMedicalAssistance,
-                        'with_awta_card' => 'none',
-                        'notes' => [],
-                        'activities' => [],
-                        'booking_activities' => [],
-                        'custom_fields' => $custom_fields_value
-                    ]);
+                    try {
+                        $registration = Registration::create([
+                            'uuid' => $uuid,
+                            'event_id' => $event->id,
+                            'email' => $details->email,
+                            'firstname' => $details->firstName,
+                            'lastname' => $details->lastName,
+                            'fullname' => $details->firstName . ' ' . $details->lastName,
+                            'facebook_name' => $details->facebookName,
+                            'registration_type' => 'Guest',
+                            'local_church' => $details->localChurch,
+                            'cluster_group' => $details->clusterGroup,
+                            'country' => $details->country,
+                            'category' => $category,
+                            'attending_option' => $request->step_1['attendingOption'],
+                            'medical_assistance_needed' => $details->specificMedicalAssistance,
+                            'with_awta_card' => 'none',
+                            'notes' => [],
+                            'activities' => [],
+                            'booking_activities' => [],
+                            'custom_fields' => $custom_fields_value
+                        ]);
+                    } catch (\Exception $e) {
+                        return response()->json([
+                            'error' => $e->getMessage(),
+                        ], 422);
+                    }
 
                     $this->book($event, $registration, $book);
 

@@ -93,6 +93,12 @@ class Registration extends MyModel
                 ->where('venue', $venue)
                 ->first();
 
+            if (!$payment_config) {
+                throw new \Exception(
+                    "No rate configuration found for {$model->category} - {$model->attending_option} - {$model->registration_type} - {$venue}."
+                );
+            }
+
             $model->rate = $payment_config->rate;
             $model->can_book_rate = $payment_config->can_book_rate;
         });
