@@ -30,7 +30,7 @@
                                                     v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])"
                                                     class="text-error">
                                                     <span v-if="errors[i]['firstName']">{{ errors[i]['firstName']
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                             <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="8" :xl="8">
@@ -43,7 +43,7 @@
                                                     v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])"
                                                     class="text-error">
                                                     <span v-if="errors[i].lastName">{{ errors[i].lastName
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                             <el-col class="pb-1" :xs="24" :sm="24" :md="24" :lg="8" :xl="8">
@@ -56,7 +56,7 @@
                                                     v-if="errors[i] && (errors[i]['firstName'] || errors[i]['lastName'] || errors[i]['facebookName'])"
                                                     class="text-error">
                                                     <span v-if="errors[i].facebookName">{{ errors[i].facebookName
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                             <el-col class="pb-1" :xs="16" :sm="16" :md="16" :lg="16" :xl="16">
@@ -70,7 +70,7 @@
                                                 <small v-if="errors[i] && (errors[i]['email'] || errors[i]['country'])"
                                                     class="text-error">
                                                     <span v-if="errors[i]['email']">{{ errors[i]['email']
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                             <el-col class="pb-1" :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -83,7 +83,7 @@
                                                 <small v-if="errors[i] && (errors[i]['email'] || errors[i]['country'])"
                                                     class="text-error">
                                                     <span v-if="errors[i]['country']">{{ errors[i]['country']
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                             <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
@@ -91,7 +91,7 @@
                                                 <el-select
                                                     :class="{ 'has-error': (errors[i] && errors[i]['localChurch']) || (errors[i] && errors[i]['invalid']) }"
                                                     size="mini" v-model="guest.localChurch" placeholder="Local Church"
-                                                    @change="removeClusterGroup(i)">
+                                                    @change="changeLocalChurch(i)">
                                                     <el-option v-for="(value, local_church) in assignments"
                                                         :key="local_church" :label="local_church"
                                                         :value="local_church"></el-option>
@@ -100,7 +100,7 @@
                                                     v-if="errors[i] && (errors[i]['localChurch'] || errors[i]['clusterGroup'])"
                                                     class="text-error">
                                                     <span v-if="errors[i]['localChurch']">{{ errors[i]['localChurch']
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                             <el-col class="pb-1" :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
@@ -122,7 +122,7 @@
                                                     v-if="errors[i] && (errors[i]['localChurch'] || errors[i]['clusterGroup'])"
                                                     class="text-error">
                                                     <span v-if="errors[i]['clusterGroup']">{{ errors[i]['clusterGroup']
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                         </el-row>
@@ -157,23 +157,38 @@
                                                     </el-col>
                                                 </el-row>
                                                 <el-checkbox-group v-else v-model="guest.booked" size="mini">
-                                                    <el-checkbox-button v-for="(date, index) in dates" :label="date.id"
+                                                    <el-checkbox-button v-for="date in dates" :label="date.id"
                                                         :key="date.id" @change="onChangeProcessed($event, date.id)"
-                                                        :disabled="(!guest.booked?.includes(date.id) && guest.booked.length === guest_booking_limit)
+                                                        :disabled="!guest.localChurch
+                                                            ||
+                                                            (
+                                                                !guest.booked.includes(date.id)
+                                                                && guest.booked.length >= guest_booking_limit
+                                                            )
                                                             ||
                                                             (
                                                                 getLocalChurchAvailability(date, guest.localChurch) === 0
                                                                 && !guest.booked.includes(date.id)
                                                             )
                                                             ">
-                                                        <label class="mb-1">{{ date.event_date }}</label> <br>
-                                                        <span>{{ getLocalChurchAvailability(date, guest.localChurch) }}
-                                                            left!</span>
+                                                        <label class="mb-1">
+                                                            {{ date.event_date }}
+                                                        </label>
+                                                        <br>
+
+                                                        <span v-if="guest.localChurch">
+                                                            {{ getLocalChurchAvailability(date, guest.localChurch) }}
+                                                            left!
+                                                        </span>
+
+                                                        <span v-else>
+                                                            Select Local Church first
+                                                        </span>
                                                     </el-checkbox-button>
                                                 </el-checkbox-group>
                                                 <small v-if="errors[i] && errors[i]['booked']" class="text-error">
                                                     <span v-if="errors[i]['booked']">{{ errors[i]['booked']
-                                                        }}</span>&nbsp;
+                                                    }}</span>&nbsp;
                                                 </small>
                                             </el-col>
                                         </el-row>
@@ -666,9 +681,6 @@ export default {
                 })
             }
         },
-        removeClusterGroup(index) {
-            this.ruleForm.guests[index].clusterGroup = ''
-        },
         onChangeProcessed(isChecked, id) {
             for (var i = 0, len = this.dates.length; i < len; i++) {
                 if (this.dates[i]['id'] === id) {
@@ -677,6 +689,36 @@ export default {
                 }
             }
         },
+        changeLocalChurch(index) {
+            const guest = this.ruleForm.guests[index];
+
+            // Reset cluster group
+            guest.clusterGroup = '';
+
+            // Reset selected dates whenever Local Church changes
+            guest.booked = [];
+
+            // Reset date availability display
+            this.refreshDateAvailability();
+        },
+
+        refreshDateAvailability() {
+            this.dates = this.dates.map(date => {
+                let available = date.base_available;
+
+                this.ruleForm.guests.forEach(guest => {
+                    if (guest.localChurch && guest.booked?.includes(date.id)) {
+                        available--;
+                    }
+                });
+
+                return {
+                    ...date,
+                    available
+                };
+            });
+        },
+
         onChangeProcessedMulti(newValue, dateId, guestIndex) {
             const prev = this.previous_values[`${guestIndex}_${dateId}`] || "";
 
