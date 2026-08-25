@@ -2,7 +2,7 @@
     <div>
         <el-table v-loading="loading" :data="tableData" :span-method="objectSpanMethod" size="mini" border
             style="width: 100%">
-            <el-table-column prop="registration_type" label="Registration Type" align="center" width="180" />
+            <el-table-column prop="registration_type" label="Registration Type" align="center" width="120" />
 
             <el-table-column prop="description" label="Description" align="center" width="100" />
 
