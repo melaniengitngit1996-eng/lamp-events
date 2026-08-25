@@ -21,32 +21,26 @@
                 </div>
                 <div class="col-md-6">
                     <el-form-item label="Facebook Name" prop="facebookName">
-                        <el-input v-model="ruleForm.facebookName" placeholder="If none, kindly type in the Facebook name of your event companion"></el-input>
+                        <el-input v-model="ruleForm.facebookName"
+                            placeholder="If none, kindly type in the Facebook name of your event companion"></el-input>
                     </el-form-item>
                 </div>
 
                 <div class="col-md-3">
                     <el-form-item label="Local Church" prop="localChurch" required>
                         <el-select v-model="ruleForm.localChurch" placeholder="Choose">
-                            <el-option v-for="(value, local_church) in assignments" :key="local_church" :label="local_church" :value="local_church"></el-option>
+                            <el-option v-for="(value, local_church) in assignments" :key="local_church"
+                                :label="local_church" :value="local_church"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
                 <div class="col-md-3">
                     <el-form-item label="Cluster Group" prop="localChurch" required>
-                        <el-select 
-                            v-model="ruleForm.clusterGroup" 
-                            placeholder="Cluster Group">
+                        <el-select v-model="ruleForm.clusterGroup" placeholder="Cluster Group">
                             <el-option label="No Cluster Group" value="No Cluster"></el-option>
-                            <el-option-group
-                            v-for="group in assignments[ruleForm.localChurch]"
-                                :key="group.label"
+                            <el-option-group v-for="group in assignments[ruleForm.localChurch]" :key="group.label"
                                 :label="group.label">
-                                <el-option
-                                    v-for="item in group.options"
-                                    :key="item"
-                                    :label="item"
-                                    :value="item">
+                                <el-option v-for="item in group.options" :key="item" :label="item" :value="item">
                                 </el-option>
                             </el-option-group>
                         </el-select>
@@ -55,7 +49,8 @@
                 <div class="col-md-3">
                     <el-form-item label="Country" prop="country" required>
                         <el-select v-model="ruleForm.country" placeholder="Choose">
-                            <el-option v-for="country in countries" v-bind:key="country" :label="country" :value="country"></el-option>
+                            <el-option v-for="country in countries" v-bind:key="country" :label="country"
+                                :value="country"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
@@ -69,7 +64,7 @@
                     </el-form-item>
                 </div>
             </div>
-        </el-card> 
+        </el-card>
 
         <el-card shadow="hover" class="mb-3">
             <div class="row">
@@ -83,7 +78,8 @@
 
         <el-row>
             <div class="col-md-12">
-                <el-button v-if="permissions.can_edit_lookup_data" type="warning" @click="submitForm('ruleForm')">Update</el-button>
+                <el-button v-if="permissions.can_edit_lookup_data" type="warning"
+                    @click="submitForm('ruleForm')">Update</el-button>
             </div>
         </el-row>
     </el-form>
@@ -117,25 +113,25 @@ export default {
             },
             rules: {
                 firstName: [
-                    { required: true, message: 'Please input First Name', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please input First Name', trigger: ['blur', 'change'] }
                 ],
                 lastName: [
-                    { required: true, message: 'Please input Last Name', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please input Last Name', trigger: ['blur', 'change'] }
                 ],
                 localChurch: [
-                    { required: true, message: 'Please select Local Church', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please select Local Church', trigger: ['blur', 'change'] }
                 ],
                 country: [
-                    { required: true, message: 'Please select Country', trigger: ['blur', 'change']}
+                    { required: true, message: 'Please select Country', trigger: ['blur', 'change'] }
                 ],
                 lampIDNumber: [
-                    { required: true, message: 'Please input LAMP ID Number', trigger: ['blur', 'change']},
+                    { required: true, message: 'Please input LAMP ID Number', trigger: ['blur', 'change'] },
                 ],
                 category: [
-                    { required: true, message: 'Please select rate', trigger: ['blur', 'change']},
+                    { required: true, message: 'Please select rate', trigger: ['blur', 'change'] },
                 ],
                 canBookDays: [
-                    { required: true, message: 'Please input number of days can book', trigger: ['blur', 'change']},
+                    { required: true, message: 'Please input number of days can book', trigger: ['blur', 'change'] },
                 ]
             },
             countries: this.$allCountries,
@@ -175,22 +171,22 @@ export default {
 
                     setTimeout(async () => {
                         await axios.post(`/${this.event.slug}/lookup/${this.lookup.lamp_id}/update`, this.ruleForm)
-                        .then(async (response) => {
-                            loading.close()
+                            .then(async (response) => {
+                                loading.close()
 
-                            this.$alert('', 'Details Successfully Updated!', {
-                                confirmButtonText: 'OK',
-                                showCancelButton: false,
-                                closeOnPressEscape: false,
-                                closeOnClickModal: false,
-                                showClose: false,
-                                center: true,
-                                type: 'success',
-                                callback: action => {
-                                    window.location.reload();
-                                }
+                                this.$alert('', 'Details Successfully Updated!', {
+                                    confirmButtonText: 'OK',
+                                    showCancelButton: false,
+                                    closeOnPressEscape: false,
+                                    closeOnClickModal: false,
+                                    showClose: false,
+                                    center: true,
+                                    type: 'success',
+                                    callback: action => {
+                                        window.location.reload();
+                                    }
+                                });
                             });
-                        });
                     }, 1000);
                 } else {
                     return false;
