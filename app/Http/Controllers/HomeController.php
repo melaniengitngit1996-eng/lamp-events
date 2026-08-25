@@ -304,7 +304,7 @@ class HomeController extends Controller
                 'members' => $slots_members,
                 'guests' => $slots_guests
             ],
-            'slots_list' => json_encode(Slots::where('event_id', $event->id)->get()),
+            'slots_list' => json_encode(Slots::where('event_id', $event->id)->with('localChurchSlots')->get()),
             'count' => json_encode($attendance_count),
             'overall' => json_encode($overall),
             'overall_total' => json_encode($overall_total),

@@ -118,7 +118,9 @@ Route::get('/{event:slug}/check-in/validate', [App\Http\Controllers\CheckInContr
 Route::post('/{event:slug}/check-in/{id}/edit', [App\Http\Controllers\CheckInController::class, 'update'])->name('check-in.update');
 Route::get('/{event:slug}/check-in/passes', [App\Http\Controllers\CheckInController::class, 'show'])->name('check-in.attendance');
 
+Route::get('/{event:slug}/slots', [App\Http\Controllers\SlotsController::class, 'index'])->name('slots.index');
 Route::post('/{event:slug}/slots', [App\Http\Controllers\SlotsController::class, 'store'])->name('slots.store');
+Route::post('/{event:slug}/slots/{slot}/local-church', [App\Http\Controllers\SlotsController::class, 'updateLocalChurchSlots']);
 
 Route::get('/{event:slug}/export/history', [App\Http\Controllers\ExportHistoryController::class, 'index'])->name('history.index');
 
