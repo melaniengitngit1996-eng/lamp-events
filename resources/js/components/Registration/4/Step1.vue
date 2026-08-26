@@ -504,6 +504,7 @@ export default {
                 this.options = [];
                 this.ruleForm.clusterGroup = "";
             } else if (scope === 'venue') {
+                this.$set(this.ruleForm, 'cluster_group_satellite', "");
                 this.$emit("reset");
             }
         },
