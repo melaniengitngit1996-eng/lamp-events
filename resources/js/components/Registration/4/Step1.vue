@@ -84,7 +84,7 @@
                                 :required="evaluateRule(field.mandatory_rule)">
                                 <small v-if="field.description" class="text-sm">{{ field.description }}</small>
                                 <el-select v-if="field.type === 'select'" v-model="ruleForm[field.name]"
-                                    placeholder="Choose">
+                                    placeholder="Choose" @change="field.name == 'venue' && resetData('venue')">
                                     <el-option v-for="option in field.options.split(',')" :key="option" :value="option"
                                         :label="option"
                                         :disabled="option == 'Calamba Tent' && slots?.member[0]?.available <= 0 && ruleForm.registrationType === 'Member'"></el-option>
@@ -404,7 +404,7 @@ export default {
                         });
                 }
             }
-        }
+        },
     },
     mounted() {
         if (Object.keys(this.data.step_1).length != 0) {
@@ -503,6 +503,8 @@ export default {
                 this.ruleForm.found = {};
                 this.options = [];
                 this.ruleForm.clusterGroup = "";
+            } else if (scope === 'venue') {
+                this.$emit("reset");
             }
         },
         resetCustomFields() {
