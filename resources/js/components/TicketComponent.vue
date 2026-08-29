@@ -35,7 +35,7 @@
                                 <div class="col-md-12">
                                     <small>Email Address</small>
                                     <span class="text-md font-bold d-block text-break">{{ registration.email || '--'
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </div>
                         </div>
@@ -199,7 +199,7 @@ export default {
 
             if (this.registrations[0].attending_option === 'Online') {
                 if (this.registrations[0].rate > 0) {
-                    msg += '<br /><br /><small style="line-height: 0px;">To confirm your registration, please settle your balance on or before the deadline. <br /><br />Deadline for full payment: June 28,2026<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
+                    msg += '<br /><br /><small style="line-height: 0px;">To confirm your registration, please settle your balance on or before the deadline. <br /><br />Deadline for full payment: November 30, 2026<br /><br />For payments or cancellations, <br />please contact your Local Registrar.</small>';
                 }
                 if (this.event.enable_zoom_registration) {
                     msg += '<br /><br /><u>We will send you the Zoom details soon.</u>';
