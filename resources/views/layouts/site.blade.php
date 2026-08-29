@@ -85,7 +85,7 @@
                     <a class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground text-foreground" href="/" data-status="active" aria-current="page">Home</a>
                     <a href="/upcoming-events" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Events</a>
                     <a href="/past-events" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Past Events</a>
-                    <a href="/about-us" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Our Story</a>
+                    {{-- <a href="/about-us" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Our Story</a> --}}
                 </nav>
                 <div class="hidden items-center gap-3 md:flex">
                     <a href="/login" class="text-sm font-medium text-muted-foreground hover:text-foreground">Admin login</a>
@@ -110,7 +110,7 @@
                     <a href="/" class="rounded-md px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">Home</a>
                     <a href="/upcoming-events" class="rounded-md px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground active" data-status="active" aria-current="page">Events</a>
                     <a href="/past-events" class="rounded-md px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">Past Events</a>
-                    <a href="/about-us" class="rounded-md px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">Our Story</a>
+                    {{-- <a href="/about-us" class="rounded-md px-2 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground">Our Story</a> --}}
                     <div class="mt-2 border-t border-border/60 pt-2">
                         <a href="/login" class="block rounded-md px-2 py-2 text-sm font-medium text-muted-foreground">Admin login</a>
                     </div>
