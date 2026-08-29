@@ -374,6 +374,65 @@ HTML,
                 'rate' => 0.00,
                 'can_book_rate' => 0.00,
             ],
+            // Online - Senior
+            [
+                'category' => 'Senior',
+                'attending_option' => 'Online',
+                'registration_type' => 'Member',
+                'venue' => 'Online',
+                'description' => 'Senior (Online)',
+                'rate' => 100.00,
+                'can_book_rate' => 100.00,
+            ],
+            [
+                'category' => 'Senior',
+                'attending_option' => 'Online',
+                'registration_type' => 'Guest',
+                'venue' => 'Online',
+                'description' => 'Senior Visitor (Online)',
+                'rate' => 0.00,
+                'can_book_rate' => 0.00,
+            ],
+
+            // Calamba Tent - Senior
+            [
+                'category' => 'Senior',
+                'attending_option' => 'Physical',
+                'registration_type' => 'Member',
+                'venue' => 'Calamba Tent',
+                'description' => 'Senior (Calamba Tent)',
+                'rate' => 900.00,
+                'can_book_rate' => 900.00,
+            ],
+            [
+                'category' => 'Senior',
+                'attending_option' => 'Physical',
+                'registration_type' => 'Guest',
+                'venue' => 'Calamba Tent',
+                'description' => 'Senior Visitor (Calamba Tent)',
+                'rate' => 0.00,
+                'can_book_rate' => 0.00,
+            ],
+
+            // Cluster Based Satellite - Senior
+            [
+                'category' => 'Senior',
+                'attending_option' => 'Physical',
+                'registration_type' => 'Member',
+                'venue' => 'Cluster Based Satellite',
+                'description' => 'Senior (Local Church)',
+                'rate' => 100.00,
+                'can_book_rate' => 100.00,
+            ],
+            [
+                'category' => 'Senior',
+                'attending_option' => 'Physical',
+                'registration_type' => 'Guest',
+                'venue' => 'Cluster Based Satellite',
+                'description' => 'Senior Visitor (Local Church)',
+                'rate' => 0.00,
+                'can_book_rate' => 0.00,
+            ],
         ];
 
         foreach ($rates as $rate) {

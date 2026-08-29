@@ -17,7 +17,7 @@
                 class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-gold">
                 <span class="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-gold"></span>Next event
             </div>
-            <h2 class="mt-3 font-display text-3xl font-medium sm:text-4xl">39th LAMP Church Anniversary Celebration</h2>
+            <h2 class="mt-3 font-display text-3xl font-medium sm:text-4xl">Annual Worship and Thanksgiving Assembly 2026</h2>
             <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-primary-foreground/75"><span
                     class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -33,7 +33,7 @@
                         <path d="M8 18h.01"></path>
                         <path d="M12 18h.01"></path>
                         <path d="M16 18h.01"></path>
-                    </svg>Sunday 5 July 2026 at 09:00</span><span
+                    </svg>December 26 - 29, 2026</span><span
                     class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -42,7 +42,7 @@
                             d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
                         </path>
                         <circle cx="12" cy="10" r="3"></circle>
-                    </svg>Park Homes Subdivision, Midland Alley, Tunasan, Muntinlupa, Metro Manila</span></div>
+                    </svg>Calamba Tent, CMC Avenue, Crossing, Calamba City</span></div>
             <div class="mt-6">
                 <div class="flex flex-wrap gap-3 sm:gap-4">
                     <div
@@ -139,7 +139,7 @@
     $(function () {
 
         // July 5, 2026 9:00 AM (Philippines Time)
-        const targetDate = new Date('2026-07-05T09:00:00+08:00').getTime();
+        const targetDate = new Date('2026-12-26T16:00:00+08:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();

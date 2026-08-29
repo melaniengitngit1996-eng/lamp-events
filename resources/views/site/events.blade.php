@@ -38,7 +38,7 @@
             </div>
             {{-- <p class="mt-4 flex-1 text-sm text-foreground/80 line-clamp-4">An evening of worship, testimonies, and community as we celebrate the light of Christ together. Join hundreds of believers for an unforgettable night.</p> --}}
             <div class="mt-5">
-                <a href="/registration" class="inline-flex items-center rounded-md bg-midnight px-4 py-2 text-sm font-medium text-gold transition-opacity hover:opacity-90" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-_r_1d_" data-state="closed">Register</a>
+               <a href="#" class="inline-flex items-center rounded-md bg-midnight px-4 py-2 text-sm font-medium text-gold transition-opacity hover:opacity-90 disabled-link" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-_r_1d_" data-state="closed">Register</a>
             </div>
          </article>
          <article class="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-warm/40 transition-shadow hover:shadow-warm">
@@ -69,7 +69,7 @@
             </div>
             {{-- <p class="mt-4 flex-1 text-sm text-foreground/80 line-clamp-4">An evening of worship, testimonies, and community as we celebrate the light of Christ together. Join hundreds of believers for an unforgettable night.</p> --}}
             <div class="mt-5">
-                <a href="#" class="inline-flex items-center rounded-md bg-midnight px-4 py-2 text-sm font-medium text-gold transition-opacity hover:opacity-90 disabled-link" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-_r_1d_" data-state="closed">Register</a>
+               <a href="/registration" class="inline-flex items-center rounded-md bg-midnight px-4 py-2 text-sm font-medium text-gold transition-opacity hover:opacity-90" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-_r_1d_" data-state="closed">Register</a>
             </div>
          </article>
       </div>
