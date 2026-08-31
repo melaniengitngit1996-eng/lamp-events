@@ -49,12 +49,10 @@
                             </el-form-item>
                         </div>
                         <div class="col-md-6" v-if="
-                            ruleForm.attendingOption === 'Online' &&
                             ruleForm.registrationType === 'Guest' &&
                             event.with_guest_booking_code
                         ">
-                            <el-form-item class="transform-uppercase" label="Booking Code" prop="bookingCode" :required="ruleForm.attendingOption === 'Online' &&
-                                ruleForm.registrationType === 'Guest'
+                            <el-form-item class="transform-uppercase" label="Booking Code" prop="bookingCode" :required="ruleForm.registrationType === 'Guest'
                                 ">
                                 <el-input v-model="ruleForm.bookingCode" :clearable="true"></el-input>
                             </el-form-item>
