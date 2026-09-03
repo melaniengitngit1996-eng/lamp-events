@@ -259,4 +259,15 @@ class LookUpController extends Controller
             'lookup' => $lookUp
         ]);
     }
+
+    /**
+     * Delete registration
+     *
+     * @param Event $event
+     * @param LookUp $lookUp
+     */
+    public function destroy(Event $event, LookUp $lookup)
+    {
+        return $lookup->delete();
+    }
 }

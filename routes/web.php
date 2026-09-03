@@ -80,6 +80,7 @@ Route::get('/{event:slug}/registrations/export', [App\Http\Controllers\Registrat
 
 // lookup
 Route::get('/{event:slug}/lookup', [App\Http\Controllers\LookUpController::class, 'index'])->name('lookup.index');
+Route::delete('/{event:slug}/lookup/{lookup}/delete', [App\Http\Controllers\LookUpController::class, 'destroy'])->name('lookup.delete');
 Route::get('/{event:slug}/lookup/create', [App\Http\Controllers\LookUpController::class, 'create'])->name('lookup.create');
 Route::post('/lookup', [App\Http\Controllers\LookUpController::class, 'store'])->name('lookup.store');
 Route::get('/{event:slug}/lookup/validate', [App\Http\Controllers\LookUpController::class, 'validation'])->name('lookup.validation');
