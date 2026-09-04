@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\AttendingOption;
+use App\Enums\BookingStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\RegistrationType;
 use App\Exports\ExportRegistration;
@@ -186,11 +187,13 @@ class Registration2Controller extends Controller
      * @param Event $event
      * @param Request $request
      */
-    public function store(Event $event, Request $request)
+    public function store_(Event $event, Request $request)
     {
         $event = Event::with(['custom_fields', 'slots'])->find($event->id);
 
-        // member registration
+        // ============================================================
+        // MEMBER REGISTRATION
+        // ============================================================
         if ($request->step_1['registrationType'] === 'Member') {
             $uuid = null;
 
@@ -399,7 +402,10 @@ class Registration2Controller extends Controller
             // }
 
             return $registration->uuid;
-        } else { // guest registration
+        } else {
+            // ============================================================
+            // GUEST REGISTRATION
+            // ============================================================
             $details = $request->step_1;
 
             $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $details);
@@ -407,12 +413,24 @@ class Registration2Controller extends Controller
             if (true === env('ONLINE_GUESTS_GROUP_REGISTRATION', true)) {
                 $registered = [];
 
-                foreach ($request->step_2['guests'] as $key => $value) {
+                $guests = $request->step_2['guests'] ?? [];
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | STEP 1
+                | Build all bookings first.
+                |
+                | We DO NOT create any registration yet.
+                |--------------------------------------------------------------------------
+                */
+                // Validate ALL guests first before creating any registration
+                foreach ($guests as $value) {
                     $uuid = $this->generateGuestId();
 
                     $details = (object) $value;
 
-                    $book = $details->booked;
+                    $booked = $details->booked;
 
                     // Auto-book even if event booking is disabled
                     // Ensures a booking record exists for proper attendance tracking
@@ -420,21 +438,21 @@ class Registration2Controller extends Controller
                         !$event->with_booking &&
                         AttendingOption::Online != $request->step_1['attendingOption']
                     ) {
-                        $book = $request->step_3['booked'];
+                        $booked = $request->step_3['booked'];
                     }
 
                     if ($event->has_multiple_venues && $event->slug == 1226292026 && AttendingOption::Online != $request->step_1['attendingOption']) {
-                        $book = array_combine($book, array_fill(0, count($book), $request->step_1['venue']));
+                        $booked = array_combine($booked, array_fill(0, count($booked), $request->step_1['venue']));
                     }
 
                     if ($event->slug == 1226292026 && AttendingOption::Online != $request->step_1['attendingOption']) {
-                        $book = $details->booked;
+                        $booked = $details->booked;
                     }
 
                     // Remove bookings without selected venue
                     // Bookings without venue means not booked
                     if ($event->has_multiple_venues && $event->slug != 1226292026) {
-                        $book = array_filter($value['booked'], function ($venue) {
+                        $booked = array_filter($value['booked'], function ($venue) {
                             return !empty(trim((string)$venue));
                         });
                     }
@@ -442,7 +460,7 @@ class Registration2Controller extends Controller
                     if ($event->slug == 1226292026) {
                         $value['venue'] = $request->step_1['venue'];
                     }
-
+                    dd($booked);
                     $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $value);
 
                     $category = 'Adult';
@@ -479,7 +497,7 @@ class Registration2Controller extends Controller
                         ], 422);
                     }
 
-                    $this->book($event, $registration, $book);
+                    $this->book($event, $registration, $booked);
 
                     $registration = $this->updatePaymentStatus($registration->id, true);
 
@@ -517,6 +535,628 @@ class Registration2Controller extends Controller
 
                 return $registration->uuid;
             }
+        }
+    }
+
+    /**
+     * Store a newly created registration in storage.
+     *
+     * @param Event $event
+     * @param Request $request
+     */
+    public function store(Event $event, Request $request)
+    {
+        $event = Event::with([
+            'custom_fields',
+            'slots',
+        ])->find($event->id);
+
+        // ============================================================
+        // MEMBER REGISTRATION
+        // ============================================================
+        if ($request->step_1['registrationType'] === 'Member') {
+
+            $uuid = null;
+
+            $details = array_merge(
+                $request->step_1,
+                $request->step_2,
+                $request->step_3
+            );
+
+            $custom_fields_value = $this->getCustomFieldsValue(
+                $event->custom_fields,
+                $details
+            );
+
+            // hard coded
+            if (
+                $event->slug == 1226292026 &&
+                $custom_fields_value['venue'] == 'Calamba Tent'
+            ) {
+                $remaining = $event->slots
+                    ->where('registration_type', 'Member')
+                    ->first()
+                    ->available ?? 0;
+
+                if ($remaining <= 0) {
+                    return response()->json([
+                        'error' => 'Sorry, there are no remaining slots for Calamba Tent. Please select another venue to continue.'
+                    ], 422);
+                }
+            }
+
+            switch ($request->step_1['withAwtaCard']) {
+
+                case 'none':
+
+                    $uuid = UUID::issue($event);
+                    $email = $details['email'];
+                    $firstname = $details['firstName'];
+                    $lastname = $details['lastName'];
+                    $fullname = $details['firstName'] . ' ' . $details['lastName'];
+                    $facebook = $details['facebookName'];
+                    $registration_type = $details['registrationType'];
+                    $local_church = $details['localChurch'];
+                    $country = $details['country'];
+
+                    $category = Category::getByBirthdate(
+                        $details['birthdate']
+                    )?->name;
+
+                    $attending_option = $details['attendingOption'];
+                    $with_awta_card = $details['withAwtaCard'];
+                    $cluster_group = $details['clusterGroup'];
+                    $assistance = $details['specificMedicalAssistance'];
+                    $can_book_days = $event->member_booking_limit;
+                    $awta_card_number = '--';
+                    $birthdate = $details['birthdate'];
+
+                    break;
+
+                case 'lost':
+
+                    $lookup = LookUp::where(
+                        'lamp_id',
+                        $details['selected']
+                    )->first();
+
+                    $uuid = is_null($lookup['old_lamp_card_number'])
+                        ? UUID::issue($event)
+                        : $lookup['lamp_id'];
+
+                    $email = $details['email'];
+                    $firstname = $lookup['firstname'];
+                    $lastname = $lookup['lastname'];
+                    $fullname = $lookup['firstname'] . ' ' . $lookup['lastname'];
+                    $facebook = $lookup['facebook_name'];
+                    $registration_type = $details['registrationType'];
+                    $local_church = $details['localChurch'];
+                    $country = $details['country'];
+
+                    $category = Category::getByBirthdate(
+                        $details['birthdate']
+                    )?->name;
+
+                    $attending_option = $details['attendingOption'];
+                    $with_awta_card = $details['withAwtaCard'];
+                    $cluster_group = $details['clusterGroup'];
+                    $awta_card_number = $details['selected'];
+                    $assistance = $details['specificMedicalAssistance'];
+                    $can_book_days = $lookup['can_book_days'];
+                    $birthdate = $details['birthdate'];
+
+                    break;
+
+                case 'mislaid':
+
+                    $lookup = LookUp::where(
+                        'lamp_id',
+                        $details['selected']
+                    )->first();
+
+                    $uuid = is_null($lookup['old_lamp_card_number'])
+                        ? UUID::issue($event)
+                        : $lookup['lamp_id'];
+
+                    $email = $details['email'];
+                    $firstname = $lookup['firstname'];
+                    $lastname = $lookup['lastname'];
+                    $fullname = $lookup['firstname'] . ' ' . $lookup['lastname'];
+                    $facebook = $lookup['facebook_name'];
+                    $registration_type = $details['registrationType'];
+                    $local_church = $details['localChurch'];
+                    $country = $details['country'];
+
+                    $category = Category::getByBirthdate(
+                        $details['birthdate']
+                    )?->name;
+
+                    $attending_option = $details['attendingOption'];
+                    $with_awta_card = $details['withAwtaCard'];
+                    $cluster_group = $details['clusterGroup'];
+                    $awta_card_number = $details['selected'];
+                    $assistance = $details['specificMedicalAssistance'];
+                    $can_book_days = $lookup['can_book_days'];
+                    $birthdate = $details['birthdate'];
+
+                    break;
+
+                case 'yes':
+
+                    $lookup = LookUp::where(
+                        'lamp_id',
+                        $details['lampIDNumber']
+                    )->first();
+
+                    $uuid = $lookup['lamp_id'];
+
+                    $email = $details['email'];
+                    $firstname = $lookup['firstname'];
+                    $lastname = $lookup['lastname'];
+                    $fullname = $lookup['firstname'] . ' ' . $lookup['lastname'];
+                    $facebook = $lookup['facebook_name'];
+                    $registration_type = $details['registrationType'];
+                    $local_church = $details['localChurch'];
+                    $country = $details['country'];
+
+                    $category = Category::getByBirthdate(
+                        $details['birthdate']
+                    )?->name;
+
+                    $attending_option = $details['attendingOption'];
+                    $with_awta_card = $details['withAwtaCard'];
+                    $cluster_group = $details['clusterGroup'];
+                    $awta_card_number = $details['lampIDNumber'];
+                    $assistance = $details['specificMedicalAssistance'];
+                    $can_book_days = $lookup['can_book_days'];
+                    $birthdate = $details['birthdate'];
+
+                    break;
+            }
+
+            // custom blocks
+            $this->addCampingData(
+                $category,
+                $request->step_1['withAwtaCard'],
+                $details,
+                $event,
+                'Member'
+            );
+
+            try {
+
+                $registration = Registration::create([
+                    'uuid' => strtoupper($uuid),
+                    'event_id' => $event->id,
+                    'email' => $email,
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'fullname' => $fullname,
+                    'facebook_name' => $facebook,
+                    'registration_type' => $registration_type,
+                    'local_church' => $local_church,
+                    'cluster_group' => $cluster_group,
+                    'country' => $country,
+                    'category' => $category,
+                    'attending_option' => $attending_option,
+                    'with_awta_card' => $with_awta_card,
+                    'medical_assistance_needed' => $assistance,
+                    'can_book_days' => $can_book_days,
+                    'notes' => [],
+                    'activities' => [],
+                    'booking_activities' => [],
+                    'custom_fields' => $custom_fields_value
+                ]);
+
+                $registration->additional_data()->create([
+                    'registration_id' => $registration->id,
+                    'has_viewed_ticket' => null
+                ]);
+            } catch (\Exception $e) {
+
+                return response()->json([
+                    'error' => $e->getMessage(),
+                ], 422);
+            }
+
+            $lookup = LookUp::where(
+                'lamp_id',
+                $awta_card_number
+            )->first();
+
+            if ($lookup) {
+
+                $update = [
+                    'cluster_group' => $cluster_group,
+                    'email' => $email,
+                    'birthdate' => $birthdate,
+                    'category' => $category
+                ];
+
+                if (is_null($lookup['old_lamp_card_number'])) {
+                    $update['lamp_id'] = strtoupper($registration->uuid);
+                    $update['old_lamp_card_number'] = strtoupper(
+                        $lookup->lamp_id
+                    );
+                }
+
+                $lookup->update($update);
+            } else {
+
+                LookUp::create([
+                    'lamp_id' => strtoupper($registration->uuid),
+                    'old_lamp_card_number' => strtoupper($awta_card_number),
+                    'email' => $email,
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'fullname' => $firstname . ' ' . $lastname,
+                    'facebook_name' => $facebook,
+                    'registration_type' => 'Member',
+                    'category' => $category,
+                    'local_church' => $local_church,
+                    'country' => $country,
+                    'can_book_days' => $event->member_booking_limit,
+                    'cluster_group' => $cluster_group,
+                    'birthdate' => $birthdate
+                ]);
+            }
+
+            if ($attending_option != AttendingOption::Online) {
+
+                $booked = $request->step_3['booked'] ?? null;
+
+                if (
+                    $event->slug == 1226292026 &&
+                    AttendingOption::Physical === $registration->attending_option &&
+                    RegistrationType::Member === $registration->registration_type
+                ) {
+
+                    $slots = Slots::where('event_id', $event->id)
+                        ->where(
+                            'registration_type',
+                            $registration->registration_type
+                        )
+                        ->get();
+
+                    $booked = [];
+
+                    foreach ($slots as $slot) {
+                        $booked[$slot->id] = $custom_fields_value['venue'];
+                    }
+                }
+
+                if ($booked != null) {
+                    $this->book(
+                        $event,
+                        $registration,
+                        $booked
+                    );
+                }
+            }
+
+            $registration = $this->updatePaymentStatus(
+                $registration->id,
+                true
+            );
+
+            return $registration->uuid;
+        }
+
+
+        // ============================================================
+        // GUEST REGISTRATION
+        // ============================================================
+
+        $details = $request->step_1;
+
+        $custom_fields_value = $this->getCustomFieldsValue(
+            $event->custom_fields,
+            $details
+        );
+
+        if (true === env('ONLINE_GUESTS_GROUP_REGISTRATION', true)) {
+
+            $guests = $request->step_2['guests'] ?? [];
+
+            /*
+            |--------------------------------------------------------------------------
+            | STEP 1
+            | Build all bookings first.
+            |
+            | We DO NOT create any registration yet.
+            |--------------------------------------------------------------------------
+            */
+
+            $guestBookings = [];
+
+            foreach ($guests as $key => $value) {
+
+                $details = (object) $value;
+
+                $book = $details->booked ?? [];
+
+                // Auto-book even if event booking is disabled
+                if (
+                    !$event->with_booking &&
+                    AttendingOption::Online != $request->step_1['attendingOption']
+                ) {
+                    $book = $request->step_3['booked'] ?? [];
+                }
+
+                // Multiple venues
+                if (
+                    $event->has_multiple_venues &&
+                    $event->slug == 1226292026 &&
+                    AttendingOption::Online != $request->step_1['attendingOption']
+                ) {
+                    $book = array_combine(
+                        $book,
+                        array_fill(
+                            0,
+                            count($book),
+                            $request->step_1['venue']
+                        )
+                    );
+                }
+
+                if (
+                    $event->slug == 1226292026 &&
+                    AttendingOption::Online != $request->step_1['attendingOption']
+                ) {
+                    $book = $details->booked ?? [];
+                }
+
+                // Remove bookings without selected venue
+                if (
+                    $event->has_multiple_venues &&
+                    $event->slug != 1226292026
+                ) {
+                    $book = array_filter(
+                        $value['booked'] ?? [],
+                        function ($venue) {
+                            return !empty(trim((string) $venue));
+                        }
+                    );
+                }
+
+                $guestBookings[$key] = $book;
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Validate guest bookings
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                AttendingOption::Online != $request->step_1['attendingOption'] &&
+                $request->step_1['venue'] === 'Calamba Tent'
+            ) {
+
+                foreach ($guestBookings as $key => $book) {
+
+                    if (empty($book)) {
+                        return response()->json([
+                            'error' => 'Please select a slot for all guests.'
+                        ], 422);
+                    }
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | STEP 2
+            | Count how many guests are requesting each slot.
+            |
+            | Example:
+            |
+            | Guest 1 -> slot 63
+            | Guest 2 -> slot 63
+            | Guest 3 -> slot 63
+            |
+            | requestedSlots[63] = 3
+            |--------------------------------------------------------------------------
+            */
+
+            $requestedSlots = [];
+
+            foreach ($guests as $key => $value) {
+
+                $book = $guestBookings[$key] ?? [];
+
+                if (empty($book)) {
+                    continue;
+                }
+
+                $venue = $value['localChurch'] ?? null;
+
+                foreach ($book as $slotId) {
+
+                    if (!isset($requestedSlots[$slotId])) {
+                        $requestedSlots[$slotId] = [];
+                    }
+
+                    $venueKey = $venue ?: 'Calamba Tent';
+
+                    if (!isset($requestedSlots[$slotId][$venueKey])) {
+                        $requestedSlots[$slotId][$venueKey] = 0;
+                    }
+
+                    $requestedSlots[$slotId][$venueKey]++;
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | STEP 3
+            | Validate ALL requested slots before creating registrations.
+            |--------------------------------------------------------------------------
+            */
+            foreach ($requestedSlots as $slotId => $venues) {
+
+                $slot = Slots::with('localChurchSlots')
+                    ->find($slotId);
+
+                if (!$slot) {
+                    return response()->json([
+                        'error' => 'One of the selected slots no longer exists. Please refresh the page and try again.'
+                    ], 422);
+                }
+
+                foreach ($venues as $venue => $requestedCount) {
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | LOCAL CHURCH SLOT
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        $event->has_multiple_venues &&
+                        $venue &&
+                        $venue !== 'Calamba Tent'
+                    ) {
+
+                        $localChurchSlot = $slot->localChurchSlots()
+                            ->where('local_church', $venue)
+                            ->first();
+
+                        if (!$localChurchSlot) {
+                            return response()->json([
+                                'error' => "No slot allocation was found for {$venue} on {$slot->description}."
+                            ], 422);
+                        }
+
+                        $taken = Booking::where('slot_id', $slot->id)
+                            ->where('venue', $venue)
+                            ->whereIn('status', [
+                                BookingStatus::Confirmed,
+                                BookingStatus::Pending,
+                            ])
+                            ->count();
+
+                        $available = $localChurchSlot->seat_count - $taken;
+
+                        if ($requestedCount > $available) {
+                            return response()->json([
+                                'error' => "Sorry, there are only {$available} remaining slots for {$venue} on {$slot->description}."
+                            ], 422);
+                        }
+                    } else {
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | CALAMBA TENT
+                        |--------------------------------------------------------------------------
+                        */
+
+                        $taken = Booking::where('slot_id', $slot->id)
+                            ->where('venue', 'Calamba Tent')
+                            ->whereIn('status', [
+                                BookingStatus::Confirmed,
+                                BookingStatus::Pending,
+                            ])
+                            ->count();
+
+                        $available = $slot->seat_count - $taken;
+
+                        if ($requestedCount > $available) {
+                            return response()->json([
+                                'error' => "Sorry, there are only {$available} remaining slots for {$slot->description}."
+                            ], 422);
+                        }
+                    }
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | STEP 4
+            | ALL slots are available.
+            |
+            | NOW we can safely create registrations.
+            |--------------------------------------------------------------------------
+            */
+
+            $registered = [];
+
+            foreach ($guests as $key => $value) {
+
+                $uuid = $this->generateGuestId();
+
+                $details = (object) $value;
+
+                $book = $guestBookings[$key];
+
+                $custom_fields_value = $this->getCustomFieldsValue(
+                    $event->custom_fields,
+                    $value
+                );
+
+                $category = 'Adult';
+
+                // custom blocks
+                $this->addCampingData(
+                    $category,
+                    null,
+                    $value,
+                    $event,
+                    'Guest'
+                );
+
+                try {
+
+                    $registration = Registration::create([
+                        'uuid' => $uuid,
+                        'event_id' => $event->id,
+                        'email' => $details->email,
+                        'firstname' => $details->firstName,
+                        'lastname' => $details->lastName,
+                        'fullname' => $details->firstName . ' ' . $details->lastName,
+                        'facebook_name' => $details->facebookName,
+                        'registration_type' => 'Guest',
+                        'local_church' => $details->localChurch,
+                        'cluster_group' => $details->clusterGroup,
+                        'country' => $details->country,
+                        'category' => $category,
+                        'attending_option' => $request->step_1['attendingOption'],
+                        'medical_assistance_needed' => $details->specificMedicalAssistance,
+                        'with_awta_card' => 'none',
+                        'notes' => [],
+                        'activities' => [],
+                        'booking_activities' => [],
+                        'custom_fields' => $custom_fields_value
+                    ]);
+                } catch (\Exception $e) {
+
+                    return response()->json([
+                        'error' => $e->getMessage(),
+                    ], 422);
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | CREATE BOOKING
+                |--------------------------------------------------------------------------
+                */
+
+                $this->book(
+                    $event,
+                    $registration,
+                    $book
+                );
+
+                $registration = $this->updatePaymentStatus(
+                    $registration->id,
+                    true
+                );
+
+                $registered[] = $registration->uuid;
+            }
+
+            return $registered;
         }
     }
 
