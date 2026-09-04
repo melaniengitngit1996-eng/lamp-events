@@ -460,7 +460,7 @@ class Registration2Controller extends Controller
                     if ($event->slug == 1226292026) {
                         $value['venue'] = $request->step_1['venue'];
                     }
-                    dd($booked);
+
                     $custom_fields_value = $this->getCustomFieldsValue($event->custom_fields, $value);
 
                     $category = 'Adult';
@@ -1088,6 +1088,10 @@ class Registration2Controller extends Controller
                 $details = (object) $value;
 
                 $book = $guestBookings[$key];
+
+                if ($event->slug == 1226292026) {
+                    $value['venue'] = $request->step_1['venue'];
+                }
 
                 $custom_fields_value = $this->getCustomFieldsValue(
                     $event->custom_fields,
