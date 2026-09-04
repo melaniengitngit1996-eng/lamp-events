@@ -3,46 +3,42 @@
         <div class="card">
             <div class="card-body pt-0">
                 <div class="row justify-content-center">
-                    <label class="mt-3" v-if="event.has_multiple_venues">Please choose a venue for the dates you’d like to attend in person. You may select up to {{max}} days.</label>
+                    <label class="mt-3" v-if="event.has_multiple_venues">Please choose a venue for the dates you’d like
+                        to attend in person. You may select up to {{ max }} days.</label>
                     <div v-if="event.has_multiple_venues">
-                        <el-form-item 
-                            v-for="(date, index) in dates" :key="index" 
-                            :prop="'booked.' + date.id"
-                            :rules="[
-                                { validator: validateBooked, trigger: 'change' }
-                            ]"
-                            class="check-dates" 
-                        >
+                        <el-form-item v-for="(date, index) in dates" :key="index" :prop="'booked.' + date.id" :rules="[
+                            { validator: validateBooked, trigger: 'change' }
+                        ]" class="check-dates">
                             <template slot="label">
-                                {{date.event_date}} <el-tag size="mini" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{date.available}} left for {{event.main_venue}}!</el-tag>
+                                {{ date.event_date }} <el-tag size="mini"
+                                    :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">{{ date.available }}
+                                    left for {{ event.main_venue }}!</el-tag>
                             </template>
-                            <el-select v-model="ruleForm.booked[date.id]" @change="onChangeProcessedMulti($event,date.id)" @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue" >
-                                <el-option 
-                                    label="--">
+                            <el-select v-model="ruleForm.booked[date.id]"
+                                @change="onChangeProcessedMulti($event, date.id)"
+                                @visible-change="onSelectOpen($event, date.id)" placeholder="please select your venue">
+                                <el-option label="--">
                                 </el-option>
-                                <el-option 
-                                    v-for="(venue, e) in date.venues" 
-                                    :key="e" 
-                                    :label="venue.venue" 
-                                    :value="venue.venue"
-                                    :disabled="isMainVenueDisabled(venue.venue)">
+                                <el-option v-for="(venue, e) in date.venues" :key="e" :label="venue.venue"
+                                    :value="venue.venue" :disabled="isMainVenueDisabled(venue.venue)">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                     </div>
-                    <el-form-item v-else class="check-dates" :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`" prop="booked" required>
+                    <el-form-item v-else class="check-dates"
+                        :label="`Choose the dates you would like to attend physically. Please select at least 1 day, maximum of ${max} days.`"
+                        prop="booked" required>
                         <!-- <el-tag v-if="(ruleForm.booked.length > 0)" class="bg-white border-0"><i class="el-icon-date"></i>&nbsp;&nbsp;You are booked on<span v-for="(value, index) in ruleForm.booked" :key="index"> {{ dates[value-1]['event_date'] }}&nbsp;</span></el-tag> -->
                         <el-checkbox-group v-model="ruleForm.booked" size="small">
                             <div class="row">
                                 <div v-for="(date, index) in dates" :key="index" class="col-md-3 text-center">
-                                    <el-badge :value="`${date.available} left!`" class="item my-3 c-booking-date" :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">
-                                        <el-checkbox
-                                            :label="date.id"
-                                            name="booked"
-                                            border
+                                    <el-badge :value="`${date.available} left!`" class="item my-3 c-booking-date"
+                                        :type="date.available <= 10 ? 'danger' : (date.available <= 100 ? 'warning' : 'success')">
+                                        <el-checkbox :label="date.id" name="booked" border
                                             :disabled="((!ruleForm.booked.includes(date.id) && ruleForm.booked.length === max) || (date.available === 0 && !ruleForm.booked.includes(date.id) && !initial.includes(date.id)) || hide_button)"
-                                            @change="onChangeProcessed($event,date.id)">
-                                            <span v-if="ruleForm.booked.includes(date.id)">&#10003;&nbsp;</span>{{ date.event_date }}
+                                            @change="onChangeProcessed($event, date.id)">
+                                            <span v-if="ruleForm.booked.includes(date.id)">&#10003;&nbsp;</span>{{
+                                            date.event_date }}
                                         </el-checkbox>
                                     </el-badge>
                                 </div>
@@ -91,21 +87,21 @@ export default {
             required: false
         }
     },
-    data () {
-      return {
-        dates: [],
-        initial: [],
-        ruleForm: {
-            booked: [],
-        },
-        rules: {
-            booked: [
-                {required: true, message: 'Please select atleast one day', trigger: ['blur', 'change']},
-            ],
-        },
-        max: 2,
-        previous_values: {}
-      }
+    data() {
+        return {
+            dates: [],
+            initial: [],
+            ruleForm: {
+                booked: [],
+            },
+            rules: {
+                booked: [
+                    { required: true, message: 'Please select atleast one day', trigger: ['blur', 'change'] },
+                ],
+            },
+            max: 4,
+            previous_values: {}
+        }
     },
     mounted() {
         this.ruleForm.booked = this.booked_dates.map(function (date) { return date.slot.id; });
@@ -161,41 +157,41 @@ export default {
                     await axios.post(`/${this.event.slug}/booking/${this.registration.id}/update`, {
                         dates: booked,
                         is_admin: this.is_admin
-                    }) 
-                    .then(async (response) => {
-                        loading.close()
+                    })
+                        .then(async (response) => {
+                            loading.close()
 
-                        this.$alert('', 'Successfully Booked!', {
-                            confirmButtonText: 'OK',
-                            showCancelButton: false,
-                            closeOnPressEscape: false,
-                            closeOnClickModal: false,
-                            showClose: false,
-                            center: true,
-                            type: 'success',
-                            callback: action => {
-                                if (this.self_redirect)
+                            this.$alert('', 'Successfully Booked!', {
+                                confirmButtonText: 'OK',
+                                showCancelButton: false,
+                                closeOnPressEscape: false,
+                                closeOnClickModal: false,
+                                showClose: false,
+                                center: true,
+                                type: 'success',
+                                callback: action => {
+                                    if (this.self_redirect)
+                                        window.location.reload();
+                                    else
+                                        window.location.href = `booking/${this.registration.id}/view`;
+                                }
+                            });
+                        }).catch((error) => {
+                            loading.close()
+
+                            this.$alert('', error.response.data.error, {
+                                confirmButtonText: 'OK',
+                                showCancelButton: false,
+                                closeOnPressEscape: false,
+                                closeOnClickModal: false,
+                                showClose: false,
+                                center: true,
+                                type: 'error',
+                                callback: action => {
                                     window.location.reload();
-                                else
-                                    window.location.href = `booking/${this.registration.id}/view`;
-                            }
+                                }
+                            });
                         });
-                    }).catch((error) => {
-                        loading.close()
-
-                        this.$alert('', error.response.data.error, {
-                            confirmButtonText: 'OK',
-                            showCancelButton: false,
-                            closeOnPressEscape: false,
-                            closeOnClickModal: false,
-                            showClose: false,
-                            center: true,
-                            type: 'error',
-                            callback: action => {
-                                window.location.reload();
-                            }
-                        });
-                    });
                 });
             })
         },
