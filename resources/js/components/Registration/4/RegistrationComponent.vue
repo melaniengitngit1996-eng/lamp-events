@@ -145,9 +145,6 @@ export default {
                     loading.close();
 
                     // this.showTicket(response.data.toString());
-
-                    this.$refs[formName].resetFields();
-
                 } catch (error) {
                     loading.close();
 
