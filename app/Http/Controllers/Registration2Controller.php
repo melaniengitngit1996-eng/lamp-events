@@ -113,10 +113,12 @@ class Registration2Controller extends Controller
             }
         }
 
-        if ($event->is_maintenance) {
-            return view('registration.maintenance', [
-                'event' => $event
-            ]);
+        if (!$request->admin) {
+            if ($event->is_maintenance) {
+                return view('registration.maintenance', [
+                    'event' => $event
+                ]);
+            }
         }
 
         $directory = "registration.{$event->template_id}.create";
