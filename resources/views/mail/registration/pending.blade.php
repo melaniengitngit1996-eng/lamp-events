@@ -7,7 +7,7 @@
  
 <b>Hi {{ $name }},</b>
 
-@if($event_slug == 7382159074 || $event_slug == 7382159777)
+@if($event_slug == 1226292026)
 Please settle the full balance on or before the due date indicated below. Otherwise, your registration will automatically be cancelled.
 @else
 Please settle your balance or atleast pay half to confirm your booking on or before the due date indicated below. Otherwise, your booking will automatically be cancelled.<br />
@@ -15,7 +15,7 @@ Please settle your balance or atleast pay half to confirm your booking on or bef
 
 @component('mail::panel')
 <b>Balance:</b> Php {{ $balance }}<br />
-@if($event_slug == 7382159074 || $event_slug == 7382159777)
+@if($event_slug == 1226292026)
 <b>Payment Due Date:</b> {{ $payment_due_date }}<br />
 @else
 <b>Minimum Payment Due:</b> Php {{ $minimum_due }}<br />
