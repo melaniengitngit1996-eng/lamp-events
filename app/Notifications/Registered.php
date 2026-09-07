@@ -50,13 +50,13 @@ class Registered extends Notification
     {
         $event = Event::find($this->registration->event_id);
 
-        $url = url('/'. $event->slug .'/ticket/' . $this->registration->uuid);
+        $url = url('/' . $event->slug . '/ticket/' . $this->registration->uuid);
 
         if ($this->registration->booking_status === BookingStatus::Pending) {
             $markup = 'mail.registration.pending';
             $subject = 'Booking on-hold for ' . $event->name;
 
-            if($event->slug == 7382159074 || $event->slug == 7382159075) {
+            if ($event->slug == 1226292026) {
                 $subject = 'Registration on-hold for ' . $event->name;
             }
         } else if ($this->registration->booking_status === BookingStatus::Cancelled) {
@@ -64,14 +64,14 @@ class Registered extends Notification
             $subject = 'Booking cancelled for ' . $event->name;
             $url = url('/booking/');
 
-            if($event->slug == 7382159074 || $event->slug == 7382159075) {
+            if ($event->slug == 1226292026) {
                 $subject = 'Registration cancelled for ' . $event->name;
             }
         } else if ($this->registration->booking_status === BookingStatus::Confirmed) {
             $markup = 'mail.registration.confirmed';
             $subject = 'Booking confirmed for ' . $event->name;
 
-            if($event->slug == 7382159074 || $event->slug == 7382159075) {
+            if ($event->slug == 1226292026) {
                 $subject = 'Registration confirmed for ' . $event->name;
             }
         }
@@ -103,12 +103,12 @@ class Registered extends Notification
 
         if ($event->slug == 7382159074) {
             if ($this->registration->attending_option == 'Online') {
-                $payment_due_date = 'December 24, 2025';
+                $payment_due_date = 'December 24, 2026';
             } else {
                 if ($this->registration->custom_fields['venue'] == 'Local Church') {
-                    $payment_due_date = 'December 14, 2025';
+                    $payment_due_date = 'December 14, 2026';
                 } else {
-                    $payment_due_date = 'November 30, 2025';
+                    $payment_due_date = 'November 30, 2026';
                 }
             }
         }
