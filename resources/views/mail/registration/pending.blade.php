@@ -1,6 +1,6 @@
 @component('mail::message')
 <center>
-<label style="font-size: 20px; color: orange; font-weight: 600;">@if($event_slug == 7382159074 || $event_slug == 7382159075 || $event_slug == 7382159777) Registration On-Hold! @else Booking On-Hold! @endif<label>
+<label style="font-size: 20px; color: orange; font-weight: 600;">@if($event_slug == 1226292026) Registration On-Hold! @else Booking On-Hold! @endif<label>
 </center>
 <br />
 <br />
