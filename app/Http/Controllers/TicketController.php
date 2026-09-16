@@ -13,8 +13,14 @@ class TicketController extends Controller
         $this->middleware('auth', ['except' => ['show']]);
     }
 
-    public function show(Event $event, $uuid)
+    public function show($event_id, $uuid)
     {
+        $event = Event::where('slug', $event_id)->first();
+
+        if ($event === null) {
+            return view('events.closed');
+        }
+
         $registration = Registration::with('bookings', 'bookings.slot')->where('event_id', $event->id)->where('uuid', $uuid)->first();
 
         $registration->booked_dates = array_map(function ($dates) use ($event) {
