@@ -29,7 +29,6 @@ class ImportNewLookupSeeder extends Seeder
             ['Angela', 'Canoy', null],
             ['Jerry', 'Causaren', null],
             ['Rose Ann', 'Causaren', null],
-            ['TESTEvang', 'Coordinator', null],
             ['John Louis', 'De vera Estopa', null],
             ['Kenneth', 'Dela Mata', null],
             ['Mary Jane', 'Devosora', null],
