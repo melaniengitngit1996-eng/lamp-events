@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Notification;
 */
 
 /* run `php artisan send-out-event-reminder 7` */
+
 Artisan::command('send-out-event-reminder {event_id?}', function () {
     $this->comment('---------------------------------- ' . \Carbon\Carbon::today() . ' ---------------------------------');
     $eventId = $this->argument('event_id');
@@ -31,26 +32,65 @@ Artisan::command('send-out-event-reminder {event_id?}', function () {
         AttendingOption::Hybrid,
         AttendingOption::Physical
     ])->get();
-    
+
     foreach ($registrations as $registration) {
         $email = trim((string) $registration->email);
-    
+
         // Skip if empty or doesn't contain @
         if ($email === '' || strpos($email, '@') === false) {
             $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid email] {$email}");
             continue;
         }
-    
+
         // Validate format properly
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid format] {$email}");
             continue;
         }
-    
+
         try {
             Notification::route('mail', [$email => $registration->fullname])
                 ->notify(new Reminder($registration));
-    
+
+            $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
+        } catch (\Throwable $e) {
+            $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
+        }
+    }
+    $this->comment('---------------------------------- end ---------------------------------');
+});
+
+/* run `php artisan send-out-payment-reminder 7` */
+Artisan::command('send-out-payment-reminder {event_id?}', function () {
+    $this->comment('---------------------------------- ' . \Carbon\Carbon::today() . ' ---------------------------------');
+    $eventId = $this->argument('event_id');
+
+    // $registrations = Registration::where('event_id', $eventId)->whereIn('payment_status', [
+    //     PaymentStatus::Unsettled,
+    //     PaymentStatus::Partial
+    // ])->get();
+
+    $registrations = Registration::where('id', 321)->get();
+
+    foreach ($registrations as $registration) {
+        $email = trim((string) $registration->email);
+
+        // Skip if empty or doesn't contain @
+        if ($email === '' || strpos($email, '@') === false) {
+            $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid email] {$email}");
+            continue;
+        }
+
+        // Validate format properly
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid format] {$email}");
+            continue;
+        }
+
+        try {
+            Notification::route('mail', [$email => $registration->fullname])
+                ->notify(new Registered($registration));
+
             $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
         } catch (\Throwable $e) {
             $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
@@ -66,45 +106,44 @@ Artisan::command('send-out-event-reminder-online {event_id?} {registration_id?}'
     $registrationId = $this->argument('registration_id');
     if ($registrationId) {
         $registration = Registration::where('id', $registrationId)->first();
-       
+
 
         try {
             Notification::route('mail', [
                 $registration->email => $registration->fullname,
             ])->notify(new Reminder($registration));
-    
+
             $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$registration->email}");
         } catch (\Throwable $e) {
             $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
         }
     } else {
         $registrations = Registration::where('event_id', $eventId)->where('attending_option', AttendingOption::Online)->get();
-        
+
         foreach ($registrations as $registration) {
             $email = trim((string) $registration->email);
-        
+
             // Skip if empty or doesn't contain @
             if ($email === '' || strpos($email, '@') === false) {
                 $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid email] {$email}");
                 continue;
             }
-        
+
             // Validate format properly
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->comment("{$registration->id} - reminder not sent for {$registration->fullname} - [invalid format] {$email}");
                 continue;
             }
-        
+
             try {
                 Notification::route('mail', [$email => $registration->fullname])
                     ->notify(new Reminder($registration));
-        
+
                 $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
             } catch (\Throwable $e) {
                 $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
             }
-        }        
-        
+        }
     }
 
     $this->comment('---------------------------------- end ---------------------------------');
@@ -182,7 +221,7 @@ Artisan::command('rebook-to-sattelite-partial-bookings {event_id?}', function ()
         try {
             Notification::route('mail', [$registration->email => $registration->fullname])
                 ->notify(new Rebooked($registration));
-    
+
             $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
         } catch (\Throwable $e) {
             $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
