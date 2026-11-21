@@ -70,7 +70,7 @@ Artisan::command('send-out-payment-reminder {event_id?}', function () {
     //     PaymentStatus::Partial
     // ])->get();
 
-    $registrations = Registration::where('id', 321)->get();
+    $registrations = Registration::with('bookings', 'bookings.slot')->withSum('payments', 'amount')->where('id', 321)->get();
 
     foreach ($registrations as $registration) {
         $email = trim((string) $registration->email);
@@ -93,7 +93,13 @@ Artisan::command('send-out-payment-reminder {event_id?}', function () {
 
             $this->comment("{$registration->id} - sent reminder to {$registration->fullname} - {$email}");
         } catch (\Throwable $e) {
-            $this->comment("{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}");
+            $this->comment(
+                "{$registration->id} - failed to send reminder to {$registration->fullname} - {$email}"
+            );
+
+            $this->comment("Message: " . $e->getMessage());
+            $this->comment("File: " . $e->getFile());
+            $this->comment("Line: " . $e->getLine());
         }
     }
     $this->comment('---------------------------------- end ---------------------------------');
